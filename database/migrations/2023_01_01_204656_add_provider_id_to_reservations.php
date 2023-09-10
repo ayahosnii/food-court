@@ -15,9 +15,7 @@ class AddProviderIdToReservations extends Migration
     {
         Schema::table('reservations', function (Blueprint $table) {
             $table->integer('provider_id')->unsigned();
-            $table->integer('branch_id')->unsigned();
             $table->foreign('provider_id')->references('id')->on('providers');
-            $table->foreign('branch_id')->references('id')->on('branches');
         });
     }
 
