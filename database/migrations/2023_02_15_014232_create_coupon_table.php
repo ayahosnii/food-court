@@ -25,7 +25,6 @@ class CreateCouponTable extends Migration
             $table->timestamps();
 
             $table->foreign('provider_id')->references('id')->on('providers')->onDelete('cascade');
-            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
 
         });
         Schema::create('coupon_meal', function (Blueprint $table) {
