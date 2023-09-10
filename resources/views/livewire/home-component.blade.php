@@ -54,7 +54,7 @@
                     @foreach($providers as $provider)
                         <div class="col-lg-3">
                             <div class="categories__item set-bg" data-setbg="{{asset($provider->logo)}}">
-                                <h5><a href="{{Str::slug($provider->name)}}">{{$provider->name}}</a></h5>
+                                <h5><a href="{{route('restaurant.details', ['slug'=> Str::slug($provider->name)])}}"">{{$provider->name}}</a></h5>
                             </div>
                         </div>
                     @endforeach
