@@ -20,7 +20,7 @@ class CreateCouponTable extends Migration
             $table->unsignedInteger('value');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
-            $table->enum('for', ['general', 'provider', 'branch', 'items'])->default('general');
+            $table->enum('for', ['general', 'provider', 'items'])->default('general');
             $table->unsignedInteger('provider_id')->nullable();
             $table->timestamps();
 
