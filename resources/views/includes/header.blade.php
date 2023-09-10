@@ -5,7 +5,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="header__top__left">
                         <ul>
-                            <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                            <li><i class="fa fa-envelope"></i> food-court@site.com</li>
                             <li>Free Shipping for all Order of $99</li>
                         </ul>
                     </div>
@@ -28,7 +28,7 @@
                             </ul>
                         </div>
                         <div class="header__top__right__auth">
-                            <a href="#"><i class="fa fa-user"></i> Login</a>
+                            <a href="{{route('login')}}"><i class="fa fa-user"></i> Login</a>
                         </div>
                     </div>
                 </div>

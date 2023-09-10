@@ -30,7 +30,7 @@
                                 <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <button style="background: #0260c0" type="submit" class="site-btn my-3">
+                                                <button style="background: #366ca4" type="submit" class="site-btn my-3">
                                                     Login Facebook
                                                     <li class="fa fa-facebook mx-3" style="color: #FFFFFF"></li>
                                                 </button>
