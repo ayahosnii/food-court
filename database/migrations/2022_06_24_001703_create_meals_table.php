@@ -24,7 +24,6 @@ class CreateMealsTable extends Migration
             $table->enum("published" , ["1" , "0"]);
             $table->timestamps();
             $table->foreign('category_id')->references('id')->on('logos')->onDelete('cascade');
-            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
         });
     }
 
