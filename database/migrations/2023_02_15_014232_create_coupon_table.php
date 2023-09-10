@@ -22,7 +22,6 @@ class CreateCouponTable extends Migration
             $table->dateTime('end_time');
             $table->enum('for', ['general', 'provider', 'branch', 'items'])->default('general');
             $table->unsignedInteger('provider_id')->nullable();
-            $table->unsignedInteger('branch_id')->nullable();
             $table->timestamps();
 
             $table->foreign('provider_id')->references('id')->on('providers')->onDelete('cascade');
