@@ -67,7 +67,6 @@
                         @livewire('cart-count-component')
                         @livewire('wishlist-count-component')
                     </ul>
-                    <div class="header__cart__price">item: <span>$150.00</span></div>
                 </div>
             </div>
         </div>
