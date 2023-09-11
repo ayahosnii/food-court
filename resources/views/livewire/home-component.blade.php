@@ -1,3 +1,65 @@
+@push('styles')
+    <style>
+        .single-banner-slide {
+            height: 470px;
+            width: 851px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            z-index: 2;
+        }
+        .single-banner-slide span {
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .single-banner-slide h2 {
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 60px;
+        }
+        .single-banner-slide::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+        }
+        .single-banner-slide p {
+            color: #fff;
+            font-size: 15px;
+            max-width: 50%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .single-banner-slide a {
+            color: #000;
+            background: #fff;
+            padding: 10px 45px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 30px;
+            transition: 0.3s;
+        }
+        .single-banner-slide a:hover {
+            color: #fff;
+            background: #000;
+        }
+        .owl-dots {
+            display: none !important;
+        }
+    </style>
+@endpush
 <div>
 
     <!-- Hero Section Begin -->
@@ -35,7 +97,38 @@
                             </div>
                         </div>
                     </div>
-                    <div class="hero__item set-bg" data-setbg="{{asset('assets/img/hero/main.jpg')}}">
+
+                    <div class="hero__item set-bg"{{-- data-setbg="{{asset('assets/img/hero/main.jpg')}}"--}}>
+                        <section class="banner-area">
+                            <div class="container">
+                                <div class="all-banner-slide owl-carousel">
+                                    <div class="single-banner-slide" style="background-image: url(assets/img/hero/main.jpg);">
+                                        <span>Discover The Colorful World</span>
+                                        <h2>New Experience</h2>
+                                        <p>the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
+                                        <a href="#">Discover Now</a>
+                                    </div>
+                                    <div class="single-banner-slide" style="background-image: url(assets/img/hero/hero-2.jpg);">
+                                        <span>Discover The Colorful World</span>
+                                        <h2>New Experience</h2>
+                                        <p>the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
+                                        <a href="#">Discover Now</a>
+                                    </div>
+                                    <div class="single-banner-slide" style="background-image: url(assets/img/hero/hero-3.jpg);">
+                                        <span>Discover The Colorful World</span>
+                                        <h2>New Experience</h2>
+                                        <p>the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
+                                        <a href="#">Discover Now</a>
+                                    </div>
+                                    <div class="single-banner-slide" style="background-image: url(assets/img/hero/hero-4.jpg);">
+                                        <span>Discover The Colorful World</span>
+                                        <h2>New Experience</h2>
+                                        <p>the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
+                                        <a href="#">Discover Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                         {{--<div class="hero__text">
                             <a href="#" class="primary-btn">SHOP NOW</a>
                         </div>--}}
@@ -340,3 +433,16 @@
     <!-- Blog Section End -->
 
 </div>
+@push('scripts')
+    <script>
+        $(".owl-carousel").owlCarousel({
+            items: 1,
+            loop: true,
+            autoplay: true,
+            nav: false,
+            dots: true
+        });
+
+    </script>
+
+@endpush

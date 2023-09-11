@@ -847,7 +847,7 @@ section {
   padding: 50px 30px;
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
   transition: all ease-in-out 0.3s;
-  background: #1a1814;
+  background: #dcdcdc;
 }
 
 .why-us .box span {
@@ -862,7 +862,7 @@ section {
   font-weight: 600;
   padding: 0;
   margin: 20px 0;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgb(205 164 94);
 }
 
 .why-us .box p {
@@ -1052,7 +1052,7 @@ section {
 
 .events::before {
   content: '';
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(213, 212, 212, 0.80);
   position: absolute;
   top: 0;
   right: 0;
@@ -1199,7 +1199,7 @@ section {
   border-radius: 0;
   box-shadow: none;
   font-size: 14px;
-  background: #0c0b09;
+  background: #f5f5f5;
   border-color: #625b4b;
   color: white;
 }
@@ -1262,12 +1262,12 @@ section {
   font-size: 18px;
   font-weight: bold;
   margin: 10px 0 5px 45px;
-  color: white;
+  color: #797979;
 }
 
 .testimonials .testimonial-item h4 {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.6);
+  color: #797979;
   margin: 0 0 0 45px;
 }
 
@@ -1293,7 +1293,7 @@ section {
   font-style: italic;
   margin: 0 15px 0 15px;
   padding: 20px 20px 60px 20px;
-  background: #26231d;
+  background: #dcdcdc;
   position: relative;
   border-radius: 6px;
   position: relative;

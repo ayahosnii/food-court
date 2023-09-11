@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\providers\Provider;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -67,7 +71,7 @@ class AuthController extends Controller
 
     public function redirectToGoogle()
     {
-        return Socialite::driver('google')->redirectUrl('https://restaurant.ayahosni.com/')->redirect();
+        return Socialite::driver('google')->redirectUrl('https://food-court.ayahosni.com/')->redirect();
     }
 
     public function handleFacebookCallback()

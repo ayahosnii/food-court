@@ -28,8 +28,45 @@
                             </ul>
                         </div>
                         <div class="header__top__right__auth">
-                            <a href="{{route('login')}}"><i class="fa fa-user"></i> Login</a>
+                            @guest
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        @if (Route::has('login'))
+                                            <a href="{{route('login')}}">
+                                                Login</a>
+                                        @endif
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        @if (Route::has('register'))
+                                            <a href="{{ route('register') }}">
+                                                Register
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+
+                            @else
+                                <div class="header__top__right__language">
+                                    {{ Auth::user()->name }}
+                                    <span class="arrow_carrot-down"></span>
+                                    <ul>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                               onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                                {{ __('Logout') }}
+                                            </a>
+
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                @csrf
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            @endguest
                         </div>
+
                     </div>
                 </div>
             </div>

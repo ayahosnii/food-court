@@ -19,8 +19,36 @@
             </ul>
         </div>
         <div class="header__top__right__auth">
+            @guest
+                @if (Route::has('login'))
             <a href="{{route('login')}}"><i class="fa fa-user"></i> Login</a>
+                @endif
+
+                @if (Route::has('register'))
+            <a href="{{ route('register') }}"><i class="fa fa-user"></i> Register</a>
+                    @endif
+            @else
+                <div class="header__top__right__language">
+                    {{ Auth::user()->name }}
+                    <span class="arrow_carrot-down"></span>
+                    <ul>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            @endguest
         </div>
+
+
     </div>
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
