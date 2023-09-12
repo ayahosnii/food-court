@@ -6,6 +6,7 @@ use App\Models\providers\Provider;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -76,6 +77,7 @@ class AuthController extends Controller
 
     public function handleFacebookCallback()
     {
+        try {
         $user = Socialite::driver('facebook')->user();
 
         // Check if the user already exists in your application's database
@@ -99,6 +101,11 @@ class AuthController extends Controller
         Auth::login($newUser);
 
         return redirect('/');
+        } catch (\Exception $e) {
+            // Log or handle the exception
+            Log::error('Error during Facebook authentication: ' . $e->getMessage());
+            return $e->getMessage();
+        }
     }
 
     public function handleGoogleCallback()
