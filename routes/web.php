@@ -9,6 +9,7 @@ use App\Http\Livewire\DetailsComponent;
 use App\Http\Livewire\HomeComponent;
 use App\Http\Livewire\LoginComponent;
 use App\Http\Livewire\MealsComponent;
+use App\Http\Livewire\PrivacyPolicyComponent;
 use App\Http\Livewire\RegisterComponent;
 use App\Http\Livewire\RegisterController;
 use App\Http\Livewire\ReservationComponent;
@@ -46,6 +47,8 @@ Route::get('/meal/{slug}', DetailsComponent::class)->name('meals.details');
 Route::get('/restaurant/{slug}', RestaurantComponent::class)->name('restaurant.details');
 Route::get('/cart', CartComponent::class)->name('cart');
 Route::get('/checkout', CheckoutComponent::class)->name('checkout');
+
+Route::get('/privacy-policy', PrivacyPolicyComponent::class)->name('privacy.policy');
 
 Auth::routes();
 
