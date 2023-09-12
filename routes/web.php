@@ -28,10 +28,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 ############################## Login by Social Media ##############################
-Route::get('auth/facebook', [AuthController::class, 'redirectToFacebook']);
-Route::get('auth/google', [AuthController::class, 'redirectToGoogle']);
-Route::get('auth/facebook/callback', [AuthController::class, 'handleFacebookCallback'])->name('facebook');
-Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google');
+Route::get('/auth/facebook', [AuthController::class, 'redirectToFacebook'])->name('auth.facebook');
+Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/facebook/callback', [AuthController::class, 'handleFacebookCallback'])->name('auth.facebook.callback');
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
 Route::get('/login', LoginComponent::class)->name('login');
 Route::get('/register', RegisterComponent::class)->name('register');

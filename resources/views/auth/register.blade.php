@@ -9,13 +9,13 @@
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-md-6">
-                            <a href="{{route('facebook')}}" style="background: #366ca4" class="site-btn my-3">
+                            <a href="{{route('auth.facebook')}}" style="background: #366ca4" class="site-btn my-3">
                                 Register Facebook
                                 <li class="fa fa-facebook mx-3" style="color: #FFFFFF"></li>
                             </a>
                         </div>
                         <div class="col-md-6">
-                            <a href="{{route('google')}}" style="background: #202326" class="site-btn">
+                            <a href="{{route('auth.google')}}" style="background: #202326" class="site-btn">
                                 Register Google
                                 <li class="fa fa-google mx-3" style="color: #FFFFFF"></li>
                             </a>
