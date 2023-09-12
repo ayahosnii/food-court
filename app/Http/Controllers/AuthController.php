@@ -104,7 +104,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             // Log or handle the exception
             Log::error('Error during Facebook authentication: ' . $e->getMessage());
-            return $e->getMessage();
+            return $e;
         }
     }
 
