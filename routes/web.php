@@ -14,6 +14,7 @@ use App\Http\Livewire\RegisterComponent;
 use App\Http\Livewire\RegisterController;
 use App\Http\Livewire\ReservationComponent;
 use App\Http\Livewire\RestaurantComponent;
+use App\Http\Livewire\TermsConditionsComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,7 @@ Route::get('/auth/facebook', [AuthController::class, 'redirectToFacebook'])->nam
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/facebook/callback', [AuthController::class, 'handleFacebookCallback'])->name('auth.facebook.callback');
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+Route::post('/data-deletion-request', [AuthController::class, 'submitDataDeletionRequest'])->name('submit-data-deletion-request');
 
 Route::get('/login', LoginComponent::class)->name('login');
 Route::get('/register', RegisterComponent::class)->name('register');
@@ -49,6 +51,7 @@ Route::get('/cart', CartComponent::class)->name('cart');
 Route::get('/checkout', CheckoutComponent::class)->name('checkout');
 
 Route::get('/privacy-policy', PrivacyPolicyComponent::class)->name('privacy.policy');
+Route::get('/terms-conditions', TermsConditionsComponent::class)->name('terms.conditions');
 
 Auth::routes();
 

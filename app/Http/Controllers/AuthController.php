@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\providers\Provider;
 use App\Models\User;
+use App\Models\UserDataDeletionRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -135,5 +136,18 @@ class AuthController extends Controller
         return redirect('/');
     }
 
+    public function submitDataDeletionRequest(Request $request)
+    {
+        $user = auth()->user();
+
+        // Insert a new deletion request into the table
+        UserDataDeletionRequest::create([
+            'user_id' => $user->id,
+            'reason' => $request->input('reason'),
+            'status' => 'pending',
+        ]);
+
+        return redirect()->back()->with('success', 'Your data deletion request has been submitted.');
+    }
 
 }
