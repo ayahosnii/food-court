@@ -31,8 +31,8 @@ class TableController extends Controller
     {
         $id = Auth::guard('providers')->user()->id;
         $tables = Table::where('provider_id', $id)->get();
-        $branches = Branch::where('provider_id', $id)->get();
-        return view('providers.table.create-tables', compact('tables', 'branches'));
+        //$branches = Branch::where('provider_id', $id)->get();
+        return view('providers.table.create-tables', compact('tables'));
     }
 
     /**
