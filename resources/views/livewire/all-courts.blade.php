@@ -9,7 +9,7 @@
                             <span>All Courts</span>
                         </div>
                         <ul>
-                            @foreach ($provider->all() as $provider)
+                            @foreach ($provider->where('accountactivated', '1')->get() as $provider)
                             <li><a href="{{route('restaurant.details', ['slug'=> Str::slug($provider->name)])}}">{{$provider->name}}</a></li>
                             @endforeach
                         </ul>

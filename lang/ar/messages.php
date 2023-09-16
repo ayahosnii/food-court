@@ -11,7 +11,10 @@ return [
     'Categories' => 'الأقسام',
     'Restaurants' => 'المطاعم',
     'coupons' => 'كوبونات',
+    'roles' => 'الادوار',
     'all-coupons' => 'كل الكوبونات',
+    'all-roles' => 'كل الأدوار',
+    'all-permissions' => 'كل الاذونات',
 
     //Basics
     'en' => 'باللغة الانجليزية',

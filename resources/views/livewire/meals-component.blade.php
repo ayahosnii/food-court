@@ -102,8 +102,9 @@
                             <div class="col-lg-4 col-md-4 col-sm-6 mb-5 h-100 mix {{$meal->category->slug}} fresh-meat">
                                 <div class="card card-span h-100 rounded-3">
                                     <li
+                                        id="favorite-toggle-{{$meal->slug}}"
                                         wire:click="toggleFavorite('{{$meal->slug}}')"
-                                        class="fa fa-heart {{$meal->isFavorite ? 'favorite' : ''}}"
+                                        class="fa fa-heart {{$meal->isInFavorites() ? 'favorite' : ''}}"
                                         data-slug="{{$meal->slug}}"
                                     ></li>
                                     <a href="{{route('meals.details', ['slug'=>$meal->slug])}}">
@@ -159,5 +160,6 @@
             });
         });
     </script>
+
 @endpush
 

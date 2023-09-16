@@ -3,12 +3,13 @@
 namespace App\Models\providers;
 
 use App\Models\admin\MainCategory;
-use App\Models\ProviderRegister;
+use App\Models\providers\Provider;
 use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
+use Illuminate\Support\Facades\Auth;
 
 class Meal extends Model /*implements TranslatableContract*/
 {
@@ -84,6 +85,15 @@ class Meal extends Model /*implements TranslatableContract*/
         return $query;
     }
 
+    public function isInFavorites()
+    {
+        $user = Auth::user();
 
+        if ($user) {
+            return $user->favoriteMeals->contains($this);
+        }
+
+        return false;
+    }
 
 }

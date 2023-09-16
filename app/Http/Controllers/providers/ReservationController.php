@@ -44,8 +44,6 @@ class ReservationController extends Controller
             ->join("branches", "branches.id", "reservations.branch_id")
             ->join("providers", "providers.id", "branches.provider_id")
             ->join("users", "users.id", "reservations.user_id")
-            ->leftjoin("images", "images.id", "users.image_id")
-            ->join("reservation_statuses", "reservation_statuses.id", "reservations.status_id")
             ->where("reservations.user_id", auth('web')->id())
             ->whereIn("reservations.status_id", $filter)
             ->orderBy("reservations.id", "DESC")
@@ -56,9 +54,6 @@ class ReservationController extends Controller
                 "reservations.time AS reservation_time",
                 "reservations.seats_number",
                 "users.name AS username",
-                DB::raw("CONCAT('". url('/') ."','/storage/app/public/users/', images.name) AS user_image_url"),
-                "reservation_statuses.".LaravelLocalization::getCurrentLocale()."_name AS status_name",
-                "reservation_statuses.id AS status_id"
             )
             ->paginate(10,['*'], $page);
 

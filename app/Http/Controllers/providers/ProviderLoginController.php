@@ -4,10 +4,10 @@ namespace App\Http\Controllers\providers;
 
 use App\Http\Controllers\Controller;
 use App\Models\providers\ProviderLogin;
-use App\Models\providers\ProviderRegister;
+use App\Models\providers\Provider;
 use Illuminate\Http\Request;
-use DB;
-use Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class ProviderLoginController extends Controller
@@ -60,13 +60,15 @@ class ProviderLoginController extends Controller
             $password =   $request->input('provider-password');
 
 
-            $phone = ProviderRegister::find($request->id);
-            $provider = DB::table('provider_registers')->where('email', $email)->where('password', $password)->orwhere("phone", '0' . $phone)->first();
+            $phone = Provider::find($request->id);
+            $provider = DB::table('providers')->where('email', $email)
+                ->where('password', $password)
+                ->orwhere("phone", '0' . $phone)->first();
 
 
                 if ($provider) {
 
-                    $data = ProviderRegister::find($provider->id);
+                    $data = Provider::find($provider->id);
 
                     //save browser subscrbe token
 
@@ -94,9 +96,10 @@ class ProviderLoginController extends Controller
      * @param  \App\Models\providers\ProviderLogin  $providerLogin
      * @return \Illuminate\Http\Response
      */
-    public function show(ProviderLogin $providerLogin)
+    public function logout()
     {
-        //
+        Auth::guard('providers')->logout();
+        return redirect('/'); // You can redirect to any URL after logout.
     }
 
     /**

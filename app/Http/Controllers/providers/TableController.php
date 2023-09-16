@@ -50,11 +50,11 @@ class TableController extends Controller
                 'status' => $request->status,
                 'location' => $request->location,
                 'provider_id' => Auth::guard('providers')->user()->id,
-                'branch_id' => $request->branch
             ]);
-            return redirect()->route('tables')->with('تمت اضافة منضدة بنجاح');
+            return redirect()->route('providers.tables')->with('تمت اضافة منضدة بنجاح');
         }catch (\Exception $e){
-            return redirect()->route('tables')->with('حدث خطأ حاول مرة اخرى');
+            return $e;
+            return redirect()->route('providers.tables')->with('حدث خطأ حاول مرة اخرى');
         }
 
     }

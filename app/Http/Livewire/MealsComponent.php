@@ -52,6 +52,16 @@ class MealsComponent extends Component
         $this->max_alphabet='z';
     }
 
+    protected $listeners = ['favoriteToggled' => 'refreshFavoriteStatus'];
+
+    public $favoriteMeals = [];
+
+    public function refreshFavoriteStatus($slug)
+    {
+
+    }
+
+
     public function toggleFavorite($slug)
     {
         $user = Auth::user();
@@ -67,10 +77,8 @@ class MealsComponent extends Component
                 $user->favoriteMeals()->attach($meal);
             }
 
-            // Update the favorite status in the current meal object
             $meal->refresh();
 
-            // Emit an event to update the heart icon's color
             $this->emit('favoriteToggled', $meal->slug);
         }
 
@@ -121,7 +129,7 @@ class MealsComponent extends Component
 
     public function render()
     {
-        $providers = Provider::get();
+        $providers = Provider::where('accountactivated', '1')->get();
         $categories = Category::get();
 
         // Create a new instance of the meals query
@@ -149,6 +157,7 @@ class MealsComponent extends Component
             'categories' => $categories,
             'meals' => $meals,
             'cartItemCount' => $this->cartItemCount,
+            'favoriteMeals' => $this->favoriteMeals,
         ])->layout('layouts.font-layout');
     }
 }

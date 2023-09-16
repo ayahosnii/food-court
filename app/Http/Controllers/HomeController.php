@@ -16,7 +16,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $providers = Provider::get();
+        $providers = Provider::where('accountactivated', '1')->get();
         $categories = Category::get();
         $meals = Meal::get();
         return view('welcome', compact('providers', 'categories', 'meals'));

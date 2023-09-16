@@ -23,7 +23,7 @@ class Provider
             }
            }else{
 
-            return redirect("/providers/dashboard");
+            return redirect("/login");
         }
 
         return $next($request);

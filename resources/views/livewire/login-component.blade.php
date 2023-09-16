@@ -14,10 +14,10 @@
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-md-6">
-                            <button style="background: #366ca4" type="submit" class="site-btn my-3">
+                            <a href="{{route('auth.facebook')}}" style="background: #366ca4" class="site-btn my-3">
                                 Login Facebook
                                 <li class="fa fa-facebook mx-3" style="color: #FFFFFF"></li>
-                            </button>
+                            </a>
                         </div>
                         <div class="col-md-6">
                             <button style="background: #202326" type="submit" class="site-btn">

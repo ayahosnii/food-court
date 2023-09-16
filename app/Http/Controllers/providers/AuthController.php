@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\providers;
 
 use App\Http\Controllers\Controller;
-use App\Models\providers\ProviderRegister;
+use App\Models\providers\Provider;
 use App\Models\User;
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use Str;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -55,7 +55,7 @@ class AuthController extends Controller
             return redirect()->back()->with("error", trans("messages.register.active.notMatch"));
         }
 
-        ProviderRegister::where('id', auth('providers')->id())->update([
+        Provider::where('id', auth('providers')->id())->update([
             "phoneactivated" => "1",
             "activate_phone_hash" => ""
         ]);

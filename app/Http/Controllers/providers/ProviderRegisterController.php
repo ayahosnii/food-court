@@ -5,7 +5,7 @@ namespace App\Http\Controllers\providers;
 use App\Http\Controllers\Apis\User\GeneralController;
 use App\Http\Controllers\Apis\User\SmsController;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\providers\ProviderRegisterRequest;
+use App\Http\Requests\providers\ProviderRequest;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\providers\Provider;
 use Twilio\Rest\Client;
 
-class ProviderRegisterController extends Controller
+class ProviderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -149,10 +149,10 @@ class ProviderRegisterController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ProviderRegister  $providerRegister
+     * @param  \App\Models\Provider  $Provider
      * @return \Illuminate\Http\Response
      */
-    public function show(ProviderRegister $providerRegister)
+    public function show(Provider $Provider)
     {
         //
     }
@@ -160,10 +160,10 @@ class ProviderRegisterController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ProviderRegister  $providerRegister
+     * @param  \App\Models\Provider  $Provider
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProviderRegister $providerRegister)
+    public function edit(Provider $Provider)
     {
         //
     }
@@ -172,10 +172,10 @@ class ProviderRegisterController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ProviderRegister  $providerRegister
+     * @param  \App\Models\Provider  $Provider
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProviderRegister $providerRegister)
+    public function update(Request $request, Provider $Provider)
     {
         //
     }
@@ -183,10 +183,10 @@ class ProviderRegisterController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ProviderRegister  $providerRegister
+     * @param  \App\Models\Provider  $Provider
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProviderRegister $providerRegister)
+    public function destroy(Provider $Provider)
     {
         //
     }

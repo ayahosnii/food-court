@@ -25,6 +25,9 @@ return [
     'show'=>'show',
     'coupons'=>'Coupons',
     'all-coupons'=>'All Coupons',
+    'all-roles'=>'All Roles',
+    'roles'=>'Roles',
+    'all-permissions'=>'All Permissions',
 
 
     'categories' => 'categories',

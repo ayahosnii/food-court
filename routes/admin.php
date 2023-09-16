@@ -14,6 +14,7 @@ use App\Http\Controllers\admin\RestaurantController;
 use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\SaleController;
+use App\Http\Controllers\PermissionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -120,9 +121,13 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function ()
         Route::post('update/{id}', [OptionController::class, 'update'])->name('admin.options.update');
     });
     ################################## end options    #######################################
+
+
     # ################################## start roles ######################################
     Route::group(['prefix' => 'roles'], function () {
         Route::get('/', [RoleController::class, 'index'])->name('admin.roles');
+        Route::get('/assign-role', [RoleController::class, 'assignRoleForm'])->name('admin.assign-role-form');
+        Route::post('/assign-role', [RoleController::class, 'assignRole'])->name('admin.assign-role');
         Route::get('create', [RoleController::class, 'create'])->name('admin.roles.create');
         Route::post('store', [RoleController::class, 'store'])->name('admin.roles.store');
         //Route::get('delete/{id}','RolesController@destroy') -> name('admin.roles.delete');
@@ -130,6 +135,20 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function ()
         Route::post('update/{id}', [RoleController::class, 'update'])->name('admin.roles.update');
     });
     ################################## end options    #######################################
+    #################################### Start Permissions ######################################
+    Route::group(['prefix' => 'permissions'], function () {
+        Route::get('/', [PermissionController::class, 'index'])->name('admin.permissions');
+        Route::get('create', [PermissionController::class, 'create'])->name('admin.permissions.create');
+        Route::post('store', [PermissionController::class, 'store'])->name('admin.permissions.store');
+        //Route::get('delete/{id}','RolesController@destroy') -> name('admin.permissions.delete');
+        Route::get('edit/{id}', [PermissionController::class, 'edit'])->name('admin.permissions.edit');
+        Route::post('update/{id}', [PermissionController::class, 'update'])->name('admin.permissions.update');
+    });
+    ################################## End Permissions    #######################################
+
+
+
+
     # ################################## start roles ######################################
     Route::group(['prefix' => 'restaurant'], function () {
         Route::get('/', [RestaurantController::class, 'index'])->name('admin.restaurants');

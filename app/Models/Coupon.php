@@ -114,7 +114,7 @@ class Coupon extends Model
 
     public function providers()
     {
-        return $this->belongsToMany(\App\Models\providers\ProviderRegister::class);
+        return $this->belongsToMany(\App\Models\providers\Provider::class);
     }
 
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProviderRegister;
+use App\Models\providers\Provider;
 use App\Models\providers\Category;
 use App\Models\providers\Meal;
 use Illuminate\Http\Request;
@@ -18,7 +18,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        $restaurants = ProviderRegister::paginate(10);
+        $restaurants = Provider::paginate(10);
         return view('admin.restaurants.index', compact('restaurants'));
     }
 
@@ -51,13 +51,15 @@ class RestaurantController extends Controller
      */
     public function show($id)
     {
-        $r = ProviderRegister::find($id);
+        $r = Provider::find($id);
 
         $categories = Category::get();
-        $mealCategories = Meal::select(['meals.*', 'categories.name as category_name'])
+        $mealCategories = Meal::where('meals.provider_id', $r->id)
+            ->select(['meals.*', 'categories.name as category_name'])
             ->join('categories', 'meals.category_id', '=', 'categories.id')
             ->orderBy('categories.name')
             ->get();
+
         return view('admin.restaurants.show', compact('r', 'mealCategories', 'categories'));
     }
 

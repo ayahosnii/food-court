@@ -40,7 +40,7 @@ class HomeComponent extends Component
 
     public function render()
     {
-        $providers = Provider::get();
+        $providers = Provider::where('accountactivated', '1')->get();
         $categories = Category::get();
         $meals = Meal::get();
         return view('livewire.home-component', [

@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\providers;
 
 use App\Http\Controllers\Controller;
-use App\Models\providers\ProviderRegister;
+use App\Models\providers\Provider;
 use Illuminate\Http\Request;
 use DB;
 class ProfileController extends Controller
 {
    public function index($id)
    {
-       $profile = ProviderRegister::select()->find($id);
+       $profile = Provider::select()->find($id);
        return view('providers.profile', compact('profile'));
    }
    public function update_profile($id, Request $request)
    {
        try {
-           $profile = ProviderRegister::find($id);
+           $profile = Provider::find($id);
 
            if (!$profile)
                return redirect()->route('dashboard')->with(['error' => 'هذا ألعنصر غير موجود']);
@@ -27,7 +27,7 @@ class ProfileController extends Controller
                $filePath = uploadImage('providers-logo', $request->file('image'));
            }
 
-           $profile = ProviderRegister::where('id', $id)->update([
+           $profile = Provider::where('id', $id)->update([
                'name'                      => $request->input("res_name"),
                'email'                     => $request->input("res_email"),
                'phone'                     => $request->input("res_phone"),

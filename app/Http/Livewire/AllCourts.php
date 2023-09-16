@@ -9,9 +9,9 @@ class AllCourts extends Component
 {
     public $provider;
 
-    public function mount(Provider $provider)
+    public function mount()
     {
-        $this->provider = $provider;
+        $this->provider = Provider::where('accountactivated', '1')->first();
     }
 
     public function render()
