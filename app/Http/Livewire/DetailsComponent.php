@@ -63,10 +63,6 @@ class DetailsComponent extends Component
 
     public function submitRating($slug)
     {
-        if (!Auth::check()) {
-            notify()->error('You need to log in to rate this meal.');
-
-        }
         $userId = Auth::id();
         $meal = Meal::where('slug', $slug)->firstOrFail();
 
@@ -80,7 +76,10 @@ class DetailsComponent extends Component
 
 
         } else {
+            if (!Auth::check()) {
+                notify()->error('You need to log in to rate this meal.');
 
+            }
             Rating::create([
                 'user_id' => $userId,
                 'meal_id' => $meal->id,
