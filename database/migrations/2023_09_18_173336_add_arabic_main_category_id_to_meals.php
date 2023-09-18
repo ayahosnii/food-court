@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('meals', function (Blueprint $table) {
             // Add the new column
-            $table->unsignedInteger('arabic_main_category_id')->nullable();
+            $table->unsignedInteger('arabic_main_category_id');
 
             // Define the foreign key constraint
             $table->foreign('arabic_main_category_id')
