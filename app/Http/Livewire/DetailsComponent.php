@@ -63,32 +63,34 @@ class DetailsComponent extends Component
 
     public function submitRating($slug)
     {
-        $userId = Auth::id();
-        $meal = Meal::where('slug', $slug)->firstOrFail();
+        if (!Auth::check()) {
+            notify()->error('You need to log in to rate this meal.');
 
-        $existingRating = Rating::where('user_id', $userId)
-            ->where('meal_id', $meal->id)
-            ->first();
+        }else {
+            $userId = Auth::id();
+            $meal = Meal::where('slug', $slug)->firstOrFail();
 
-        if ($existingRating) {
+            $existingRating = Rating::where('user_id', $userId)
+                ->where('meal_id', $meal->id)
+                ->first();
 
-            notify()->error('You have already rated this meal.');
+            if ($existingRating) {
+
+                notify()->error('You have already rated this meal.');
 
 
-        } else {
-            if (!Auth::check()) {
-                notify()->error('You need to log in to rate this meal.');
+            } else {
 
+                Rating::create([
+                    'user_id' => $userId,
+                    'meal_id' => $meal->id,
+                    'rating' => $this->rating,
+                    'comment' => $this->comment,
+                ]);
+
+                notify()->success('Rating submitted successfully!');
+                $this->emit('ratingSubmitted', ['message' => 'Rating submitted successfully!', 'slug' => $slug]);
             }
-            Rating::create([
-                'user_id' => $userId,
-                'meal_id' => $meal->id,
-                'rating' => $this->rating,
-                'comment' => $this->comment,
-            ]);
-
-            notify()->success('Rating submitted successfully!');
-            $this->emit('ratingSubmitted', ['message' => 'Rating submitted successfully!', 'slug' => $slug]);
         }
     }
 
