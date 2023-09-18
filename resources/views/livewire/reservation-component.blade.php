@@ -164,14 +164,15 @@
                                         </div>
 
                                             <div class="col-md-12 text-center">
-                                                @if (!$paymentSuccess)
+
                                                     <button class="btn btn-dark btn-shadow btn-lg" wire:click="submitPayment">Pay Now</button>
-                                                @endif
+
                                             <button class="btn btn-dark btn-shadow btn-lg" wire:click="previousStep">Previous</button>
 
-                                                    @if ($paymentSuccess)
+
                                                         <button class="btn btn-dark btn-shadow btn-lg" style="color: rgba(161,127,58,0.89)" type="submit" name="submit">Next</button>
-                                                    @endif                                        </div>
+
+                                                                                         </div>
                                     </form>
                                 @endif
 

@@ -141,9 +141,9 @@ class ReservationComponent extends Component
             $this->submitPayment();
 
             // Only move to step 3 if payment submission is successful
-            if (!$this->paymentError) {
+
                 $this->step = 3;
-            }
+
         }
     }
 
