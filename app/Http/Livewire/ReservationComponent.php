@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use Mockery\Exception;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 
@@ -55,20 +56,24 @@ class ReservationComponent extends Component
             }
         }
 
-        public function submitPayment()
-        {
-            // Set your Stripe API key
+    public function submitPayment()
+    {
+        try {
             Stripe::setApiKey(config('services.stripe.secret'));
 
-            // Create a PaymentIntent
             $paymentIntent = PaymentIntent::create([
                 'amount' => 1000,
                 'currency' => 'usd',
                 'payment_method_types' => ['card'],
             ]);
 
-            $this->emit('paymentIntentCreated', $paymentIntent->client_secret);
+            $this->paymentSuccess = true; // Set a flag to indicate successful payment
+            $this->paymentMessage = 'Payment is done successfully.';
+        } catch (Exception $exception) {
+            $this->paymentSuccess = false; // Set a flag to indicate failed payment
+            $this->paymentMessage = 'Payment failed: ' . $exception->getMessage();
         }
+    }
         public function storeData()
         {
             try {
@@ -126,17 +131,24 @@ class ReservationComponent extends Component
             }
         }
 
-        public function thirdStep()
-        {
-            if ($this->step == 2) {
-                $this->validate([
-                    'table_id' => 'required',
-                ]);
+    public function thirdStep()
+    {
+        if ($this->step == 2) {
+            $this->validate([
+                'table_id' => 'required',
+            ]);
+
+            $this->submitPayment();
+
+            // Only move to step 3 if payment submission is successful
+            if (!$this->paymentError) {
                 $this->step = 3;
             }
         }
+    }
 
-        public function previousStep()
+
+    public function previousStep()
         {
             if ($this->step == 2) {
                 $this->step = 1;

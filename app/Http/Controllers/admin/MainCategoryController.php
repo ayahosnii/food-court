@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MainCategoryRequest;
 use App\Models\admin\MainCategory;
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class MainCategoryController extends Controller
 {
@@ -61,9 +62,9 @@ class MainCategoryController extends Controller
                 foreach ($categories as $category) {
                     $categories_arr[] = [
                         'translation_lang' => $category['abbr'],
-                        'translate_of' => 0,
+                        'translate_of' => $default_category_id,
                         'name' => $category['name'],
-                        'slug' => $category['name'],
+                        'slug' => Str::slug($category['name']),
                         'active' => $request->input('category.1.active'),
                         'photo' => $filePath
                     ];

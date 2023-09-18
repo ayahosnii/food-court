@@ -1,6 +1,16 @@
 <div>
     <!-- Hero Section Begin -->
-    @livewire('all-courts')
+    <section class="hero hero-normal">
+        <div class="container">
+            <div class="row">
+                 @livewire('all-courts')
+                <div class="col-lg-9">
+                    @livewire('header-search-component')
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Hero Section End -->
 
     <!-- Breadcrumb Section Begin -->

@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/jquery-ui.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('assets/css/owl.carousel.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('assets/css/slicknav.min.css')}}" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/fonts/flag-icon-css/css/flag-icon.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}" type="text/css">
     @stack('styles')
     @livewireStyles
@@ -47,7 +48,7 @@
 @include('includes.footer')
 <!-- Js Plugins -->
 {{--<script src="{{asset('assets/js/fontawesome/all.min.js')}}"></script>--}}
-<script src="{{asset('assets/js/jquery-3.3.1.min.js')}}"></script>
+<script src="{{asset('assets/js/jquery-3.6.0.min.js')}}"></script>
 @livewireScripts
 <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('assets/js/jquery.nice-select.min.js')}}"></script>
@@ -56,6 +57,7 @@
 <script src="{{asset('assets/js/mixitup.min.js')}}"></script>
 <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
 <script src="{{asset('assets/js/main.js')}}"></script>
+<script src="{{asset('assets/js/custom.js')}}"></script>
 {{--<script>--}}
 {{--    $('#flash-overlay-modal').modal();--}}
 {{--</script>--}}

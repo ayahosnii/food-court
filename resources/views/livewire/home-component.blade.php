@@ -21,7 +21,7 @@
         .single-banner-slide h2 {
             color: #fff;
             text-transform: uppercase;
-            font-size: 60px;
+            font-size: 30px;
         }
         .single-banner-slide::after {
             content: "";
@@ -58,80 +58,129 @@
         .owl-dots {
             display: none !important;
         }
+
+        /* deal of the day css */
+        .home-countdown1 .back-img{
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            align-items: center;
+            display: flex;
+            height: 450px;
+        }
+        .home-countdown1 .back-img .deal-content{
+            max-width: 427px;
+        }
+        .home-countdown1 .back-img .deal-content h2{
+            color: #040404;
+            line-height: 1;
+        }
+        .home-countdown1 .back-img .deal-content span.deal-c{
+            color: #040404;
+        }
+        .home-countdown1 .back-img .deal-content span.deal-c{
+            color: #fff;
+            font-size: 16px;
+            margin-top: 19px;
+            font-weight: 500;
+        }
+        /* timer */
+        .home-countdown1 .back-img .deal-content ul.contdown_row{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-top: 23px;
+        }
+        .home-countdown1 .back-img .deal-content ul.contdown_row li.countdown_section{
+            background-color: #55724f;
+            position: relative;
+            width: 70px;
+            height: 70px;
+            margin-right: 20px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .home-countdown1 .back-img .deal-content ul.contdown_row li.countdown_section:after{
+            content: ":";
+            position: absolute;
+            right: -13px;
+            bottom: 50%;
+            transform: translateY(50%);
+            color: #fff;
+            font-size: 22px;
+            font-weight: 600;
+        }
+        .home-countdown1 .back-img .deal-content ul.contdown_row li.countdown_section:last-child:after{
+            display: none;
+        }
+        .home-countdown1 .back-img .deal-content ul.contdown_row li.countdown_section span.countdown_timer{
+            color: #fff;
+            font-size: 22px;
+            font-weight: 600;
+        }
+        .home-countdown1 .back-img .deal-content ul.contdown_row li.countdown_section span.countdown_title{
+            color: #fff;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 400;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+        .home-countdown1 .back-img .deal-content a{
+            margin-top: 30px;
+        }
+        .home-countdown1 .back-img .deal-content a:hover {
+            color: #fff;
+        }
+
+        home-countdown1 .back-img .deal-content h2 {
+            font-size: 30px;
+            color: #040404;
+            line-height: 1;
+        }
+
+        .btn-style1 {
+            color: #fff;
+            font-size: 14px;
+            padding: 10px 30px;
+            background-color: #735845;
+            font-weight: 600;
+            border: 2px solid #735845;
+            border-radius: 25px;
+        }
     </style>
 @endpush
 <div>
+
 
     <!-- Hero Section Begin -->
     <section class="hero">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
-                    <div class="hero__categories">
-                        <div class="hero__categories__all">
-                            <i class="fa fa-bars"></i>
-                            <span>All Courts</span>
-                        </div>
-                        <ul>
-                            @foreach($providers as $provider)
-                                <li><a href="{{route('restaurant.details', ['slug'=> Str::slug($provider->name)])}}">{{$provider->name}}</a></li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
+                @livewire('all-courts')
                 <div class="col-lg-9">
-                    <div class="hero__search">
-                        <div class="hero__search__form">
-                            <form action="#">
-                                <input type="text" placeholder="What do yo u need?">
-                                <button type="submit" class="site-btn">SEARCH</button>
-                            </form>
-                        </div>
-                        <div class="hero__search__phone">
-                            <div class="hero__search__phone__icon">
-                                <i class="fa fa-phone"></i>
-                            </div>
-                            <div class="hero__search__phone__text">
-                                <h5>+20 11.188.888</h5>
-                                <span>support 24/7 time</span>
-                            </div>
-                        </div>
-                    </div>
+                    @livewire('header-search-component')
 
                     <div class="hero__item set-bg"{{-- data-setbg="{{asset('assets/img/hero/main.jpg')}}"--}}>
                         <section class="banner-area">
                             <div class="container">
                                 <div class="all-banner-slide owl-carousel">
-                                    <div class="single-banner-slide" style="background-image: url(assets/img/hero/main.jpg);">
-                                        <span>Discover The Colorful World</span>
-                                        <h2>New Experience</h2>
-                                        <p>the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
-                                        <a href="#">Discover Now</a>
+                                    @foreach($banners as $banner)
+                                        <div class="single-banner-slide" style="background-image: url({{ asset('assets/img/hero/' . $banner->background_image) }});">
+                                            <h2>{{$banner->title}}</h2>
+                                            <p>
+                                                {{$banner->description}}
+                                            </p>
+                                            <a href="{{route('reservation')}}">Book Now!</a>
+                                        </div>
+                                    @endforeach
                                     </div>
-                                    <div class="single-banner-slide" style="background-image: url(assets/img/hero/hero-2.jpg);">
-                                        <span>Discover The Colorful World</span>
-                                        <h2>New Experience</h2>
-                                        <p>the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
-                                        <a href="#">Discover Now</a>
-                                    </div>
-                                    <div class="single-banner-slide" style="background-image: url(assets/img/hero/hero-3.jpg);">
-                                        <span>Discover The Colorful World</span>
-                                        <h2>New Experience</h2>
-                                        <p>the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
-                                        <a href="#">Discover Now</a>
-                                    </div>
-                                    <div class="single-banner-slide" style="background-image: url(assets/img/hero/hero-4.jpg);">
-                                        <span>Discover The Colorful World</span>
-                                        <h2>New Experience</h2>
-                                        <p>the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
-                                        <a href="#">Discover Now</a>
-                                    </div>
-                                </div>
                             </div>
                         </section>
-                        {{--<div class="hero__text">
-                            <a href="#" class="primary-btn">SHOP NOW</a>
-                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -144,10 +193,10 @@
         <div class="container">
             <div class="row">
                 <div class="categories__slider owl-carousel">
-                    @foreach($providers as $provider)
+                    @foreach($mainCategories as $mainCategory)
                         <div class="col-lg-3">
-                            <div class="categories__item set-bg" data-setbg="{{asset($provider->logo)}}">
-                                <h5><a href="{{route('restaurant.details', ['slug'=> Str::slug($provider->name)])}}"">{{$provider->name}}</a></h5>
+                            <div class="categories__item set-bg" data-setbg="{{asset($mainCategory->photo)}}">
+                                <h5><a href="{{route('main.category', ['slug'=> $mainCategory->slug])}}">{{$mainCategory->name}}</a></h5>
                             </div>
                         </div>
                     @endforeach
@@ -156,6 +205,7 @@
         </div>
     </section>
     <!-- Categories Section End -->
+
 
     <!-- Featured Section Begin -->
     <section class="featured spad">
@@ -177,25 +227,28 @@
             </div>
             <div class="row featured__filter">
                 @foreach($meals as $meal)
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-5 h-100 mix {{Str::slug($meal->provider->name)}}">
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-5 h-100 mix {{$meal->category->slug}} fresh-meat">
                         <div class="card card-span h-100 rounded-3">
+                            <li
+                                id="favorite-toggle-{{$meal->slug}}"
+                                wire:click="toggleFavorite('{{$meal->slug}}')"
+                                class="fa fa-heart {{$meal->isInFavorites() ? 'favorite' : ''}}"
+                                data-slug="{{$meal->slug}}"
+                            ></li>
                             <a href="{{route('meals.details', ['slug'=>$meal->slug])}}">
                                 <img class="img-fluid rounded-3 h-100" src="{{$meal->image}}" alt="..." />
                             </a>
                             <div class="card-body ps-0">
                                 <a href="{{route('meals.details', ['slug'=>$meal->slug])}}">
-                                <h5 class="fw-bold text-1000 text-truncate mb-1">Cheese Burger</h5>
+                                    <h5 class="fw-bold text-1000 text-truncate mb-1">{{$meal->name}}</h5>
                                 </a>
                                 <div><span class="text-warning me-2">
                                         <i class="fas fa-map-marker-alt"></i></span>
-                                    <span class="text-primary">
-                                        <a href="{{route('restaurant.details', ['slug'=> Str::slug($meal->provider->name)])}}">
-                                        {{$meal->provider->name}}
-                                        </a>
-                                    </span>
-
+                                    <a href="{{route('restaurant.details', ['slug'=> Str::slug($meal->provider->name)])}}">
+                                        <span class="text-primary">{{$meal->provider->name}}</span>
+                                    </a>
                                 </div>
-                                <span class="text-1000 fw-bold">$3.88</span>
+                                <span class="text-1000 fw-bold">${{$meal->price}}</span>
                             </div>
                         </div>
                         <div class="d-grid gap-2">
@@ -209,6 +262,62 @@
         </div>
     </section>
     <!-- Featured Section End -->
+
+    <!-- Categories Section Begin -->
+    <section class="categories">
+        <div class="container">
+            <div class="row">
+                <div class="categories__slider owl-carousel">
+                    @foreach($providers as $provider)
+                        <div class="col-lg-3">
+                            <div class="categories__item set-bg" data-setbg="{{asset($provider->logo)}}">
+                                <h5><a href="{{route('restaurant.details', ['slug'=> Str::slug($provider->name)])}}"">{{$provider->name}}</a></h5>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Categories Section End -->
+
+    <section class="home-countdown1">
+        <div class="back-img" style="background-color: rgb(206 200 200)">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="deal-content">
+                            @if($sale && $ends_at > \Carbon\Carbon::now())
+                                <h2>{{$sale->name}}</h2>
+                                <span class="deal-c" style="color: #0a001f">We offer a hot deal offer every festival</span>
+                                <ul class="contdown_row">
+                                    <li class="countdown_section">
+                                        <span id="days" class="countdown_timer" wire:key="days">{{ $days }}</span>
+                                        <span class="countdown_title">Days</span>
+                                    </li>
+                                    <li class="countdown_section">
+                                        <span id="hours" class="countdown_timer" wire:key="hours">{{ $hours }}</span>
+                                        <span class="countdown_title">Hours</span>
+                                    </li>
+                                    <li class="countdown_section">
+                                        <span id="minutes" class="countdown_timer" wire:key="minutes">{{ $minutes }}</span>
+                                        <span class="countdown_title">Minutes</span>
+                                    </li>
+                                    <li class="countdown_section">
+                                        <span id="seconds" class="countdown_timer" wire:key="seconds">{{ $seconds }}</span>
+                                        <span class="countdown_title">Seconds</span>
+                                    </li>
+                                </ul>
+                                <a href="{{-- route('restaurant.index') --}}" class="btn btn-style1">Shop collection</a>
+                            @else
+                                <h2>Wait for new sale soon</h2>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Banner Begin -->
     <div class="banner">
@@ -444,5 +553,6 @@
         });
 
     </script>
+
 
 @endpush

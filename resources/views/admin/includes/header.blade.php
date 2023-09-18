@@ -74,15 +74,22 @@
 
                     </li>
 
-                    <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown"
-                                                                       aria-haspopup="true" aria-expanded="false">
+                    <li class="dropdown dropdown-language nav-item">
 
-                            <i class="{{LaravelLocalization::getLocalizedURL() == 'en' ? 'flag-icon flag-icon-gb' : 'flag-icon flag-icon-eg'}}"></i><span class="selected-language"></span></a>
+
+                        <a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="{{app()->getLocale() == 'en' ? 'flag-icon flag-icon-gb' : 'flag-icon flag-icon-eg'}}"></i>
+                            <span class="selected-language"></span>
+                        </a>
+
                         <div class="dropdown-menu" aria-labelledby="dropdown-flag">
                             @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                                 <a class="dropdown-item" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                                    <i class="{{$localeCode == 'en'? 'flag-icon flag-icon-gb' : 'flag-icon flag-icon-eg'}}"></i> {{ $properties['native'] }}</a>
+                                    <i class="{{$localeCode == 'en'? 'flag-icon flag-icon-gb' : 'flag-icon flag-icon-eg'}}"></i>
+                                    {{ $properties['native'] }}
+                                </a>
                         @endforeach
+
                     </li>
 
                     <div id="app">

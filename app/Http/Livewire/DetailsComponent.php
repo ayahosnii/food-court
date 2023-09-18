@@ -5,8 +5,10 @@ namespace App\Http\Livewire;
 use App\Exceptions\QuantityExceededException;
 use App\Models\Product;
 use App\Models\providers\Meal;
+use App\Models\Rating;
 use App\Support\Storage\SessionStorage;
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Cart;
 
@@ -14,6 +16,9 @@ class DetailsComponent extends Component
 {
     public $slug;
     public $qty;
+    public $rating;
+    public $name;
+    public $comment;
 
 
     public function mount($slug){
@@ -54,6 +59,34 @@ class DetailsComponent extends Component
 
         flash('Item added to cart successfully!');
         return redirect()->back();
+    }
+
+    public function submitRating($slug)
+    {
+        $userId = Auth::id();
+        $meal = Meal::where('slug', $slug)->firstOrFail();
+
+        $existingRating = Rating::where('user_id', $userId)
+            ->where('meal_id', $meal->id)
+            ->first();
+
+        if ($existingRating) {
+
+            notify()->error('You have already rated this meal.');
+
+
+        } else {
+
+            Rating::create([
+                'user_id' => $userId,
+                'meal_id' => $meal->id,
+                'rating' => $this->rating,
+                'comment' => $this->comment,
+            ]);
+
+            notify()->success('Rating submitted successfully!');
+            $this->emit('ratingSubmitted', ['message' => 'Rating submitted successfully!', 'slug' => $slug]);
+        }
     }
 
     public function render()

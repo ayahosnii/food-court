@@ -15,6 +15,7 @@ use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\SaleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\SliderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 Route::group(
     [
@@ -121,7 +123,16 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function ()
         Route::post('update/{id}', [OptionController::class, 'update'])->name('admin.options.update');
     });
     ################################## end options    #######################################
-
+    ################################## Sliders routes ######################################
+    Route::group(['prefix' => 'sliders'], function () {
+        Route::get('/', [SliderController::class, 'index'])->name('admin.sliders');
+        Route::get('create', [SliderController::class, 'create'])->name('admin.sliders.create');
+        Route::post('store', [SliderController::class, 'store'])->name('admin.sliders.store');
+        Route::get('delete/{id}', [SliderController::class, 'destroy'])->name('admin.sliders.delete');
+        Route::get('edit/{id}', [SliderController::class, 'edit'])->name('admin.sliders.edit');
+        Route::post('update/{id}', [SliderController::class, 'update'])->name('admin.sliders.update');
+    });
+    ################################## end attributes    #######################################
 
     # ################################## start roles ######################################
     Route::group(['prefix' => 'roles'], function () {

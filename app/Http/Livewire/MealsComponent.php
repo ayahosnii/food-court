@@ -6,6 +6,7 @@ use App\Cart\Cart;
 use App\Events\CartItemCountUpdated;
 use App\Exceptions\QuantityExceededException;
 use App\Helper\MealCategorySorter;
+use App\Models\admin\MainCategory;
 use App\Models\providers\Category;
 use App\Models\providers\Meal;
 use App\Models\providers\Provider;
@@ -15,31 +16,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
-class MealsComponent extends Component
+class MealsComponent extends BaseComponent
 {
-    public $price_range = [];
-
-    public $slug;
-
-    protected $cart;
-    public $sorting;
-    public $pagesize;
-    public $category_slug;
-    public $debug;
-
-    public $min_price;
-    public $max_price;
-
-    public $min_alphabet;
-    public $max_alphabet;
-
-    public $min_date;
-    public $max_date;
-    public $cartItemCount = 0;
-
-    public $filterProviders = [], $categoryInputs = [];
-
-
     public function mount()
     {
         $this->sorting = "price";
@@ -52,85 +30,12 @@ class MealsComponent extends Component
         $this->max_alphabet='z';
     }
 
-    protected $listeners = ['favoriteToggled' => 'refreshFavoriteStatus'];
-
-    public $favoriteMeals = [];
-
-    public function refreshFavoriteStatus($slug)
-    {
-
-    }
-
-
-    public function toggleFavorite($slug)
-    {
-        $user = Auth::user();
-
-        if (!$user) {
-            notify()->error('You must login first');
-        }else{
-            $meal = Meal::where('slug', $slug)->firstOrFail();
-
-            if ($user->favoriteMeals->contains($meal)) {
-                $user->favoriteMeals()->detach($meal);
-            } else {
-                $user->favoriteMeals()->attach($meal);
-            }
-
-            $meal->refresh();
-
-            $this->emit('favoriteToggled', $meal->slug);
-        }
-
-    }
-
-    public function addToCart(HttpRequest $request, $slug)
-    {
-        $meal = Meal::where('slug', $slug)->firstOrFail();
-        $cart = new Cart(new SessionStorage('cart'), $meal);
-
-        try {
-            $cart->add($meal, $request->input('quantity', 1));
-
-            $this->cartItemCount = $cart->itemCount();
-
-            $this->emitTo('cart-count-component', 'refreshComponent');
-
-        } catch (QuantityExceededException $e) {
-            session()->flash('message', 'Quantity exceeded.');
-            return redirect()->back();
-        }
-
-        notify()->success('Item added to cart successfully!');
-        return redirect()->back();
-    }
-
-    public function updatedCategoryInputs()
-    {
-        // Create a new instance of the meals query
-        $mealsQuery = Meal::query();
-
-        // Call the filterByCategory method to apply the category filter
-        $mealsQuery = MealCategorySorter::filterByCategory($mealsQuery, $this->categoryInputs);
-
-        if (!empty($this->filterProviders)) {
-            $mealsQuery->whereIn('provider_id', $this->filterProviders);
-        }
-
-        // Apply the price range filter
-        if (!empty($this->min_price) && !empty($this->max_price)) {
-            $mealsQuery->whereBetween('price', [$this->min_price, $this->max_price]);
-        }
-
-        return $mealsQuery;
-    }
-
-
-
     public function render()
     {
         $providers = Provider::where('accountactivated', '1')->get();
-        $categories = Category::get();
+        $default_lang = get_default_language();
+
+        $categories = MainCategory::where('translation_lang',$default_lang)->get();
 
         // Create a new instance of the meals query
         $mealsQuery = Meal::query();

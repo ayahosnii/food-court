@@ -75,6 +75,10 @@
             }
         </style>
     @else
+        <link rel="stylesheet" type="text/css" href="{{asset('assets/fonts/flag-icon-css/css/flag-icon.css')}}">
+
+        <link rel="stylesheet" type="text/css" href="{{asset('admin-assets/css-rtl/app.css')}}">
+
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
         <link rel="stylesheet" type="text/css" href="{{asset('assets/site/css/font-awesome.min.css')}}">
     <!--

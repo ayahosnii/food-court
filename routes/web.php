@@ -3,20 +3,25 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Livewire\BlogComponent;
 use App\Http\Livewire\CartComponent;
 use App\Http\Livewire\CheckoutComponent;
 use App\Http\Livewire\DetailsComponent;
 use App\Http\Livewire\HomeComponent;
 use App\Http\Livewire\LoginComponent;
+use App\Http\Livewire\MainCategoryComponent;
 use App\Http\Livewire\MealsComponent;
 use App\Http\Livewire\PrivacyPolicyComponent;
 use App\Http\Livewire\RegisterComponent;
 use App\Http\Livewire\RegisterController;
 use App\Http\Livewire\ReservationComponent;
 use App\Http\Livewire\RestaurantComponent;
+use App\Http\Livewire\SearchComponent;
 use App\Http\Livewire\TermsConditionsComponent;
+use App\Http\Livewire\WishlistComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +40,11 @@ Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('a
 Route::get('/auth/facebook/callback', [AuthController::class, 'handleFacebookCallback'])->name('auth.facebook.callback');
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 Route::post('/data-deletion-request', [AuthController::class, 'submitDataDeletionRequest'])->name('submit-data-deletion-request');
+Route::group(
+    [
+        'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+    ], function(){
 
 Route::get('/login', LoginComponent::class)->name('login');
 Route::get('/register', RegisterComponent::class)->name('register');
@@ -46,12 +56,17 @@ Route::get('/', HomeComponent::class)->name('home');
 Route::get('/reservation', ReservationComponent::class)->name('reservation');
 Route::get('/meals', MealsComponent::class)->name('meals');
 Route::get('/meal/{slug}', DetailsComponent::class)->name('meals.details');
+Route::get('/main-category/{slug}', MainCategoryComponent::class)->name('main.category');
 Route::get('/restaurant/{slug}', RestaurantComponent::class)->name('restaurant.details');
+Route::get('/blog', BlogComponent::class)->name('blog');
 Route::get('/cart', CartComponent::class)->name('cart');
+Route::get('/wishlist', WishlistComponent::class)->name('wishlist');
 Route::get('/checkout', CheckoutComponent::class)->name('checkout');
+Route::get('/search', SearchComponent::class)->name('meal.search');
 
 Route::get('/privacy-policy', PrivacyPolicyComponent::class)->name('privacy.policy');
 Route::get('/terms-conditions', TermsConditionsComponent::class)->name('terms.conditions');
 
 Auth::routes();
 
+});

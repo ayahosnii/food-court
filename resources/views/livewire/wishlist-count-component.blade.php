@@ -1,6 +1,10 @@
 <li>
-    <a href="#">
+    <a href="{{route('cart')}}">
         <i class="fa fa-heart"></i>
-        <span>1</span>
+        @if(auth()->check())
+            <span>{{ $wishlistCount }}</span>
+        @else
+            <span>0</span>
+        @endif
     </a>
 </li>

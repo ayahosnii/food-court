@@ -30,6 +30,6 @@ class Post extends Model
 
     public function getImageAttribute($val)
     {
-        return ($val !== null) ? asset('assets/img/' . $val) : "";
+        return ($val !== null) ? asset('assets/images/posts/' . $val) : "";
     }
 }

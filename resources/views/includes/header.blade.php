@@ -20,11 +20,17 @@
                         </div>
                         <div class="header__top__right__language">
                             <img src="img/language.png" alt="">
-                            <div>English</div>
+                            <div>
+                                <i class="{{app()->getLocale() == 'en' ? 'flag-icon flag-icon-gb' : 'flag-icon flag-icon-eg'}}"></i>
+                            </div>
                             <span class="arrow_carrot-down"></span>
                             <ul>
-                                <li><a href="#">Spanis</a></li>
-                                <li><a href="#">English</a></li>
+                                @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                    <a style="color: #f9fafd;" class="dropdown-item" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                        <i class="{{$localeCode == 'en'? 'flag-icon flag-icon-gb' : 'flag-icon flag-icon-eg'}}"></i>
+                                        {{ $properties['native'] }}
+                                    </a>
+                                @endforeach
                             </ul>
                         </div>
                         <div class="header__top__right__auth">
@@ -82,9 +88,9 @@
             <div class="col-lg-6">
                 <nav class="header__menu">
                     <ul>
-                        <li class="active"><a href="{{route('home')}}">Home</a></li>
-                        <li><a href="{{route('meals')}}">Meals</a></li>
-                        <li><a href="{{route('reservation')}}">Reservation</a></li>
+                        <li class="active"><a href="{{route('home')}}">@lang('site.home')</a></li>
+                        <li><a href="{{route('meals')}}">@lang('site.meals')</a></li>
+                        <li><a href="{{route('reservation')}}">@lang('site.reservation')</a></li>
                         {{--<li><a href="#">Pages</a>
                             <ul class="header__menu__dropdown">
                                 <li><a href="./shop-details.html">Shop Details</a></li>
@@ -93,8 +99,8 @@
                                 <li><a href="./blog-details.html">Blog Details</a></li>
                             </ul>
                         </li>--}}
-                        <li><a href="./blog.html">Blog</a></li>
-                        <li><a href="./contact.html">Contact</a></li>
+                        <li><a href="{{route('blog')}}">@lang('site.blogs')</a></li>
+                        <li><a href="./contact.html">@lang('site.contact')</a></li>
                     </ul>
                 </nav>
             </div>

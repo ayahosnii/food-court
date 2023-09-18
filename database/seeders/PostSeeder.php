@@ -16,48 +16,30 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        Post::create([
-            'id' => 1,
-            'title' =>"ways to cook Eggs",
-            'slug' => Str::slug('ways to cook eggs'),
-            'body' => "Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                       Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
-                       remaining essentially unchanged.
-                       and more recently with desktop publishing software like Aldus PageMaker
-                       including versions of Lorem Ipsum.",
+        // Seed posts for each category
+        $categories = [
+            'Cuisines',
+            'Food Reviews',
+            'Healthy Eating',
+            'Food Court Events',
+        ];
 
-            'image' => 'p1.jpg',
-            'user_id' =>1,
-            'category_id' =>1,
-        ]);
-        Post::create([
-            'id' => 2,
-            'title' =>"How to make pizza",
-            'slug' => Str::slug('how to make pizza'),
-            'body' => "Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                       Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
-                       remaining essentially unchanged.
-                       and more recently with desktop publishing software like Aldus PageMaker
-                       including versions of Lorem Ipsum.",
+        foreach ($categories as $categoryName) {
+            $category = \App\Models\CategoryBlog::where('name', $categoryName)->firstOrFail();
 
-            'image' => 'p2.jpg',
-            'user_id' =>1,
-            'category_id' =>2,
-        ]);
-        Post::create([
-            'id' => 3,
-            'title' =>"Delicious dinners",
-            'slug' => Str::slug('delicious dinners'),
-            'body' => "Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                       Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
-                       remaining essentially unchanged.
-                       and more recently with desktop publishing software like Aldus PageMaker
-                       including versions of Lorem Ipsum.",
+            for ($i = 1; $i <= 5; $i++) {
+                $title = "{$categoryName} Post {$i}";
+                $slug = Str::slug($title);
 
-            'image' => 'p1.jpg',
-            'user_id' =>1,
-            'category_id' =>3,
-        ]);
-
-    }
-}
+                Post::create([
+                    'id' => $i,
+                    'title' => $title,
+                    'slug' => $slug,
+                    'body' => "This is the body of the {$title} article.",
+                    'image' => 'example.jpg',
+                    'user_id' => 1,
+                    'category_id' => $category->id,
+                ]);
+            }
+        }
+    }}

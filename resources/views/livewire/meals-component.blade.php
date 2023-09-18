@@ -1,6 +1,18 @@
 <div>
 
-    @livewire('all-courts')
+    <!-- Hero Section Begin -->
+    <section class="hero hero-normal">
+        <div class="container">
+            <div class="row">
+                 @livewire('all-courts')
+                <div class="col-lg-9">
+                    @livewire('header-search-component')
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Section End -->
     @livewire('hero-section', ['title' => 'All Meals', 'pageName' => 'Meals'])
 
     <!-- Product Section Begin -->

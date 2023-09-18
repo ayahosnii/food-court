@@ -4,6 +4,7 @@ namespace App\Models\providers;
 
 use App\Models\admin\MainCategory;
 use App\Models\providers\Provider;
+use App\Models\Rating;
 use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -83,6 +84,12 @@ class Meal extends Model /*implements TranslatableContract*/
         }
 
         return $query;
+    }
+
+    // Meal.php (assuming you have this relationship)
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
     }
 
     public function isInFavorites()

@@ -1,9 +1,19 @@
 <div>
-    <!-- Breadcrumb Section Begin -->
-    @livewire('all-courts')
-    @livewire('hero-section', ['title' => $meal->name, 'pageName' => 'Meal\'s detail'])
-     <!-- Breadcrumb Section End -->
+    <!-- Hero Section Begin -->
+    <section class="hero hero-normal">
+        <div class="container">
+            <div class="row">
+                @livewire('all-courts')
+                <div class="col-lg-9">
+                    @livewire('header-search-component')
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Hero Section End -->
+    @livewire('hero-section', ['title' => $meal->name, 'pageName' => $meal->name])
+    <!-- Hero Section End -->
     <!-- Product Details Section Begin -->
     <section class="product-details spad">
         <div class="container">
@@ -12,16 +22,6 @@
                     <div class="product__details__pic">
                         <div class="product__details__pic__item">
                             <img class="product__details__pic__item--large"
-                                 src="{{$meal->image}}" alt="">
-                        </div>
-                        <div class="product__details__pic__slider owl-carousel">
-                            <img data-imgbigurl="img/product/details/product-details-2.jpg"
-                                 src="{{$meal->image}}" alt="">
-                            <img data-imgbigurl="img/product/details/product-details-3.jpg"
-                                 src="{{$meal->image}}" alt="">
-                            <img data-imgbigurl="img/product/details/product-details-5.jpg"
-                                 src="{{$meal->image}}" alt="">
-                            <img data-imgbigurl="img/product/details/product-details-4.jpg"
                                  src="{{$meal->image}}" alt="">
                         </div>
                     </div>
@@ -94,15 +94,15 @@
                                     <div class="container">
                                         <div class="feedback">
                                             <div class="rating">
-                                                <input type="radio" name="rating" id="rating-5">
+                                                <input type="radio" name="rating" wire:model="rating" value="5" id="rating-5">
                                                 <label for="rating-5"></label>
-                                                <input type="radio" name="rating" id="rating-4">
+                                                <input type="radio" name="rating" wire:model="rating" value="4" id="rating-4">
                                                 <label for="rating-4"></label>
-                                                <input type="radio" name="rating" id="rating-3">
+                                                <input type="radio" name="rating" wire:model="rating" value="3" id="rating-3">
                                                 <label for="rating-3"></label>
-                                                <input type="radio" name="rating" id="rating-2">
+                                                <input type="radio" name="rating" wire:model="rating" value="2" id="rating-2">
                                                 <label for="rating-2"></label>
-                                                <input type="radio" name="rating" id="rating-1">
+                                                <input type="radio" name="rating" wire:model="rating" value="1" id="rating-1">
                                                 <label for="rating-1"></label>
                                                 <div class="emoji-wrapper">
                                                     <div class="emoji">
@@ -194,36 +194,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <label>Name</label>
-                                    <input class="form-control">
+
                                     <label>Comment</label>
-                                    <textarea rows="5" class="form-control"></textarea>
+                                    <textarea name="comment" wire:model="comment" rows="5" class="form-control"></textarea>
+
+                                    <button wire:click="submitRating('{{ $meal->slug }}')" class="primary-btn my-2">Submit</button>
+
                                 </div>
                             </div>
-                            <div class="tab-pane" id="tabs-2" role="tabpanel">
-                                <div class="product__details__tab__desc">
-                                    <h6>Products Infomation</h6>
-                                    <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
-                                        Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
-                                        Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
-                                        sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
-                                        eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
-                                        Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
-                                        sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
-                                        diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
-                                        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-                                        Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
-                                        Proin eget tortor risus.</p>
-                                    <p>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Lorem
-                                        ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet
-                                        elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum
-                                        porta. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus
-                                        nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.</p>
-                                </div>
-                            </div>
+                            <livewire:rating-component :slug='$meal->slug' />
                         </div>
                     </div>
                 </div>
+
+
+
+
             </div>
         </div>
     </section>

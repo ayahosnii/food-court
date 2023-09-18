@@ -89,7 +89,9 @@
 
                 <li class="nav-item">
                     <a href="{{route('admin.coupons')}}"><i class="la la-male"></i>
-                        <span class="menu-title" data-i18n="nav.dash.main">@lang('messages.coupons')   </span>
+                        <span class="menu-title" data-i18n="nav.dash.main">
+                            @lang('messages.coupons')
+                        </span>
                         <span
                             class="badge badge badge-danger  badge-pill float-right mr-2">0</span>
                     </a>
@@ -169,21 +171,15 @@
                         Sliders
                     </a>
                     <ul class="menu-content">
-                        <li><a class="menu-item" href="layout-content-detached-left-sidebar.html"
-                               data-i18n="nav.page_layouts.3_columns_detached.detached_left_sidebar">Detached left
-                                sidebar</a>
-                        </li>
-                        <li><a class="menu-item" href="layout-content-detached-left-sticky-sidebar.html"
-                               data-i18n="nav.page_layouts.3_columns_detached.detached_sticky_left_sidebar">Detached
-                                sticky left sidebar</a>
-                        </li>
-                        <li><a class="menu-item" href="layout-content-detached-right-sidebar.html"
-                               data-i18n="nav.page_layouts.3_columns_detached.detached_right_sidebar">Detached right
-                                sidebar</a>
-                        </li>
-                        <li><a class="menu-item" href="layout-content-detached-right-sticky-sidebar.html"
-                               data-i18n="nav.page_layouts.3_columns_detached.detached_sticky_right_sidebar">Detached
-                                sticky right sidebar</a>
+                        <li>
+                          {{--  <a class="menu-item" href="{{route('admin.sliders')}}"
+                               data-i18n="nav.page_layouts.3_columns_detached.detached_left_sidebar">
+                                Sliders
+                            </a>
+                            <a class="menu-item" href="{{route('admin.sliders.create')}}"
+                               data-i18n="nav.page_layouts.3_columns_detached.detached_left_sidebar">
+                                Sliders
+                            </a>--}}
                         </li>
                     </ul>
                 </li>
@@ -206,7 +202,9 @@
             <li class="nav-item">
                 <a href="">
                     <i class="la la-male"></i>
-                    <span class="menu-title" data-i18n="nav.dash.main">@lang('providers.why-choose-restaurant')  </span>
+                    <span class="menu-title" data-i18n="nav.dash.main">
+                        @lang('providers.why-choose-restaurant')
+                    </span>
                     <span
                         class="badge badge badge-success badge-pill float-right mr-2">{{\App\Models\providers\WhyChooseRestaurant::where('provider_id', auth()->guard('providers')->user()->id)->count()}}</span>
                 </a>

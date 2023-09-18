@@ -14,18 +14,10 @@ class MealCategorySorter
 
         if ($categoryInputs) {
             if ($default_lang == 'en') {
-                $mealsQuery->whereIn('category_id', $categoryInputs);
+                $mealsQuery->whereIn('main_cate_id', $categoryInputs);
             } else {
-                $main = MainCategory::whereIn('id', $categoryInputs)->first();
-                $mealTranslation = MealTranslation::where('category_id', $main->translate_of)->first();
+                $mealsQuery->whereIn('arabic_main_category_id', $categoryInputs);
 
-                if ($mealTranslation) {
-                    $meal = Meal::find($mealTranslation->meal_id);
-
-                    if ($meal) {
-                        $mealsQuery->where('category_id', $meal->category_id);
-                    }
-                }
             }
         }
 
