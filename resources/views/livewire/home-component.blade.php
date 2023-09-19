@@ -540,6 +540,7 @@
         </div>
     </section>
     <!-- Blog Section End -->
+    <x-notify::notify />
 
 </div>
 @push('scripts')
