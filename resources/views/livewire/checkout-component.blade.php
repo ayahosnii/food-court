@@ -73,10 +73,9 @@
             });
         });
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOnrM9ISkivX_c_h82WzlOx-REJHnQLKQ&callback=initMap"async defer></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu0s6B8mPSpptZ38VQWqBzljkAYj-FlR4&callback=initializeMap" async defer></script>
     <script>
-
-
         function showMap(event) {
             event.preventDefault(); // prevent page refresh
             document.getElementById("map").style.display = "block";
