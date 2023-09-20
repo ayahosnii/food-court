@@ -203,8 +203,8 @@
 		Quantity change
 	--------------------- */
     var proQty = $('.pro-qty');
-    proQty.prepend('<span class="dec qtybtn" wire:click="decreaseQuantity">-</span>');
-    proQty.append('<span class="inc qtybtn" wire:click="increaseQuantity">+</span>');
+    proQty.prepend('<button class="dec qtybtn" wire:click="decreaseQuantity">-</button>');
+    proQty.append('<button class="inc qtybtn" wire:click="increaseQuantity">+</button>');
     proQty.on('click', '.qtybtn', function () {
         var $button = $(this);
         var oldValue = $button.parent().find('input').val();
