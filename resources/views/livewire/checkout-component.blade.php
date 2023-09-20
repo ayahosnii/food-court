@@ -182,4 +182,14 @@
                 });
         }
     </script>
+    @if ($payMethod === 'card' && $showInput)
+        <script>
+            document.addEventListener("livewire:load", function() {
+                const stripe = Stripe('{{ config('services.stripe.key') }}');
+                const elements = stripe.elements();
+                const cardElement = elements.create('card');
+                cardElement.mount('#card-element');
+            });
+        </script>
+    @endif
 @endpush
