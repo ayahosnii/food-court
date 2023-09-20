@@ -45,17 +45,19 @@
                                     </td>
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="{{ $item['quantity'] }}">
-                                            </div>
+                                            <a href="javascript:void(0)" class="minus-btn text-black" wire:click.prevent="decreaseQuantity({{ $item }})">-</a>
+                                            <input style="background-color: #f5f5f5;" readonly value="{{ $item['quantity'] }}" type="text" name="quantity">
+                                            <a href="javascript:void(0)" class="plus-btn text-black" wire:click.prevent="increaseQuantity({{ $item }})">+</a>
                                         </div>
                                     </td>
+
                                     <td class="shoping__cart__total">
                                         ${{ $item->price * $item['quantity'] }}
                                     </td>
                                     <td class="shoping__cart__item__close">
                                         <button wire:click="removeFromCart({{ $item }})" class="icon_close">
                                         </button>
+
                                     </td>
                                 </tr>
                             @endforeach

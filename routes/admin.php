@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\admin\AttributeController;
 use App\Http\Controllers\admin\backend\NotificationsController;
+use App\Http\Controllers\admin\BookedTables;
+use App\Http\Controllers\admin\BookedTablesController;
 use App\Http\Controllers\admin\CouponController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\LanguageController;
@@ -154,6 +156,18 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function ()
         //Route::get('delete/{id}','RolesController@destroy') -> name('admin.permissions.delete');
         Route::get('edit/{id}', [PermissionController::class, 'edit'])->name('admin.permissions.edit');
         Route::post('update/{id}', [PermissionController::class, 'update'])->name('admin.permissions.update');
+    });
+    ################################## End Permissions    #######################################
+
+    #################################### Start Permissions ######################################
+    Route::group(['prefix' => 'booked-tables'], function () {
+        Route::get('/', [BookedTablesController::class, 'index'])->name('admin.booked.tables');
+        Route::get('providers', [BookedTablesController::class, 'providers'])->name('admin.providers');
+        Route::get('providers/report/{id}', [BookedTablesController::class, 'providersReport'])->name('admin.providers.report');
+        Route::post('store', [BookedTablesController::class, 'store'])->name('admin.booked.tables.store');
+        //Route::get('delete/{id}','RolesController@destroy') -> name('admin.booked.tables.delete');
+        Route::get('edit/{id}', [BookedTablesController::class, 'edit'])->name('admin.booked.tables.edit');
+        Route::post('update/{id}', [BookedTablesController::class, 'update'])->name('admin.booked.tables.update');
     });
     ################################## End Permissions    #######################################
 

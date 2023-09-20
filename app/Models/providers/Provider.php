@@ -43,4 +43,9 @@ class Provider extends Authenticatable
     {
         return $this->belongsToMany(Branch::class, 'providers_branches', 'providers_id','branch_id');
     }
+
+    public function getActive()
+    {
+        return 'accountactivated' == 0 ? 'inactive' : 'activated';
+    }
 }

@@ -9,4 +9,10 @@ class Reservation extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+
+    public function provider()
+    {
+        return $this->belongsTo(\App\Models\providers\Provider::class);
+    }
 }

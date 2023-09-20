@@ -10,6 +10,7 @@ class BlogComponent extends Component
     public function render()
     {
         $posts = Post::get();
-        return view('livewire.blog-component', ['posts' => $posts])->layout('layouts.font-layout');
+        return view('livewire.blog-component', ['posts' => $posts])
+            ->layout('layouts.font-layout');
     }
 }

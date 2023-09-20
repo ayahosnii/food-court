@@ -12,6 +12,7 @@ use Livewire\Component;
 class CartComponent extends Component
 {
     protected $cart;
+    public $qty;
     public $subTotal;
     public $cartItems;
     public $removeItem;
@@ -42,6 +43,29 @@ class CartComponent extends Component
             $this->cartItems = $cart->all();
         }
     }
+
+    public function increaseQuantity(Meal $meal)
+    {
+        $cart = new Cart(new SessionStorage('cart'), $meal);
+        $updateItemResult = $cart->update($meal, $cart->get($meal)['quantity'] + 1);
+
+        if ($updateItemResult) {
+            $this->subTotal = $cart->subTotal();
+            $this->cartItems = $cart->all();
+        }
+    }
+
+    public function decreaseQuantity(Meal $meal)
+    {
+        $cart = new Cart(new SessionStorage('cart'), $meal);
+        $updateItemResult = $cart->update($meal, $cart->get($meal)['quantity'] - 1);
+
+        if ($updateItemResult) {
+            $this->subTotal = $cart->subTotal();
+            $this->cartItems = $cart->all();
+        }
+    }
+
 
 
 

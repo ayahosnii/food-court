@@ -100,7 +100,7 @@
                             </ul>
                         </li>--}}
                         <li><a href="{{route('blog')}}">@lang('site.blogs')</a></li>
-                        <li><a href="./contact.html">@lang('site.contact')</a></li>
+                        <li><a href="{{route('contact')}}">@lang('site.contact')</a></li>
                     </ul>
                 </nav>
             </div>
