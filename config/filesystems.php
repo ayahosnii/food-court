@@ -65,6 +65,12 @@ return [
             'url' => env('APP_URL').'/public',
             'visibility' => 'public',
         ],
+        'meals' => [
+            'driver' => 'local',
+            'root' => public_path('/assets/images/meals/'),
+            'url' => env('APP_URL').'/public',
+            'visibility' => 'public',
+        ],
 
         's3' => [
             'driver' => 's3',

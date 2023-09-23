@@ -68,7 +68,7 @@ class HomeComponent extends BaseComponent
     {
         $providers = Provider::where('accountactivated', '1')->get();
         $categories = Category::get();
-        $meals = Meal::get();
+        $meals = Meal::take(6)->get();
 
         $default_lang = get_default_language();
 
@@ -131,7 +131,7 @@ class HomeComponent extends BaseComponent
 
     private function loadMeals()
     {
-        return Meal::where('published', '1')->get();
+        return Meal::where('published', '1')->limit('8')->get();
     }
 
 

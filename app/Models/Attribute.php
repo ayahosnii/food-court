@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Translatable;
 
-class Attribute extends Model
+class Attribute extends Model implements TranslatableContract
 {
+
     use Translatable;
+
 
     /**
      * The relations to eager load on every query.

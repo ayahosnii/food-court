@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Cart\Cart;
+use App\Models\Coupon;
 use App\Models\providers\Meal;
 use App\Support\Storage\Contracts\StorageInterface;
 use Livewire\Component;
@@ -13,9 +14,9 @@ class YourOrderComponent extends Component
     public $cartItems;
 
 
-    public function mount(StorageInterface $storage, Meal $meal)
+    public function mount(StorageInterface $storage, Meal $meal, Coupon $coupon)
     {
-        $this->cart = new Cart($storage, $meal);
+        $this->cart = new Cart($storage, $meal, $coupon);
 
         $this->subTotal = $this->cart->subTotal();
 

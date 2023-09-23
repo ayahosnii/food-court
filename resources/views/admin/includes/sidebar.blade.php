@@ -9,17 +9,22 @@
                 </li>
 
                 <li class="nav-item"><a href=""><i class="la la-home"></i>
-                        <span class="menu-title" data-i18n="nav.dash.main">اللغات </span>
+                        <span class="menu-title" data-i18n="nav.dash.main">@lang('messages.languages') </span>
                         <span
-                            class="badge badge badge-info badge-pill float-right mr-2">5</span>
+                            class="badge badge badge-striped badge-pill float-right mr-2">
+                            {{\App\Models\admin\Language::count()}}
+                        </span>
                     </a>
                     <ul class="menu-content">
                         <li class="inactive">
                             <a class="menu-item" href="{{route('admin.languages')}}"
-                               data-i18n="nav.dash.ecommerce"> عرض الكل </a>
+                               data-i18n="nav.dash.ecommerce"> @lang('messages.show-all') </a>
                         </li>
-                        <li><a class="menu-item" href="{{route('admin.languages.create')}}" data-i18n="nav.dash.crypto">أضافة
-                                لغة جديد </a>
+                        <li>
+                            <a class="menu-item" href="{{route('admin.languages.create')}}"
+                               data-i18n="nav.dash.crypto">
+                                @lang('messages.add-new-language')
+                               </a>
                         </li>
                     </ul>
                 </li>
@@ -28,14 +33,18 @@
                 <li class="nav-item"><a href=""><i class="la la-group"></i>
                         <span class="menu-title" data-i18n="nav.dash.main">@lang('messages.Main-Categories') </span>
                         <span
-                            class="badge badge badge-danger badge-pill float-right mr-2"></span>
+                            class="badge badge badge-striped badge-pill float-right mr-2">
+                            {{\App\Models\admin\MainCategory::count()}}
+                        </span>
                     </a>
                     <ul class="menu-content">
                         <li class="inactive"><a class="menu-item" href="{{route('admin.maincategories')}}"
-                                                data-i18n="nav.dash.ecommerce"> عرض الكل </a>
+                                                data-i18n="nav.dash.ecommerce"> @lang('messages.show-all') </a>
                         </li>
-                        <li><a class="menu-item" href="{{route('admin.maincategories.create')}}" data-i18n="nav.dash.crypto">أضافة
-                                قسم </a>
+                        <li>
+                            <a class="menu-item" href="{{route('admin.maincategories.create')}}" data-i18n="nav.dash.crypto">
+                                @lang('messages.add-new-main-category')
+                            </a>
                         </li>
                     </ul>
                 </li>
@@ -43,14 +52,16 @@
                 <li class="nav-item"><a href=""><i class="la la-group"></i>
                         <span class="menu-title" data-i18n="nav.dash.main">@lang('messages.Sub-Categories') </span>
                         <span
-                            class="badge badge badge-danger badge-pill float-right mr-2"></span>
+                            class="badge badge badge-striped badge-pill float-right mr-2">{{\App\Models\admin\SubCategory::count()}}</span>
                     </a>
                     <ul class="menu-content">
                         <li class="inactive"><a class="menu-item" href="{{route('admin.subcategories')}}"
                                                 data-i18n="nav.dash.ecommerce"> عرض الكل </a>
                         </li>
-                        <li><a class="menu-item" href="{{route('admin.subcategories.create')}}" data-i18n="nav.dash.crypto">أضافة
-                                قسم </a>
+                        <li>
+                            <a class="menu-item" href="{{route('admin.subcategories.create')}}" data-i18n="nav.dash.crypto">
+                                @lang('messages.add-new-sub-category')
+                            </a>
                         </li>
                     </ul>
                 </li>
@@ -58,14 +69,16 @@
                 <li class="nav-item"><a href=""><i class="la la-male"></i>
                         <span class="menu-title" data-i18n="nav.dash.main">@lang('messages.meals')  </span>
                         <span
-                            class="badge badge badge-success badge-pill float-right mr-2"></span>
+                            class="badge badge badge-striped badge-pill float-right mr-2">{{\App\Models\providers\Meal::count()}}</span>
                     </a>
                     <ul class="menu-content">
                         <li class="inactive"><a class="menu-item" href="{{route('admin.meals')}}"
                                                 data-i18n="nav.dash.ecommerce"> عرض الكل </a>
                         </li>
-                        <li><a class="menu-item" href="{{route('admin.meals.create')}}" data-i18n="nav.dash.crypto">أضافة
-                                منتج </a>
+                        <li>
+                            <a class="menu-item" href="{{route('admin.meals.create')}}" data-i18n="nav.dash.crypto">
+                                @lang('messages.add-new-meal')
+                                </a>
                         </li>
                     </ul>
                 </li>
@@ -74,14 +87,16 @@
                 <li class="nav-item"><a href=""><i class="la la-male"></i>
                         <span class="menu-title" data-i18n="nav.dash.main">@lang('messages.Restaurants')  </span>
                         <span
-                            class="badge badge badge-warning  badge-pill float-right mr-2"></span>
+                            class="badge badge badge-striped  badge-pill float-right mr-2">{{\App\Models\providers\Provider::count()}}</span>
                     </a>
                     <ul class="menu-content">
                         <li class="inactive"><a class="menu-item" href="{{route('admin.restaurants')}}"
                                                 data-i18n="nav.dash.ecommerce"> عرض الكل </a>
                         </li>
-                        <li><a class="menu-item" href="" data-i18n="nav.dash.crypto">أضافة
-                                طالب </a>
+                        <li>
+                            <a class="menu-item" href="" data-i18n="nav.dash.crypto">
+                                @lang('messages.add-new-restaurant')
+                                </a>
                         </li>
                     </ul>
                 </li>
@@ -93,7 +108,7 @@
                             @lang('messages.coupons')
                         </span>
                         <span
-                            class="badge badge badge-danger  badge-pill float-right mr-2">0</span>
+                            class="badge badge badge-striped badge-pill float-right mr-2">0</span>
                     </a>
                     <ul class="menu-content">
                         <li class="inactive"><a class="menu-item" href="{{route('admin.coupons')}}"
@@ -105,7 +120,7 @@
                     <a href="{{route('admin.roles')}}"><i class="la la-male"></i>
                         <span class="menu-title" data-i18n="nav.dash.main">@lang('messages.roles')   </span>
                         <span
-                            class="badge badge badge-danger  badge-pill float-right mr-2">0</span>
+                            class="badge badge badge-striped badge-pill float-right mr-2">0</span>
                     </a>
                     <ul class="menu-content">
                         <li class="inactive"><a class="menu-item" href="{{route('admin.roles')}}"
@@ -135,7 +150,7 @@
                         <i class="la la-columns"></i><span class="menu-title"
                                                            data-i18n="nav.page_layouts.main">
                         The orders</span><span
-                            class="badge badge badge-pill badge-danger float-right mr-2">New</span></a>
+                            class="badge badge badge-stripeddge-danger float-right mr-2">New</span></a>
                     <ul class="menu-content">
                         <li>
                             <a class="menu-item" href="{{route('admin.orders.shipped')}}" data-i18n="nav.page_layouts.1_column">
@@ -172,14 +187,14 @@
                     </a>
                     <ul class="menu-content">
                         <li>
-                          {{--  <a class="menu-item" href="{{route('admin.sliders')}}"
+                            <a class="menu-item" href="{{route('admin.sliders')}}"
                                data-i18n="nav.page_layouts.3_columns_detached.detached_left_sidebar">
                                 Sliders
                             </a>
                             <a class="menu-item" href="{{route('admin.sliders.create')}}"
                                data-i18n="nav.page_layouts.3_columns_detached.detached_left_sidebar">
                                 Sliders
-                            </a>--}}
+                            </a>
                         </li>
                     </ul>
                 </li>
@@ -206,7 +221,7 @@
                         @lang('providers.why-choose-restaurant')
                     </span>
                     <span
-                        class="badge badge badge-success badge-pill float-right mr-2">{{\App\Models\providers\WhyChooseRestaurant::where('provider_id', auth()->guard('providers')->user()->id)->count()}}</span>
+                        class="badge badge badge-striped badge-pill float-right mr-2">{{\App\Models\providers\WhyChooseRestaurant::where('provider_id', auth()->guard('providers')->user()->id)->count()}}</span>
                 </a>
                 <ul class="menu-content">
                     <li class="inactive">
@@ -225,7 +240,7 @@
                     <i class="la la-male"></i>
                     <span class="menu-title" data-i18n="nav.dash.main">@lang('providers.tables')  </span>
                     <span
-                        class="badge badge badge-success badge-pill float-right mr-2">{{\App\Models\providers\Table::where('provider_id', auth()->guard('providers')->user()->id)->count()}}</span>
+                        class="badge badge badge-striped badge-pill float-right mr-2">{{\App\Models\providers\Table::where('provider_id', auth()->guard('providers')->user()->id)->count()}}</span>
                 </a>
                 <ul class="menu-content">
                     <li class="inactive">
@@ -244,7 +259,7 @@
                     <i class="la la-male"></i>
                     <span class="menu-title" data-i18n="nav.dash.main">@lang('messages.meals')  </span>
                     <span
-                        class="badge badge badge-success badge-pill float-right mr-2">{{\App\Models\providers\Meal::where('provider_id', auth()->guard('providers')->user()->id)->count()}}</span>
+                        class="badge badge badge-striped badge-pill float-right mr-2">{{\App\Models\providers\Meal::where('provider_id', auth()->guard('providers')->user()->id)->count()}}</span>
                 </a>
                 <ul class="menu-content">
                     <li class="inactive">

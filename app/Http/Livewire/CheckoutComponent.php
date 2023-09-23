@@ -4,26 +4,23 @@ namespace App\Http\Livewire;
 
 use App\Cart\Cart;
 use App\Models\admin\Admin;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\providers\Meal;
+use App\Models\Shipping;
+use App\Notifications\NewOrderForProviderNotify;
 use App\Support\Storage\Contracts\StorageInterface;
+use App\Support\Storage\SessionStorage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use Mockery\Exception;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 
 class CheckoutComponent extends Component
 {
-    public $subTotal;
-
-    public $discount;
-    public $payMethod;
-    public $ship_to_different;
-
-    public $showInput = false;
-    public $paymentIntentId;
-
-
     public $firstname;
     public $lastname;
     public $province;
@@ -34,6 +31,17 @@ class CheckoutComponent extends Component
     public $zipcode;
     public $mobile;
     public $email;
+    public $subTotal;
+
+    public $discount;
+    public $payMethod;
+    public $ship_to_different;
+
+    public $showInput = false;
+    public $paymentIntentId;
+
+
+
 
     public $d_firstname;
     public $d_lastname;
@@ -51,14 +59,15 @@ class CheckoutComponent extends Component
     public $removeItem;
 
 
-    public function mount(StorageInterface $storage, Meal $meal)
+    public function mount(StorageInterface $storage, Meal $meal, Coupon $coupon)
     {
-        $this->cart = new Cart($storage, $meal);
+        $this->cart = new Cart($storage, $meal, $coupon);
 
         $this->subTotal = $this->cart->subTotal();
 
         $this->cartItems = $this->cart->all();
     }
+
 
     public function rules()
     {
@@ -69,8 +78,6 @@ class CheckoutComponent extends Component
             'province' => 'required',
             'city' => 'required',
             'zipcode' => 'required',
-            'latitude' => 'required',
-            'longitude' => 'required',
             'email' => 'required|email',
             'mobile' => 'required',
         ];
@@ -87,10 +94,9 @@ class CheckoutComponent extends Component
         }
     }
 
-    public function placeOrder()
+    public function placeOrder(Meal $meal, Coupon $coupon)
     {
 
-        dd($this->cartItems);
         Stripe::setApiKey(config('services.stripe.secret'));
 
         try {
@@ -112,8 +118,6 @@ class CheckoutComponent extends Component
             'province' => 'required',
             'city' => 'required',
             'zipcode' => 'required',
-            'latitude' => 'required',
-            'longitude' => 'required',
             'email' => 'required|email',
             'mobile' => 'required',
         ]);
@@ -126,52 +130,59 @@ class CheckoutComponent extends Component
             $this->shipToDifferent();
         }
 
+        $cart = new Cart(new SessionStorage('cart'), $meal, $coupon);
 
-        $this->processPayment();
-        return redirect()->route('thankyou');
+        $this->processPayment($cart);
+        notify()->success('Checkout successfully message');
+        $this->resetForm();
     }
     private function createOrder()
     {
-        $order = new Order();
-        $order->user_id = Auth::user()->id;
-        $order->subtotal = session()->get('checkout')['subtotal'] ?? floatval(Cart::instance('cart')->subtotal());
-        $order->discount = session()->get('checkout')['discount'] ?? 0;
-        $order->tax = session()->get('checkout')['tax'] ?? Cart::instance('cart')->tax();
-        $order->total = session()->get('checkout')['total'] ?? floatval(Cart::instance('cart')->total());
-        $order->firstname = $this->firstname;
-        $order->lastname = $this->lastname;
-        $order->province = $this->province;
-        $order->address = $this->address;
-        $order->city = $this->city;
-        $order->zipcode = $this->zipcode;
-        $order->email = $this->email;
-        $order->mobile = $this->mobile;
-        $order->latitude = $this->latitude;
-        $order->longitude = $this->longitude;
-        $order->status = 'ordered';
-        $order->is_shipping_different = $this->ship_to_different ? 1:0;
-        $order->save();
-        $data = ['order_id' => $order->id];
-        //Pusher::trigger('order-orders', 'new-order', $data);
+        try {
 
-        $admin = Admin::where('id', 1)->first();
+            $order = new Order();
+            $order->user_id = Auth::user()->id;
+            $order->subtotal = $this->subTotal ?? 0;
+            $order->discount = session()->get('checkout')['discount'] ?? 0;
+            $order->tax = 0;
+            $order->total = $this->subTotal;
+            $order->firstname = $this->firstname;
+            $order->lastname = $this->lastname;
+            $order->province = $this->province;
+            $order->address = $this->address;
+            $order->city = $this->city;
+            $order->zipcode = $this->zipcode;
+            $order->email = $this->email;
+            $order->mobile = $this->mobile;
+            $order->latitude = $this->latitude;
+            $order->longitude = $this->longitude;
+            $order->status = 'ordered';
+            $order->is_shipping_different = $this->ship_to_different ? 1 : 0;
+            $order->save();
+            $data = ['order_id' => $order->id];
+            //Pusher::trigger('order-orders', 'new-order', $data);
+
+            $admin = Admin::where('id', 1)->first();
 
 
-        foreach($this->cartItems as $item) {
+            foreach ($this->cartItems as $item) {
+                $orderItem = new OrderItem();
+                $orderItem->meal_id = $item['id'] ?? ''; // Access 'id' from the array
+                $orderItem->order_id = $order->id;
+                $orderItem->price = $item['price']; // Access 'price' from the array
+                $orderItem->quantity = $item['quantity']; // Access 'quantity' from the array
 
-            $orderItem = new OrderItem();
-            $orderItem->meal_id = $item->id ?? '';
-            $orderItem->order_id = $order->id;
-            $orderItem->price = $item->price;
-            $orderItem->quantity = $item->qty;
-
-            $orderItem->save();
-            if ($orderItem) {
-                $admin->notify(new NewOrderForProviderNotify($orderItem));
+                $orderItem->save();
+                if ($orderItem) {
+                    $admin->notify(new NewOrderForProviderNotify($orderItem));
+                }
             }
 
-        }
+        }catch (\Exception $exception) {
+            Log::error($exception->getMessage());
 
+            return $exception;
+        }
     }
 
     private function shipToDifferent()
@@ -187,18 +198,48 @@ class CheckoutComponent extends Component
         $shipping->mobile = $this->d_mobile;
     }
 
-    private function processPayment()
+    private function processPayment($cart)
     {
-        Cart::instance('cart')->destroy();
-        session()->forget('checkout');
-        if (session()->has('coupon')) {
-            $coupon = Coupon::where('code', session()->get('coupon')['name'])->first();
-            if ($coupon) {
-                $coupon->times_used = $coupon->times_used + 1;
-                $coupon->save();
+        try {
+
+            $cart->clear();
+            if (session()->has('coupon')) {
+                $coupon = Coupon::where('code', session()->get('coupon')['name'])->first();
+                if ($coupon) {
+                    $coupon->times_used = $coupon->times_used + 1;
+                    $coupon->save();
+                }
             }
+        }catch (Exception $e){
+            return $e;
         }
     }
+
+    public function resetForm()
+    {
+        $this->firstname = '';
+        $this->lastname = '';
+        $this->province = '';
+        $this->address = '';
+        $this->city = '';
+        $this->latitude = '';
+        $this->longitude = '';
+        $this->zipcode = '';
+        $this->mobile = '';
+        $this->email = '';
+
+        if ($this->ship_to_different) {
+            $this->d_firstname = '';
+            $this->d_lastname = '';
+            $this->d_province = '';
+            $this->d_address = '';
+            $this->d_city = '';
+            $this->d_zipcode = '';
+            $this->d_mobile = '';
+            $this->d_email = '';
+        }
+    }
+
     public function render()
     {
         return view('livewire.checkout-component')->layout('layouts.font-layout');

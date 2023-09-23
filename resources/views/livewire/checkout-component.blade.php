@@ -42,7 +42,7 @@
         </div>
     </section>
     <!-- Checkout Section End -->
-
+    <x-notify::notify />
 </div>
 @push('scripts')
     <script src="https://js.stripe.com/v3/"></script>
@@ -74,7 +74,7 @@
         });
     </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu0s6B8mPSpptZ38VQWqBzljkAYj-FlR4&callback=initializeMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu0s6B8mPSpptZ38VQWqBzljkAYj-FlR4&callback=initMap" async defer></script>
     <script>
         function showMap(event) {
             event.preventDefault(); // prevent page refresh
@@ -91,7 +91,8 @@
             var url =
                 "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" +
                 encodeURIComponent(address + ", " + province) +
-                "&accept-language=ar";
+                "&accept-language=en";
+
             fetch(url)
                 .then((response) => response.json())
                 .then((data) => {
@@ -100,6 +101,8 @@
                         var latitude = parseFloat(data[0].lat);
                         var longitude = parseFloat(data[0].lon);
 
+                        console.log("Latitude: " + latitude);
+                        console.log("Longitude: " + longitude);
 
 
                         // Display the map

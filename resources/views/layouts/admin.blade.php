@@ -13,7 +13,7 @@
     <meta name="author" content="PIXINVENT">
     <meta name="adminId" content="{{ auth()->guard('admin') ? auth()->guard('admin')->id() : '' }}">
 
-    <title>  Aya's dashboard </title>
+    <title>  Food Court </title>
     <link rel="apple-touch-icon" href="http://127.0.0.1:8000/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="http://127.0.0.1:8000/images/ico/favicon.ico">
     <link
@@ -40,12 +40,16 @@
     <link rel="stylesheet" type="text/css" href="{{asset('admin-assets/vendors/css/cryptocoins/cryptocoins.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('admin-assets/vendors/css/extensions/datedropper.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('admin-assets/vendors/css/extensions/timedropper.min.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.min.css">
+
     <!-- END Page Level CSS-->
     <!-- BEGIN Custom CSS-->
     <!-- END Custom CSS-->
 
     @if(app()->getLocale() == 'ar')
-    <!--Start css rtl-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.min.css">
+
+        <!--Start css rtl-->
         <link rel="stylesheet" type="text/css" href="{{asset('admin-assets/css-rtl/plugins/animate/animate.css')}}">
 
         <link rel="stylesheet" type="text/css" href="{{asset('admin-assets/css-rtl/vendors.css')}}">

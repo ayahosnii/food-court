@@ -19,13 +19,65 @@ class DetailsComponent extends Component
     public $rating;
     public $name;
     public $comment;
+    public $selectedAttributePrice;
 
+    public $favoriteMeals = [];
+
+    public function calculateTotalPrice()
+    {
+        // Calculate the total price based on the meal's base price and the selected attribute's price
+        $meal = Meal::where('slug', $this->slug)->first();
+        $basePrice = $meal->price;
+        $totalPrice = $basePrice + $this->selectedAttributePrice;
+
+        return $totalPrice;
+    }
+
+    public function refreshFavoriteStatus($slug)
+    {
+
+    }
+
+
+    public $attributes;
+    public $options;
+
+    private function loadAttributesAndOptions($meal)
+    {
+        $this->options = $meal->options;
+    }
 
     public function mount($slug){
 
         $this->slug = $slug;
         $this->qty = 1;
+        $meal = Meal::where('slug', $slug)->first();
+        $this->loadAttributesAndOptions($meal);
     }
+
+    public function toggleFavorite($slug)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            notify()->error('You must login first');
+        }else{
+            $meal = Meal::where('slug', $slug)->firstOrFail();
+
+            if ($user->favoriteMeals->contains($meal)) {
+                $user->favoriteMeals()->detach($meal);
+            } else {
+                $user->favoriteMeals()->attach($meal);
+            }
+
+            $meal->refresh();
+
+            $this->emit('favoriteToggled', $meal->slug);
+            $this->emitTo('wishlist-count-component', 'refreshComponent');
+        }
+
+    }
+
 
     public function increaseQuantity()
     {

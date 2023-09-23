@@ -5,7 +5,10 @@ return [
     'en' => ' in english',
     'ar' => ' in arabic',
     'Hello' => 'Hello',
+    'languages' => 'languages',
+    'add-new-language' => 'Add New Language',
     'search' => 'search',
+    'show-all' => 'Show all',
     //Admins
     "All Categories" => 'All Categories',
     "Main-Categories" => 'Main-Categories',

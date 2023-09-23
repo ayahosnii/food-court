@@ -227,7 +227,7 @@
             </div>
             <div class="row featured__filter">
                 @foreach($meals as $meal)
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-5 h-100 mix {{$meal->category->slug}} fresh-meat">
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-5 h-100 mix {{Str::slug($meal->provider->name)}}">
                         <div class="card card-span h-100 rounded-3">
                             <li
                                 id="favorite-toggle-{{$meal->slug}}"

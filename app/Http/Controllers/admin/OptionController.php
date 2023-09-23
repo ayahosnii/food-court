@@ -17,19 +17,22 @@ use App\Models\Image;*/
 use App\Models\Option;
 use App\Models\admin\Product;
 /*use App\Models\Tag;*/
+
+use App\Models\providers\Meal;
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
+
 
 class OptionController extends Controller
 {
 
     public function index()
     {
-        $options = Option::with(['product' => function ($prod) {
+        $options = Option::with(['meal' => function ($prod) {
             $prod->select('id');
         }, 'attribute' => function ($attr) {
             $attr->select('id');
-        }])->select('id', 'product_id', 'attribute_id', 'price')->paginate(PAGINATION_COUNT);
+        }])->select('id', 'meal_id', 'attribute_id', 'price')->paginate(PAGINATION_COUNT);
 
         return view('admin.options.index', compact('options'));
     }
@@ -37,8 +40,7 @@ class OptionController extends Controller
     public function create()
     {
         $data = [];
-        $data['products'] = Product::active()->selection()->
-            where('translation_lang', get_default_language())->get();
+        $data['meals'] = Meal::published()->select('id')->get();
         $data['attributes'] = Attribute::select('id')->get();
 
         return view('admin.options.create', $data);
@@ -47,12 +49,13 @@ class OptionController extends Controller
     public function store(OptionsRequest $request)
     {
 
+
         DB::beginTransaction();
 
         //validation
         $option = Option::create([
             'attribute_id' => $request->attribute_id,
-            'product_id' => $request->product_id,
+            'meal_id' => $request->meal_id,
             'price' => $request->price,
         ]);
         //save translations
@@ -60,7 +63,7 @@ class OptionController extends Controller
         $option->save();
         DB::commit();
 
-        return redirect()->route('admin.options')->with(['success' => 'تم ألاضافة بنجاح']);
+        return redirect()->route('admin.options')->with(['success' => 'تم الاضافة بنجاح']);
     }
 
     public function edit($optionId)
@@ -72,7 +75,7 @@ class OptionController extends Controller
         if (!$data['option'])
             return redirect()->route('admin.options')->with(['error' => 'هذه القيمة غير موجود ']);
 
-        $data['products'] = \App\Models\admin\Product::active()->select('id')->get();
+        $data['meals'] = Meal::published()->select('id')->get();
         $data['attributes'] = Attribute::select('id')->get();
 
         return view('admin.options.edit', $data);
@@ -88,7 +91,7 @@ class OptionController extends Controller
             if (!$option)
                 return redirect()->route('admin.options')->with(['error' => 'هذا ألعنصر غير موجود']);
 
-            $option->update($request->only(['price','product_id','attribute_id']));
+            $option->update($request->only(['price','meal_id','attribute_id']));
             //save translations
             $option->name = $request->name;
             $option->save();
@@ -107,7 +110,7 @@ class OptionController extends Controller
 
         try {
             //get specific categories and its translations
-            $category = MainCategory::orderBy('id', 'DESC')->find($id);
+            $category = Category::orderBy('id', 'DESC')->find($id);
 
             if (!$category)
                 return redirect()->route('admin.maincategories')->with(['error' => 'هذا القسم غير موجود ']);

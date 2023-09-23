@@ -94,14 +94,14 @@ class Coupon extends Model
         }
 
         // Check if the coupon applies to any logos in the cart
-//        if ($this->providers()->count() > 0) {
-//            foreach ($cart as $item) {
-//                if ($item->model->providers()->whereIn('id', $this->providers->pluck('id'))->exists()) {
-//                    return true;
-//                }
-//            }
-//            return false;
-//        }
+        if ($this->providers()->count() > 0) {
+            foreach ($cart as $item) {
+                if ($item->model->providers()->whereIn('id', $this->providers->pluck('id'))->exists()) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         // If the coupon doesn't apply to specific products or logos, it applies to all
         return true;
@@ -109,7 +109,7 @@ class Coupon extends Model
 
     public function meals()
     {
-        return $this->belongsToMany(Meal::class);
+        return $this->belongsToMany(Meal::class, 'coupon_meal', 'coupon_id', 'meal_id');
     }
 
     public function providers()

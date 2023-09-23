@@ -3,6 +3,7 @@
 namespace App\Models\providers;
 
 use App\Models\admin\MainCategory;
+use App\Models\Option;
 use App\Models\providers\Provider;
 use App\Models\Rating;
 use App\Models\Sale;
@@ -12,14 +13,24 @@ use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Support\Facades\Auth;
 
-class Meal extends Model /*implements TranslatableContract*/
+class Meal extends Model implements TranslatableContract
 {
-    public $table = "meals";
-//    use Translatable;
+    use Translatable;
 
-//    public $translatedAttributes = ['ar_name',	'ar_details'];
-    public $fillable = ['id','name','slug','image','subcate_id',	'description',	'calories',	'category_id', 'main_cate_id',	'branch_id',
-        'price',	'published','providers_id ','provider_id',	'created_at',	'updated_at'];
+    public $translatedAttributes = ['name', 'description'];
+    protected $guarded = [];
+
+    protected $casts = [
+        'manage_stock' => 'boolean',
+        'in_stock' => 'boolean',
+        'is_active' => 'boolean',
+    ];
+
+
+    public function options(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Option::class);
+    }
 
     public function branches()
     {
@@ -90,6 +101,10 @@ class Meal extends Model /*implements TranslatableContract*/
     public function ratings()
     {
         return $this->hasMany(Rating::class);
+    }
+
+    public function scopePublished($query){
+        return $query ->where('published', 1);
     }
 
     public function isInFavorites()

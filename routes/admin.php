@@ -76,6 +76,8 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function ()
     ########################################## Start Products Route ##############################################################
     Route::get('/meals', [ProductController::class, 'index'])->name('admin.meals');
     Route::get('/meals/create', [ProductController::class, 'create'])->name('admin.meals.create');
+    Route::get('/meals/stock/{id}', [ProductController::class, 'getStock'])->name('admin.meals.stock');
+    Route::get('/meals/stock/store', [ProductController::class, 'saveProductStock'])->name('admin.products.stock.store');
     Route::post('/meals/store', [ProductController::class, 'store'])->name('admin.meals.store');
     Route::get('/meals/edit/{id}', [ProductController::class, 'edit'])->name('admin.meals.edit');
     Route::post('/meals/update', [ProductController::class, 'update'])->name('admin.meals.update');

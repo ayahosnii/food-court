@@ -23,6 +23,10 @@ class Provider extends Authenticatable
 
     }
 
+    public function scopeAccountActivated($query){
+        return $query ->where('accountactivated', '1');
+    }
+
     public function getLogoAttribute($val)
     {
         return ($val !== null) ? asset('assets/img/logos/' . $val) : "";

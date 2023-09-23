@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Cart\Cart;
 use App\Exceptions\QuantityExceededException;
 use App\Helper\MealCategorySorter;
+use App\Models\Coupon;
 use App\Models\providers\Meal;
 use App\Support\Storage\SessionStorage;
 use Illuminate\Http\Request as HttpRequest;
@@ -72,10 +73,10 @@ class BaseComponent extends Component
 
     }
 
-    public function addToCart(HttpRequest $request, $slug)
+    public function addToCart(HttpRequest $request, $slug, Coupon $coupon)
     {
         $meal = Meal::where('slug', $slug)->firstOrFail();
-        $cart = new Cart(new SessionStorage('cart'), $meal);
+        $cart = new Cart(new SessionStorage('cart'), $meal, $coupon);
 
         try {
             $cart->add($meal, $request->input('quantity', 1));

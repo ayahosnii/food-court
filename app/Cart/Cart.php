@@ -3,6 +3,7 @@
 namespace App\Cart;
 
 use App\Exceptions\QuantityExceededException;
+use App\Models\Coupon;
 use App\Models\providers\Meal;
 use App\Support\Storage\Contracts\StorageInterface;
 use Illuminate\Support\Facades\Session;
@@ -29,11 +30,11 @@ class Cart
      * @param StorageInterface $storage
      * @param Meal          $product
      */
-    public function __construct(StorageInterface $storage, Meal $product)
+    public function __construct(StorageInterface $storage, Meal $product, Coupon $coupon)
     {
         $this->storage = $storage;
         $this->product = $product;
-        //$this->coupon = $coupon;
+        $this->coupon = $coupon;
     }
 
     /**
@@ -51,31 +52,47 @@ class Cart
 
         $this->update($product, $quantity);
     }
-//
-//    public function addCoupon(Coupon $coupon)
-//    {
-//        if (!$this->checkCoupon($coupon)) {
-//            return false;
-//        }
-//
-//        $product = $coupon->product;
-//        $p = $this->get($product);
-//
-//        $this->storage->set($product->id, [
-//            'product_id' => (int) $product->id,
-//            'quantity' => $p['quantity'],
-//            'coupon' => $coupon->id,
-//        ]);
-//
-//        return true;
-//    }
-//
-//    public function checkCoupon(Coupon $coupon)
-//    {
-//        if (!$this->has($coupon->product)) {
-//            return false;
-//        }
-//
+
+    public function addCoupon(Coupon $coupon, $couponId = null)
+    {
+        $theCoupon = Coupon::where('id', $couponId)->first();
+        if (!$this->checkCoupon($theCoupon)) {
+            dd($couponId);
+        }
+
+        $theMeals = $coupon->meals;
+
+        $selectedMeal = null;
+
+        foreach ($theMeals as $meal) {
+                $selectedMeal = $meal;
+        }
+
+
+        $currentCouponId = $selectedMeal->pivot->coupon_id;
+
+
+        $meal = $this->get($selectedMeal);
+
+
+        $couponId = $couponId !== null ? $couponId : $currentCouponId;
+        $this->storage->set($meal['product_id'], [
+            'product_id' => (int) $meal['product_id'],
+            'quantity' => $meal['quantity'],
+            'coupon' => $couponId,
+        ]);
+        return true;
+    }
+
+    public function checkCoupon(Coupon $coupon)
+    {
+        foreach ($coupon->meals as $meal){
+            if ($this->has($meal)) {
+                return true;
+            }
+        }
+
+
 //        if (!$coupon->active || !$coupon->isValid() || ($this->get($coupon->product)['quantity'] < $coupon->products_count)) {
 //            return false;
 //        }
@@ -83,20 +100,20 @@ class Cart
 //        if ($coupon->members()->find(auth()->guard('site')->id())) {
 //            return false;
 //        }
-//
-//        return true;
-//    }
-//
-//    public function checkCouponById($id)
-//    {
-//        $coupon = Coupon::find($id);
-//
-//        if(!$coupon){
-//            return false;
-//        }
-//
-//        return $this->checkCoupon($coupon);
-//    }
+
+        return false;
+    }
+
+    public function checkCouponById($id)
+    {
+        $coupon = Coupon::find($id);
+
+        if(!$coupon){
+            return false;
+        }
+
+        return $this->checkCoupon($coupon);
+    }
 
     /**
      * Update the basket.
@@ -118,16 +135,16 @@ class Cart
             return;
         }
 
-//        if ($this->has($product)) {
-//            $coupon = $this->get($product)['coupon'];
-//        }else{
-//            $coupon = null;
-//        }
+        if ($this->has($product)) {
+            $coupon = $this->get($product)['coupon'];
+        }else{
+            $coupon = null;
+        }
 
         $this->storage->set($product->id, [
             'product_id' => (int) $product->id,
             'quantity' => (int) $quantity,
-            //'coupon' => $coupon,
+            'coupon' => $coupon,
         ]);
     }
 
@@ -188,9 +205,10 @@ class Cart
 
         $products = $this->product->find($ids);
 
+
         foreach ($products as $product) {
             $product->quantity = $this->get($product)['quantity'];
-//            $product->coupon = $this->get($product)['coupon'];
+            $product->coupon = $this->get($product)['coupon'];
             $items[] = $product;
         }
 

@@ -37,7 +37,13 @@
                             <i class="fa fa-star-half-o"></i>
                             <span>(18 reviews)</span>
                         </div>
-                        <div class="product__details__price">${{$meal->price}}</div>
+                        <div class="product__details__price">
+                            @if ($selectedAttributePrice)
+                                <div>${{ $selectedAttributePrice }}</div>
+                            @else
+                            ${{$meal->price}}
+                            @endif
+                        </div>
                         <p>{{$meal->description}}</p>
                         {{--<div class="product__details__quantity">
                             <div class="quantity">
@@ -59,11 +65,31 @@
                         <a href="#" class="primary-btn" wire:click.prevent="addToCart('{{$meal->slug}}', {{$qty}})"><i class="fa fa-shopping-bag"></i> Add to cart</a>
 
 
-                        <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                        <li
+                            id="favorite-toggle-{{$meal->slug}}"
+                            wire:click="toggleFavorite('{{$meal->slug}}')"
+                            class="fa fa-heart {{$meal->isInFavorites() ? 'favorite' : ''}}"
+                            data-slug="{{$meal->slug}}"
+                        ></li>
                         <ul>
+
                             <li><b>Availability</b> <span>In Stock</span></li>
                             <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
-                            <li><b>Weight</b> <span>0.5 kg</span></li>
+
+                                <li><b>
+                                        @foreach($options as $option)
+                                        {{ $option->attribute->name }}
+                                        @endforeach
+                                    </b>
+                                    <span>
+                                        <select wire:model="selectedAttributePrice" wire:change="calculateTotalPrice">
+                                            <optgroup label="Choose {{ $option->attribute->name }}"></optgroup>
+                                             @foreach($options as $option)
+                                            <option  value="{{ $option->price }}">{{$option->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </span></li>
+
                             <li><b>Share on</b>
                                 <div class="share">
                                     <a href="#"><i class="fa fa-facebook"></i></a>

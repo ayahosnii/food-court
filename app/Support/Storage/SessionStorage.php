@@ -55,7 +55,7 @@ class SessionStorage implements StorageInterface
      */
     public function get($index)
     {
-        if (! $this->exists($index)) {
+        if (!$this->exists($index)) {
             return null;
         }
 

@@ -3,14 +3,14 @@
         <div class="col-lg-6">
             <div class="checkout__input">
                 <p>First Name<span>*</span></p>
-                <input type="text" wire:model="firstname">
+                <input name="firstname" type="text" wire:model="firstname">
                 @error('firstname') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
         </div>
         <div class="col-lg-6">
             <div class="checkout__input">
                 <p>Last Name<span>*</span></p>
-                <input type="text" wire:model="lastname">
+                <input name="lastname" type="text" wire:model="lastname">
                 @error('lastname') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
         </div>
@@ -31,7 +31,7 @@
 
     <div class="checkout__input">
         <p>Address<span>*</span></p>
-        <input type="text" placeholder="Street Address" class="checkout__input__add" wire:model="address">
+        <input id="address" type="text" placeholder="Street Address" class="checkout__input__add" wire:model="address">
         @error('address') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
 
@@ -42,8 +42,8 @@
     </div>
 
     <div class="checkout__input">
-        <p>Province<span>*</span></p>
-        <input type="text" wire:model="province">
+        <p>State<span>*</span></p>
+        <input name="state" type="text" wire:model="province">
         @error('state') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
 
@@ -97,10 +97,10 @@
     </div>
     <p>Create an account by entering the information below. If you are a returning customer
         please login at the top of the page</p>
-    <div class="checkout__input">
-        <p>Account Password<span>*</span></p>
-        <input type="text">
-    </div>
+{{--    <div class="checkout__input">--}}
+{{--        <p>Account Password<span>*</span></p>--}}
+{{--        <input type="text">--}}
+{{--    </div>--}}
     <div class="checkout__input__checkbox">
         <label for="diff-acc">
             Ship to a different address?
@@ -108,9 +108,9 @@
             <span class="checkmark"></span>
         </label>
     </div>
-    <div class="checkout__input">
-        <p>Order notes<span>*</span></p>
-        <input type="text"
-               placeholder="Notes about your order, e.g. special notes for delivery.">
-    </div>
+{{--    <div class="checkout__input">--}}
+{{--        <p>Order notes<span>*</span></p>--}}
+{{--        <input type="text"--}}
+{{--               placeholder="Notes about your order, e.g. special notes for delivery.">--}}
+{{--    </div>--}}
 </div>

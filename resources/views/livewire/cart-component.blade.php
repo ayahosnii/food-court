@@ -38,7 +38,7 @@
                                 <tr>
                                     <td class="shoping__cart__item">
                                         <img style="width: 80px; height: 100px" src="{{ asset($item->image) }}" alt="{{ $item->name }}">
-                                        <h5>{{ $item->name }}</h5>
+                                        <h5>{{ $item->name }} {{ \App\Models\Coupon::find($item->coupon)->value ?? 0 }}</h5>
                                     </td>
                                     <td class="shoping__cart__price">
                                         ${{ $item->price }}
@@ -51,8 +51,9 @@
                                         </div>
                                     </td>
 
+
                                     <td class="shoping__cart__total">
-                                        ${{ $item->price * $item['quantity'] }}
+                                        ${{ $item->price * $item['quantity'] - $item['coupon'] }}
                                     </td>
                                     <td class="shoping__cart__item__close">
                                         <button wire:click="removeFromCart({{ $item }})" class="icon_close">

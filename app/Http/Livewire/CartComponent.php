@@ -18,23 +18,23 @@ class CartComponent extends Component
     public $removeItem;
 
 
-        public function mount(StorageInterface $storage, Meal $meal)
-        {
-            $this->cart = new Cart($storage, $meal);
+    public function mount(StorageInterface $storage, Meal $meal, Coupon $coupon)
+    {
+        $this->cart = new Cart($storage, $meal, $coupon);
 
             $this->subTotal = $this->cart->subTotal();
 
             $this->cartItems = $this->cart->all();
-        }
+     }
 
         public function getCartProperty()
         {
             return $this->cart;
         }
 
-    public function removeFromCart(Meal $meal)
+    public function removeFromCart(Meal $meal, Coupon $coupon)
     {
-        $cart = new Cart(new SessionStorage('cart'), $meal);
+        $cart = new Cart(new SessionStorage('cart'), $meal, $coupon);
 
         $removeItemResult = $cart->remove($meal);
 

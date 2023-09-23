@@ -5,6 +5,13 @@ return [
 
 
     'Hello' => 'مرحبا',
+    'languages' => 'اللغات',
+    'show-all' => 'عرض الكل',
+    'add-new-language' => 'إضافة لغة جديدة',
+    'add-new-main-category' => 'إضافة قسم رئيسي جديد',
+    'add-new-sub-category' => 'إضافة قسم فرعي جديد',
+    'add-new-meal' => 'إضافة وجبة جديدة',
+    'add-new-restaurant' => 'إضافة مطعم جديد',
     "All Categories" => 'كل الاقسام',
     "Main-Categories" => 'الأقسام الرئيسية',
     "Sub-Categories" => 'الأقسام الفرعية',
