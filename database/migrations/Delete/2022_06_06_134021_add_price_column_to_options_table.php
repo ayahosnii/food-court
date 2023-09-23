@@ -14,7 +14,7 @@ class AddPriceColumnToOptionsTable extends Migration
     public function up()
     {
         Schema::table('options', function (Blueprint $table) {
-            $table->string('price')->after('product_id');
+            $table->string('price')->after('meal_id');
         });
     }
 

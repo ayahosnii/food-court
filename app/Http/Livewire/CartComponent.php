@@ -16,6 +16,8 @@ class CartComponent extends Component
     public $subTotal;
     public $cartItems;
     public $removeItem;
+    public $itemQuantities = [];
+
 
 
     public function mount(StorageInterface $storage, Meal $meal, Coupon $coupon)
@@ -27,7 +29,15 @@ class CartComponent extends Component
             $this->calculateTotalDiscount = $this->cart->calculateTotalDiscount();
 
             $this->cartItems = $this->cart->all();
-     }
+        foreach ($this->cartItems as $item) {
+            $this->itemQuantities[$item->id] = $item->quantity;
+        }
+    }
+
+    public function updateItemQuantity($itemId, $quantity)
+    {
+        $this->itemQuantities[$itemId] = $quantity;
+    }
 
     public function itemTotalPrice($item)
     {
@@ -62,27 +72,51 @@ class CartComponent extends Component
         }
     }
 
-    public function increaseQuantity(Meal $meal, Coupon $coupon)
+    public function increaseQuantity($mealId, Coupon $coupon)
     {
+        $meal = Meal::find($mealId);
         $cart = new Cart(new SessionStorage('cart'), $meal, $coupon);
-        $updateItemResult = $cart->update($meal, $cart->get($meal)['quantity'] + 1);
+
+        // Retrieve the meal from the cart
+        $cartMeal = $cart->get($meal);
+
+        // Update the quantity
+        $updateItemResult = $cart->updateQty($meal, $cartMeal['quantity'] + 1);
+
 
         if ($updateItemResult) {
             $this->subTotal = $cart->subTotal();
             $this->cartItems = $cart->all();
         }
+        if ($updateItemResult) {
+            // Emit an event to update the quantity in real-time
+            $this->emit('updateQuantity', $mealId, $cartMeal['quantity']);
+        }
     }
-
-    public function decreaseQuantity(Meal $meal, Coupon $coupon)
+    public function decreaseQuantity($mealId, Coupon $coupon)
     {
+        $meal = Meal::find($mealId);
         $cart = new Cart(new SessionStorage('cart'), $meal, $coupon);
-        $updateItemResult = $cart->update($meal, $cart->get($meal)['quantity'] - 1);
+
+        // Retrieve the meal from the cart
+        $cartMeal = $cart->get($meal);
+
+        // Update the quantity
+        $updateItemResult = $cart->updateQty($meal, $cartMeal['quantity'] - 1);
+
 
         if ($updateItemResult) {
             $this->subTotal = $cart->subTotal();
             $this->cartItems = $cart->all();
         }
+        if ($updateItemResult) {
+            // Emit an event to update the quantity in real-time
+            $this->emit('updateQuantity', $mealId, $cartMeal['quantity']);
+        }
     }
+
+
+
 
 
 

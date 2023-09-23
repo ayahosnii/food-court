@@ -16,9 +16,9 @@ class CreateOptionsTable extends Migration
         Schema::create('options', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('attribute_id')->unsigned()->nullable();
-            $table->bigInteger('product_id')->unsigned()->nullable();
+            $table->bigInteger('meal_id')->unsigned()->nullable();
            $table->foreign('attribute_id')->references('id')->on('attributes')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('meal_id')->references('id')->on('products')->onDelete('cascade');
             $table->timestamps();
         });
     }

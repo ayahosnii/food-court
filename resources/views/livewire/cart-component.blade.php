@@ -45,21 +45,20 @@
                                     </td>
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
-                                            <a href="javascript:void(0)" class="minus-btn text-black" wire:click.prevent="decreaseQuantity({{ $item }})">-</a>
-                                            <input style="background-color: #f5f5f5;" readonly value="{{ $item['quantity'] }}" type="text" name="quantity">
-                                            <a href="javascript:void(0)" class="plus-btn text-black" wire:click.prevent="increaseQuantity({{ $item }})">+</a>
+                                            <a href="javascript:void(0)" class="minus-btn text-black" wire:click.prevent="decreaseQuantity({{ $item->id }})">-</a>
+                                            <input style="background-color: #f5f5f5; width: 30px" readonly value="{{$item['quantity']}}" type="text" name="quantity">
+                                            <a href="javascript:void(0)" class="plus-btn text-black" wire:click.prevent="increaseQuantity({{ $item->id }})">+</a>
+
                                         </div>
                                     </td>
 
 
                                     <td class="shoping__cart__total">
                                         {{$this->itemTotalPrice($item)}}
-
                                     </td>
                                     <td class="shoping__cart__item__close">
-                                        <button wire:click="removeFromCart({{ $item }})" class="icon_close">
+                                        <button wire:click="removeFromCart({{ $item->id }})" class="icon_close">
                                         </button>
-
                                     </td>
                                 </tr>
                             @endforeach
@@ -101,3 +100,14 @@
     <!-- Shoping Cart Section End -->
     <x-notify::notify />
 </div>
+@push('scripts')
+    <script>
+        Livewire.on('updateQuantity', (mealId, quantity) => {
+            const inputElement = document.querySelector(`input[name="quantity"][wire:model="itemQuantities.${mealId}"]`);
+            if (inputElement) {
+                inputElement.value = quantity;
+            }
+        });
+    </script>
+@endpush
+

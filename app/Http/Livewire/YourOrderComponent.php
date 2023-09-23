@@ -13,7 +13,6 @@ class YourOrderComponent extends Component
     protected $cart;
     public $cartItems;
 
-
     public function mount(StorageInterface $storage, Meal $meal, Coupon $coupon)
     {
         $this->cart = new Cart($storage, $meal, $coupon);

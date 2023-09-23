@@ -163,8 +163,8 @@ class CheckoutComponent extends Component
                 $orderItem = new OrderItem();
                 $orderItem->meal_id = $item['id'] ?? ''; // Access 'id' from the array
                 $orderItem->order_id = $order->id;
-                $orderItem->price = $item['price']; // Access 'price' from the array
-                $orderItem->quantity = $item['quantity']; // Access 'quantity' from the array
+                $orderItem->price = isset($item['newPrice']) ? $item['newPrice'] : ($item['price'] * $item['quantity']);
+                $orderItem->quantity = $item['quantity'];
                 $orderItem->save();
                 if ($orderItem) {
                     $admin->notify(new NewOrderForProviderNotify($orderItem));

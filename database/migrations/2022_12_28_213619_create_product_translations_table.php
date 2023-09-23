@@ -15,13 +15,13 @@ class CreateProductTranslationsTable extends Migration
     {
         Schema::create('product_translations', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('product_id')->unsigned();
+            $table->integer('meal_id')->unsigned();
             $table->string('locale');
             $table->string('name');
             $table->longText('description');
 
-            $table->unique(['product_id', 'locale']);
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->unique(['meal_id', 'locale']);
+            $table->foreign('meal_id')->references('id')->on('products')->onDelete('cascade');
         });
         DB::statement('ALTER TABLE product_translations ADD FULLTEXT(name)');
     }

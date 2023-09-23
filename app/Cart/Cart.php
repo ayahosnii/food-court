@@ -75,12 +75,28 @@ class Cart
         // Loop through selected meals and update them with the same coupon ID and quantity from the session
         foreach ($selectedMeals as $meal) {
             $mealData = $this->get($meal);
-            $quantity = isset($mealData['quantity']) ? $mealData['quantity'] : 0; // Get quantity from the session
-            $this->storage->set($mealData['meal_id'], [
-                'meal_id' => (int) $mealData['meal_id'],
-                'quantity' => (int) $quantity,
-                'coupon' => $couponId,
-            ]);
+
+            // Check if $mealData is null before accessing its properties
+            if ($mealData !== null) {
+                $quantity = isset($mealData['quantity']) ? $mealData['quantity'] : 0; // Get quantity from the session
+
+                // Calculate the updated price based on the applied coupon
+                $updatedPrice = $meal->price * $quantity;
+                if ($coupon) {
+                    if ($coupon->type === 'fixed') {
+                        $updatedPrice -= $coupon->value;
+                    } elseif ($coupon->type === 'percent') {
+                        $updatedPrice -= ($coupon->value / 100) * $updatedPrice;
+                    }
+                }
+
+                $this->storage->set($mealData['meal_id'], [
+                    'meal_id' => (int) $mealData['meal_id'],
+                    'quantity' => (int) $quantity,
+                    'coupon' => $couponId,
+                    'newPrice' => $updatedPrice, // Add 'newPrice' key with the updated price
+                ]);
+            }
         }
 
         return true;
@@ -133,22 +149,42 @@ class Cart
 
         if ($quantity == 0) {
             $this->remove($meal);
-
             return;
         }
 
-        if ($this->has($meal)) {
-            $coupon = $this->get($meal)['coupon'];
-        }else{
-            $coupon = null;
-        }
+        $mealData = $this->get($meal);
 
-        $this->storage->set($meal->id, [
-            'meal_id' => (int) $meal->id,
+        $this->storage->set($mealData['meal_id'] ?? $meal->id, [
+            'meal_id' => (int) ($mealData['meal_id'] ?? $meal->id),
             'quantity' => (int) $quantity,
-            'coupon' => $coupon,
+            'coupon' => $mealData['coupon'] ?? null,
+            'newPrice' => $mealData['newPrice'] ?? null,
         ]);
     }
+
+    public function updateQty(Meal $meal, $quantity)
+    {
+        /*if (! $this->meal->find($meal->id)->hasStock($quantity)) {
+            throw new QuantityExceededException;
+        }*/
+
+        if ($quantity == 0) {
+            $this->remove($meal);
+            return;
+        }
+
+        $mealData = $this->get($meal);
+
+        $this->storage->set($mealData['meal_id'] ?? $meal->id, [
+            'meal_id' => (int) ($mealData['meal_id'] ?? $meal->id),
+            'quantity' => (int) $quantity,
+            'coupon' => $mealData['coupon'] ?? null,
+            'newPrice' => $mealData['newPrice'] ?? null,
+        ]);
+
+        return $mealData['quantity'];
+    }
+
 
     /**
      * Remove a Meal from the storage.
@@ -211,6 +247,7 @@ class Cart
         foreach ($meals as $meal) {
             $meal->quantity = $this->get($meal)['quantity'];
             $meal->coupon = $this->get($meal)['coupon'];
+            $meal->newPrice = $this->get($meal)['newPrice'];
             $items[] = $meal;
         }
 
