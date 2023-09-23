@@ -21,6 +21,7 @@ use Stripe\Stripe;
 
 class CheckoutComponent extends Component
 {
+    // Properties for user information
     public $firstname;
     public $lastname;
     public $province;
@@ -31,18 +32,16 @@ class CheckoutComponent extends Component
     public $zipcode;
     public $mobile;
     public $email;
-    public $subTotal;
 
+    // Properties for order total and payment
+    public $subTotal;
     public $discount;
     public $payMethod;
     public $ship_to_different;
-
     public $showInput = false;
     public $paymentIntentId;
 
-
-
-
+    // Properties for shipping information
     public $d_firstname;
     public $d_lastname;
     public $d_province;
@@ -52,25 +51,26 @@ class CheckoutComponent extends Component
     public $d_mobile;
     public $d_email;
 
+    // Listener for placeOrder event
     protected $listeners = ['placeOrder'];
 
     protected $cart;
     public $cartItems;
     public $removeItem;
 
-
     public function mount(StorageInterface $storage, Meal $meal, Coupon $coupon)
     {
+        // Initialize the cart
         $this->cart = new Cart($storage, $meal, $coupon);
 
+        // Calculate subtotal and fetch cart items
         $this->subTotal = $this->cart->subTotal();
-
         $this->cartItems = $this->cart->all();
     }
 
-
     public function rules()
     {
+        // Validation rules
         return [
             'firstname' => 'required',
             'lastname' => 'required',
@@ -83,25 +83,43 @@ class CheckoutComponent extends Component
         ];
     }
 
-
-
     public function updatedPayMethod($value)
     {
-        if ($value === 'cash') {
-            $this->showInput = false;
-        } else {
-            $this->showInput = true;
-        }
+        // Show input fields for payment if not using cash
+        $this->showInput = ($value !== 'cash');
     }
 
     public function placeOrder(Meal $meal, Coupon $coupon)
     {
+        // Initialize Stripe and perform validation
+        $this->stripeGate();
+        $this->validate();
 
+        // Create the order
+        $this->createOrder();
+
+        // If shipping to a different address, save it
+        if ($this->ship_to_different) {
+            $this->shipToDifferent();
+        }
+
+        // Process payment and clear the cart
+        $cart = new Cart(new SessionStorage('cart'), $meal, $coupon);
+        $this->processPayment($cart);
+        notify()->success('Checkout successfully message');
+
+        // Reset the form
+        $this->resetForm();
+    }
+
+    private function stripeGate()
+    {
+        // Initialize Stripe
         Stripe::setApiKey(config('services.stripe.secret'));
 
         try {
+            // Create a Stripe Payment Intent
             $amountInCents = intval($this->subTotal * 100);
-
             $intent = \Stripe\PaymentIntent::create([
                 'amount' => $amountInCents,
                 'currency' => 'usd',
@@ -110,36 +128,12 @@ class CheckoutComponent extends Component
         } catch (ApiErrorException $e) {
             session()->flash('stripe_error', $e->getMessage());
         }
-
-        $this->validate([
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'address' => 'required',
-            'province' => 'required',
-            'city' => 'required',
-            'zipcode' => 'required',
-            'email' => 'required|email',
-            'mobile' => 'required',
-        ]);
-
-
-        $this->createOrder();
-
-        if($this->ship_to_different)
-        {
-            $this->shipToDifferent();
-        }
-
-        $cart = new Cart(new SessionStorage('cart'), $meal, $coupon);
-
-        $this->processPayment($cart);
-        notify()->success('Checkout successfully message');
-        $this->resetForm();
     }
+
     private function createOrder()
     {
         try {
-
+            // Create a new order
             $order = new Order();
             $order->user_id = Auth::user()->id;
             $order->subtotal = $this->subTotal ?? 0;
@@ -160,33 +154,29 @@ class CheckoutComponent extends Component
             $order->is_shipping_different = $this->ship_to_different ? 1 : 0;
             $order->save();
             $data = ['order_id' => $order->id];
-            //Pusher::trigger('order-orders', 'new-order', $data);
 
+            // Notify admin about the new order
             $admin = Admin::where('id', 1)->first();
-
-
             foreach ($this->cartItems as $item) {
                 $orderItem = new OrderItem();
                 $orderItem->meal_id = $item['id'] ?? ''; // Access 'id' from the array
                 $orderItem->order_id = $order->id;
                 $orderItem->price = $item['price']; // Access 'price' from the array
                 $orderItem->quantity = $item['quantity']; // Access 'quantity' from the array
-
                 $orderItem->save();
                 if ($orderItem) {
                     $admin->notify(new NewOrderForProviderNotify($orderItem));
                 }
             }
-
-        }catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             Log::error($exception->getMessage());
-
             return $exception;
         }
     }
 
     private function shipToDifferent()
     {
+        // Save shipping information
         $shipping = new Shipping();
         $shipping->firstname = $this->d_firstname;
         $shipping->lastname = $this->d_lastname;
@@ -196,12 +186,13 @@ class CheckoutComponent extends Component
         $shipping->zipcode = $this->d_zipcode;
         $shipping->email = $this->d_email;
         $shipping->mobile = $this->d_mobile;
+        $shipping->save();
     }
 
     private function processPayment($cart)
     {
         try {
-
+            // Clear the cart and update coupon usage
             $cart->clear();
             if (session()->has('coupon')) {
                 $coupon = Coupon::where('code', session()->get('coupon')['name'])->first();
@@ -210,13 +201,14 @@ class CheckoutComponent extends Component
                     $coupon->save();
                 }
             }
-        }catch (Exception $e){
+        } catch (Exception $e) {
             return $e;
         }
     }
 
     public function resetForm()
     {
+        // Reset form fields
         $this->firstname = '';
         $this->lastname = '';
         $this->province = '';
