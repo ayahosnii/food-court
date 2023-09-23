@@ -83,7 +83,7 @@
                                     </b>
                                     <span>
                                         <select wire:model="selectedAttributePrice" wire:change="calculateTotalPrice">
-                                            <optgroup label="Choose {{ $option->attribute->name }}"></optgroup>
+                                            <optgroup label="Choose Attribute"></optgroup>
                                              @foreach($options as $option)
                                             <option  value="{{ $option->price }}">{{$option->name}}</option>
                                             @endforeach

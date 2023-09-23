@@ -53,7 +53,21 @@
 
 
                                     <td class="shoping__cart__total">
-                                        ${{ $item->price * $item['quantity'] - $item['coupon'] }}
+                                        @php
+                                            $coupon = \App\Models\Coupon::find($item['coupon']);
+                                        @endphp
+                                        @if($coupon)
+                                            @if($coupon->type === 'fixed')
+                                                ${{ $item->price * $item['quantity'] - $coupon->value }}
+                                            @elseif($coupon->type === 'percent')
+                                                ${{ $item->price * $item['quantity'] - ($coupon->value / 100) * ($item->price * $item['quantity']) }}
+                                            @else
+                                                ${{ $item->price * $item['quantity'] }}
+                                            @endif
+                                        @else
+                                            ${{ $item->price * $item['quantity'] }}
+                                        @endif
+
                                     </td>
                                     <td class="shoping__cart__item__close">
                                         <button wire:click="removeFromCart({{ $item }})" class="icon_close">
