@@ -92,19 +92,19 @@
                                                         <div class="form-group">
                                                             <label for="projectinput1"> اختر ألمنتج
                                                             </label>
-                                                            <select name="product_id" class="select2 form-control" >
+                                                            <select name="meal_id" class="select2 form-control" >
                                                                 <optgroup label="من فضلك أختر المنتج ">
                                                                     @if($meals && $meals -> count() > 0)
                                                                         @foreach($meals as $meal)
                                                                             <option
                                                                                 value="{{$meal -> id }}"
-                                                                                @if($meal -> id == $option -> product_id) selected @endif
+                                                                                @if($meal -> id == $option -> meal_id) selected @endif
                                                                             >{{$meal -> name}}</option>
                                                                         @endforeach
                                                                     @endif
                                                                 </optgroup>
                                                             </select>
-                                                            @error('product_id')
+                                                            @error('meal_id')
                                                             <span class="text-danger"> {{$message}}</span>
                                                             @enderror
                                                         </div>

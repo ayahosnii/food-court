@@ -119,15 +119,15 @@ class ProductController extends Controller
      * @param  \App\Models\admin\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function getStock($product_id){
+    public function getStock($meal_id){
 
 
-        return view('admin.products.stock') -> with('id',$product_id) ;
+        return view('admin.products.stock') -> with('id',$meal_id) ;
     }
     public function saveProductStock (ProductStockRequest $request){
 
 
-        Meal::whereId($request -> product_id) -> update($request -> except(['_token','product_id']));
+        Meal::whereId($request -> meal_id) -> update($request -> except(['_token','meal_id']));
 
         return redirect()->route('admin.meals')->with(['success' => 'تم التحديث بنجاح']);
 

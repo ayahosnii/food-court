@@ -22,35 +22,35 @@ class Cart
      *
      * @var Meal
      */
-    protected $product;
+    protected $meal;
 
     /**
      * Create a new Basket instance.
      *
      * @param StorageInterface $storage
-     * @param Meal          $product
+     * @param Meal          $meal
      */
-    public function __construct(StorageInterface $storage, Meal $product, Coupon $coupon)
+    public function __construct(StorageInterface $storage, Meal $meal, Coupon $coupon)
     {
         $this->storage = $storage;
-        $this->product = $product;
+        $this->meal = $meal;
         $this->coupon = $coupon;
     }
 
     /**
-     * Add the product with its quantity to the basket.
+     * Add the meal with its quantity to the basket.
      * The quantity will be updated if it exists.
      *
-     * @param Meal  $product
+     * @param Meal  $meal
      * @param Integer  $quantity
      */
-    public function add(Meal $product, $quantity)
+    public function add(Meal $meal, $quantity)
     {
-        if ($this->has($product)) {
-            $quantity = $this->get($product)['quantity'] + $quantity;
+        if ($this->has($meal)) {
+            $quantity = $this->get($meal)['quantity'] + $quantity;
         }
 
-        $this->update($product, $quantity);
+        $this->update($meal, $quantity);
     }
 
     public function addCoupon(Coupon $coupon, $couponId = null)
@@ -62,25 +62,27 @@ class Cart
 
         $theMeals = $coupon->meals;
 
-        $selectedMeal = null;
+        $selectedMeals = []; // Initialize an array to store selected meals
 
         foreach ($theMeals as $meal) {
-                $selectedMeal = $meal;
+            $selectedMeals[] = $meal; // Add each selected meal to the array
         }
 
-
-        $currentCouponId = $selectedMeal->pivot->coupon_id;
-
-
-        $meal = $this->get($selectedMeal);
-
+        $currentCouponId = $selectedMeals[0]->pivot->coupon_id; // Assuming you want to use the first meal's coupon ID
 
         $couponId = $couponId !== null ? $couponId : $currentCouponId;
-        $this->storage->set($meal['product_id'], [
-            'product_id' => (int) $meal['product_id'],
-            'quantity' => $meal['quantity'],
-            'coupon' => $couponId,
-        ]);
+
+        // Loop through selected meals and update them with the same coupon ID and quantity from the session
+        foreach ($selectedMeals as $meal) {
+            $mealData = $this->get($meal);
+            $quantity = isset($mealData['quantity']) ? $mealData['quantity'] : 0; // Get quantity from the session
+            $this->storage->set($mealData['meal_id'], [
+                'meal_id' => (int) $mealData['meal_id'],
+                'quantity' => (int) $quantity,
+                'coupon' => $couponId,
+            ]);
+        }
+
         return true;
     }
 
@@ -93,7 +95,7 @@ class Cart
         }
 
 
-//        if (!$coupon->active || !$coupon->isValid() || ($this->get($coupon->product)['quantity'] < $coupon->products_count)) {
+//        if (!$coupon->active || !$coupon->isValid() || ($this->get($coupon->meal)['quantity'] < $coupon->meals_count)) {
 //            return false;
 //        }
 //
@@ -118,31 +120,31 @@ class Cart
     /**
      * Update the basket.
      *
-     * @param Meal $product
+     * @param Meal $meal
      * @param         $quantity
      *
      * @throws QuantityExceededException
      */
-    public function update(Meal $product, $quantity)
+    public function update(Meal $meal, $quantity)
     {
-        /*if (! $this->product->find($product->id)->hasStock($quantity)) {
+        /*if (! $this->meal->find($meal->id)->hasStock($quantity)) {
             throw new QuantityExceededException;
         }*/
 
         if ($quantity == 0) {
-            $this->remove($product);
+            $this->remove($meal);
 
             return;
         }
 
-        if ($this->has($product)) {
-            $coupon = $this->get($product)['coupon'];
+        if ($this->has($meal)) {
+            $coupon = $this->get($meal)['coupon'];
         }else{
             $coupon = null;
         }
 
-        $this->storage->set($product->id, [
-            'product_id' => (int) $product->id,
+        $this->storage->set($meal->id, [
+            'meal_id' => (int) $meal->id,
             'quantity' => (int) $quantity,
             'coupon' => $coupon,
         ]);
@@ -151,12 +153,12 @@ class Cart
     /**
      * Remove a Meal from the storage.
      *
-     * @param  Meal $product
+     * @param  Meal $meal
      */
-    public function remove(Meal $product)
+    public function remove(Meal $meal)
     {
         try {
-            $this->storage->remove($product->id);
+            $this->storage->remove($meal->id);
             return true;
         } catch (\Exception $e) {
             return false;
@@ -164,23 +166,23 @@ class Cart
     }
 
     /**
-     * Check if the basket has a certain product.
+     * Check if the basket has a certain meal.
      *
-     * @param  Meal $product
+     * @param  Meal $meal
      */
-    public function has(Meal $product)
+    public function has(Meal $meal)
     {
-        return $this->storage->exists($product->id);
+        return $this->storage->exists($meal->id);
     }
 
     /**
-     * Get a product that is inside the basket.
+     * Get a meal that is inside the basket.
      *
-     * @param  Meal $product
+     * @param  Meal $meal
      */
-    public function get(Meal $product)
+    public function get(Meal $meal)
     {
-        return $this->storage->get($product->id);
+        return $this->storage->get($meal->id);
     }
 
     /**
@@ -192,31 +194,31 @@ class Cart
     }
 
     /**
-     * Get all products inside the basket.
+     * Get all meals inside the basket.
      */
     public function all()
     {
         $ids = [];
         $items = [];
 
-        foreach ($this->storage->all() as $product) {
-            $ids[] = $product['product_id'];
+        foreach ($this->storage->all() as $meal) {
+            $ids[] = $meal['meal_id'];
         }
 
-        $products = $this->product->find($ids);
+        $meals = $this->meal->find($ids);
 
 
-        foreach ($products as $product) {
-            $product->quantity = $this->get($product)['quantity'];
-            $product->coupon = $this->get($product)['coupon'];
-            $items[] = $product;
+        foreach ($meals as $meal) {
+            $meal->quantity = $this->get($meal)['quantity'];
+            $meal->coupon = $this->get($meal)['coupon'];
+            $items[] = $meal;
         }
 
         return $items;
     }
 
     /**
-     * Get the amount of products inside the basket.
+     * Get the amount of meals inside the basket.
      */
     public function itemCount()
     {
@@ -224,7 +226,7 @@ class Cart
     }
 
     /**
-     * Get the subtotal price of all products inside the basket.
+     * Get the subtotal price of all meals inside the basket.
      */
     public function subTotal()
     {
@@ -240,6 +242,51 @@ class Cart
 
         return floatval(number_format($subtotal, 2));
     }
+
+
+    public function totalPriceAfterDiscount()
+    {
+        $totalPriceAfterDiscount = 0;
+
+        foreach ($this->all() as $item) {
+            $coupon = \App\Models\Coupon::find($item->coupon);
+
+            if ($coupon) {
+                if ($coupon->type === 'fixed') {
+                    $discountedPrice = $item->price * $item->quantity - $coupon->value;
+                } elseif ($coupon->type === 'percent') {
+                    $discountedPrice = $item->price * $item->quantity - ($coupon->value / 100) * ($item->price * $item->quantity);
+                }
+            } else {
+                $discountedPrice = $item->price * $item->quantity;
+            }
+
+            $totalPriceAfterDiscount += $discountedPrice;
+        }
+
+        return number_format($totalPriceAfterDiscount, 2);
+    }
+
+    public function calculateTotalDiscount()
+    {
+        $totalDiscount = 0;
+
+        foreach ($this->all() as $item) {
+            $coupon = \App\Models\Coupon::find($item->coupon);
+
+            if ($coupon) {
+                if ($coupon->type === 'fixed') {
+                    $totalDiscount += $coupon->value;
+                } elseif ($coupon->type === 'percent') {
+                    $totalDiscount += ($coupon->value / 100) * ($item->price * $item->quantity);
+                }
+            }
+        }
+
+        return number_format($totalDiscount, 2);
+    }
+
+
 
 
     /**

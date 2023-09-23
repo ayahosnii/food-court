@@ -45,7 +45,7 @@ class ProductSeeder extends Seeder
         DB::table('product_translations')->delete();
         ProductTranslation::create([
             'id' => 1,
-            'product_id' => 29,
+            'meal_id' => 29,
             'locale' => 'en',
             'name' => 'Coffee',
             'description' => 'Delicious Coffee',
@@ -53,7 +53,7 @@ class ProductSeeder extends Seeder
         ]);
         ProductTranslation::create([
             'id' => 2,
-            'product_id' => 31,
+            'meal_id' => 31,
             'locale' => 'en',
             'name' => 'Cake',
             'description' => 'Delicious Cake',
@@ -62,7 +62,7 @@ class ProductSeeder extends Seeder
         ]);
         ProductTranslation::create([
             'id' => 3,
-            'product_id' => 1,
+            'meal_id' => 1,
             'locale' => 'en',
             'name' => 'Pizza',
             'description' => 'Delicious Pizza',
@@ -71,7 +71,7 @@ class ProductSeeder extends Seeder
         ]);
         ProductTranslation::create([
             'id' => 4,
-            'product_id' => 33,
+            'meal_id' => 33,
             'locale' => 'en',
             'name' => 'Pizza With Vegetables',
             'description' => 'Delicious Pizza With Vegetables',

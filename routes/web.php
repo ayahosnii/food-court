@@ -63,8 +63,12 @@ Route::get('/blog', BlogComponent::class)->name('blog');
 Route::get('/contact-us', ContactComponent::class)->name('contact');
 Route::get('/cart', CartComponent::class)->name('cart');
 Route::get('/wishlist', WishlistComponent::class)->name('wishlist');
-Route::get('/checkout', CheckoutComponent::class)->name('checkout');
 Route::get('/search', SearchComponent::class)->name('meal.search');
+
+    Route::group( ['middleware' => 'auth' ], function() {
+
+        Route::get('/checkout', CheckoutComponent::class)->name('checkout');
+    });
 
 Route::get('/privacy-policy', PrivacyPolicyComponent::class)->name('privacy.policy');
 Route::get('/terms-conditions', TermsConditionsComponent::class)->name('terms.conditions');

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Exceptions\QuantityExceededException;
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\providers\Meal;
 use App\Models\Rating;
@@ -90,10 +91,10 @@ class DetailsComponent extends Component
             $this->qty--;
     }
 
-    public function addToCart($slug, $product_qty)
+    public function addToCart($slug, $product_qty, Coupon $coupon)
     {
         $meal = Meal::where('slug', $slug)->firstOrFail();
-        $cart = new \App\Cart\Cart(new SessionStorage('cart'), $meal);
+        $cart = new \App\Cart\Cart(new SessionStorage('cart'), $meal, $coupon);
 
         try {
             $cart->add($meal, $product_qty ?? 1);

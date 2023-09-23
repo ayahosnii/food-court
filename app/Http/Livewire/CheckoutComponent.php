@@ -91,6 +91,8 @@ class CheckoutComponent extends Component
 
     public function placeOrder(Meal $meal, Coupon $coupon)
     {
+        dd('work?');
+
         // Initialize Stripe and perform validation
         $this->stripeGate();
         $this->validate();

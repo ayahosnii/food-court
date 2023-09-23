@@ -3,6 +3,7 @@
 namespace App\Models\providers;
 
 use App\Models\admin\MainCategory;
+use App\Models\Coupon;
 use App\Models\Option;
 use App\Models\providers\Provider;
 use App\Models\Rating;
@@ -117,5 +118,25 @@ class Meal extends Model implements TranslatableContract
 
         return false;
     }
+
+    public function coupons()
+    {
+        return $this->belongsToMany(Coupon::class, 'coupon_meal');
+    }
+//
+//    public function hasStock($quantity)
+//    {
+//        return $this->qty >= $quantity;
+//    }
+//
+//    public function outOfStock()
+//    {
+//        return $this->qty === 0;
+//    }
+//
+//    public function inStock()
+//    {
+//        return $this->qty >= 1;
+//    }
 
 }

@@ -53,20 +53,7 @@
 
 
                                     <td class="shoping__cart__total">
-                                        @php
-                                            $coupon = \App\Models\Coupon::find($item['coupon']);
-                                        @endphp
-                                        @if($coupon)
-                                            @if($coupon->type === 'fixed')
-                                                ${{ $item->price * $item['quantity'] - $coupon->value }}
-                                            @elseif($coupon->type === 'percent')
-                                                ${{ $item->price * $item['quantity'] - ($coupon->value / 100) * ($item->price * $item['quantity']) }}
-                                            @else
-                                                ${{ $item->price * $item['quantity'] }}
-                                            @endif
-                                        @else
-                                            ${{ $item->price * $item['quantity'] }}
-                                        @endif
+                                        {{$this->itemTotalPrice($item)}}
 
                                     </td>
                                     <td class="shoping__cart__item__close">
@@ -102,7 +89,8 @@
                         <h5>Cart Total</h5>
                         <ul>
                             <li>Subtotal <span>${{ $subTotal }}</span></li>
-                            <li>Total <span>${{ $subTotal }}</span></li>
+                            <li>Discount <span>${{ $calculateTotalDiscount }}</span></li>
+                            <li>Total <span>${{ $totalPriceAfterDiscount }}</span></li>
                         </ul>
                         <a href="{{route('checkout')}}" class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>

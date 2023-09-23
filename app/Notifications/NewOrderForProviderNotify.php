@@ -58,7 +58,7 @@ class NewOrderForProviderNotify extends Notification implements ShouldQueue, Sho
     public function toDatabase($notifiable)
     {
         return [
-            'product_id' => $this->orderItem->id,
+            'meal_id' => $this->orderItem->id,
             'order_id' => $this->orderItem->order->id,
             'price' => $this->orderItem->price,
             'quantity' => $this->orderItem->qty,
@@ -68,7 +68,7 @@ class NewOrderForProviderNotify extends Notification implements ShouldQueue, Sho
     {
         return new BroadcastMessage([
             'data' => [
-                'product_id' => $this->orderItem->id,
+                'meal_id' => $this->orderItem->id,
                 'order_id' => $this->orderItem->order->id,
                 'price' => $this->orderItem->price,
                 'quantity' => $this->orderItem->qty,

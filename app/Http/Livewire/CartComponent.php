@@ -23,11 +23,29 @@ class CartComponent extends Component
         $this->cart = new Cart($storage, $meal, $coupon);
 
             $this->subTotal = $this->cart->subTotal();
+            $this->totalPriceAfterDiscount = $this->cart->totalPriceAfterDiscount();
+            $this->calculateTotalDiscount = $this->cart->calculateTotalDiscount();
 
             $this->cartItems = $this->cart->all();
      }
 
-        public function getCartProperty()
+    public function itemTotalPrice($item)
+    {
+        $coupon = \App\Models\Coupon::find($item->coupon);
+
+        if ($coupon) {
+            if ($coupon->type === 'fixed') {
+                return number_format($item->price * $item->quantity - $coupon->value, 2);
+            } elseif ($coupon->type === 'percent') {
+                return number_format($item->price * $item->quantity - ($coupon->value / 100) * ($item->price * $item->quantity), 2);
+            }
+        }
+
+        return number_format($item->price * $item->quantity, 2);
+    }
+
+
+    public function getCartProperty()
         {
             return $this->cart;
         }
@@ -44,9 +62,9 @@ class CartComponent extends Component
         }
     }
 
-    public function increaseQuantity(Meal $meal)
+    public function increaseQuantity(Meal $meal, Coupon $coupon)
     {
-        $cart = new Cart(new SessionStorage('cart'), $meal);
+        $cart = new Cart(new SessionStorage('cart'), $meal, $coupon);
         $updateItemResult = $cart->update($meal, $cart->get($meal)['quantity'] + 1);
 
         if ($updateItemResult) {
@@ -55,9 +73,9 @@ class CartComponent extends Component
         }
     }
 
-    public function decreaseQuantity(Meal $meal)
+    public function decreaseQuantity(Meal $meal, Coupon $coupon)
     {
-        $cart = new Cart(new SessionStorage('cart'), $meal);
+        $cart = new Cart(new SessionStorage('cart'), $meal, $coupon);
         $updateItemResult = $cart->update($meal, $cart->get($meal)['quantity'] - 1);
 
         if ($updateItemResult) {
