@@ -159,7 +159,7 @@ class CheckoutComponent extends Component
             $admin = Admin::where('id', 1)->first();
             foreach ($this->cartItems as $item) {
                 $orderItem = new OrderItem();
-                $orderItem->meal_id = $item['id'] ?? ''; // Access 'id' from the array
+                $orderItem->meal_id = $item['meal_id'] ?? ''; // Access 'id' from the array
                 $orderItem->order_id = $order->id;
                 $orderItem->price = isset($item['newPrice']) ? $item['newPrice'] : ($item['price'] * $item['quantity']);
                 $orderItem->quantity = $item['quantity'];
