@@ -21,8 +21,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $branches = Branch::select()->where('provider_id', Auth::guard('providers')->user()->id)->first();
-        return view('providers.dashboard', compact('branches'));
+        return view('providers.dashboard');
     }
 
     public function get_sub_categories(Request $request)
