@@ -96,7 +96,7 @@ class CheckoutComponent extends Component
         $this->validate();
 
         // Create the order
-        $this->createOrder();
+        dd($this->createOrder());
 
         // If shipping to a different address, save it
         if ($this->ship_to_different) {
