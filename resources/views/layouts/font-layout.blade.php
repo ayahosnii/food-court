@@ -91,7 +91,12 @@
             text-align: left;
             float: left;
         }
-
+        .list-group-item.active{
+            z-index: 2;
+            color: #fff;
+            background-color: #769c6e;
+            border-color: #795548;
+        }
     </style>
     @endif
     @stack('styles')
