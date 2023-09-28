@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="{{asset('assets/css/owl.carousel.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('assets/css/slicknav.min.css')}}" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/fonts/flag-icon-css/css/flag-icon.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/css/menu.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}" type="text/css">
 
     @if(app()->getLocale() == 'ar')
@@ -90,12 +89,6 @@
         body .shoping__checkout ul li span {
             text-align: left;
             float: left;
-        }
-        .list-group-item.active{
-            z-index: 2;
-            color: #fff;
-            background-color: #769c6e;
-            border-color: #795548;
         }
     </style>
     @endif

@@ -109,6 +109,12 @@
                     <ul>
                         @livewire('cart-count-component')
                         @livewire('wishlist-count-component')
+                        <li>
+                            <a href="{{route('conversations.index')}}">
+                                <i class="fa fa-comment"></i>
+                                <span id="cart-item-count">0</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -31,8 +31,8 @@ class RatingComponent extends Component
         $latestRating = $meal->ratings()->latest()->first();
 
         if ($latestRating) {
-            $this->rating = $latestRating->rating;
-            $this->comment = $latestRating->comment;
+            $this->rating = $meal->rating;
+            $this->comment = $meal->comment;
         } else {
             $this->rating = 0;
             $this->comment = '';
@@ -42,7 +42,13 @@ class RatingComponent extends Component
 
     public function render()
     {
-        $ratings = Rating::get();
+        $meal = Meal::where('slug', $this->slug)->first();
+
+        if ($meal) {
+            $ratings = $meal->ratings;
+        } else {
+            $ratings = []; // No meal found, handle this case accordingly
+        }
         return view('livewire.rating-component', ['ratings' => $ratings]);
     }
 }
