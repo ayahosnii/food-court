@@ -47,7 +47,7 @@ class RatingComponent extends Component
         if ($meal) {
             $ratings = $meal->ratings;
         } else {
-            $ratings = []; // No meal found, handle this case accordingly
+            $ratings = [];
         }
         return view('livewire.rating-component', ['ratings' => $ratings]);
     }

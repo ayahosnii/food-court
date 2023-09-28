@@ -46,7 +46,8 @@
                                     <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <div id="map" style="height: 500px; display: none;" wire:ignore></div>
+                                                <button onclick="updatePosition()">Update Position</button>
+                                                <div id="map"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -58,46 +59,44 @@
             </div>
         </div>
     </div>
-@endsection
-@push('scripts-push')
 
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAU7idojhoV50kILitscWS7I1WKYaAMytE&callback=initMap&v=weekly"async>
+    </script>
+    <script>
+        let map;
+        let markerl;
 
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu0s6B8mPSpptZ38VQWqBzljkAYj-FlR4&callback=initMap" async defer></script>
+        // Initialize and add the map
+        function initMap() {
+            // The location of Uluru
+            const uluru = { lat: -25.344, lng: 131.036 };
+            // The map, centered at Uluru
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 18,
+                center: uluru,
+            });
+            // The marker, positioned at Uluru
+            marker = new google.maps.Marker({
+                position: uluru,
+                map: map,
+            });
+        }
 
-        <script>
-            let map;
-            let markerl;
+        function updatePosition(newLat, newLng)
+        {
+            // alert('Its work');
+            const latLng = { lat: newLat, lng: newLng};
+            // alert(latLng);
+            marker.setPosition(latLng);
+            map.setCenter(latLng);
+        }
 
-            // Initialize and add the map
-            function initMap() {
-                // The location of Uluru
-                const uluru = { lat: -25.344, lng: 131.036 };
-                // The map, centered at Uluru
-                map = new google.maps.Map(document.getElementById("map"), {
-                    zoom: 18,
-                    center: uluru,
-                });
-                // The marker, positioned at Uluru
-                marker = new google.maps.Marker({
-                    position: uluru,
-                    map: map,
-                });
-            }
-
-            function updatePosition(newLat, newLng)
-            {
-                // alert('Its work');
-                const latLng = { lat: newLat, lng: newLng};
-                // alert(latLng);
-                marker.setPosition(latLng);
-                map.setCenter(latLng);
-            }
-
-            Echo.channel('truckerApp')
-                .listen('CarMoved', (e) => {
-                    // console.log(e);
-                    updatePosition(e.lat, e.lng);
-                });
-        </script>
-
-@endpush
+        Echo.channel('truckerApp')
+            .listen('CarMoved', (e) => {
+                // console.log(e);
+                updatePosition(e.lat, e.lng);
+                console.log(e.lat)
+                console.log(e.lang)
+            });
+    </script>

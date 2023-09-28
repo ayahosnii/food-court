@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\CarMoved;
 use App\Http\Controllers\admin\AttributeController;
 use App\Http\Controllers\admin\backend\NotificationsController;
 use App\Http\Controllers\admin\BookedTables;
@@ -189,10 +190,17 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function ()
         Route::post('update/{id}', [RestaurantController::class, 'update'])->name('admin.restaurants.update');
     });
     ################################## end options    #######################################
+
+
     ########################################## Start Order Route ##############################################################
     Route::group(['prefix' => 'orders'], function () {
         Route::get('/all', [OrderController::class, 'all'])->name('admin.orders.all');
         Route::get('/track', [OrderController::class, 'track'])->name('admin.orders.track');
+        Route::get('/move', function () {
+            event(new CarMoved(22.845640, 89.540329));
+            // event(new CarMoved(-24.344, 131.036));
+            // event(new CarMoved(-12.344, 111.036));
+        });
         Route::get('/pended', [OrderController::class, 'pended'])->name('admin.orders.pended');
         Route::get('/delivered', [OrderController::class, 'delivered'])->name('admin.orders.delivered');
         Route::get('/shipped', [OrderController::class, 'shipped'])->name('admin.orders.shipped');
