@@ -37,6 +37,10 @@ class Meal extends Model implements TranslatableContract
     {
         return $this->belongsToMany(Branch::class);
     }
+    public function getActive()
+    {
+        return $this->published == 0 ? 'inactive' : 'active';
+    }
 
     public function mainCategory()
     {

@@ -24,7 +24,7 @@ class MealsComponent extends BaseComponent
         $this->pagesize = "12";
 
         $this->min_price=1;
-        $this->max_price=1000;
+        $this->max_price=100;
 
         $this->min_alphabet='a';
         $this->max_alphabet='z';

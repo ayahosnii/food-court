@@ -18,6 +18,7 @@ return [
     'Categories' => 'الأقسام',
     'Restaurants' => 'المطاعم',
     'coupons' => 'كوبونات',
+    'sales' => 'الخصومات',
     'roles' => 'الادوار',
     'all-coupons' => 'كل الكوبونات',
     'all-roles' => 'كل الأدوار',

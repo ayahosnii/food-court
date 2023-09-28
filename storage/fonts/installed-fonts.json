@@ -1,0 +1,21 @@
+{
+    "open sans": {
+        "300_italic": "D:\\xampp\\htdocs\\food-court\\storage\\fonts\/open_sans_300_italic_bbf022708fbc12b32e436c3fc9556a14",
+        "italic": "D:\\xampp\\htdocs\\food-court\\storage\\fonts\/open_sans_italic_ce12633a2ffe234946eafc57381caa3a",
+        "600_italic": "D:\\xampp\\htdocs\\food-court\\storage\\fonts\/open_sans_600_italic_d5465e8d9fbc8917307f8ac7dca96398",
+        "bold_italic": "D:\\xampp\\htdocs\\food-court\\storage\\fonts\/open_sans_bold_italic_c02c7106f1b3bee9ca386a6f0b03ab93",
+        "300": "D:\\xampp\\htdocs\\food-court\\storage\\fonts\/open_sans_300_38aaef3a6f81e0869aefd29fb43eb15a",
+        "normal": "D:\\xampp\\htdocs\\food-court\\storage\\fonts\/open_sans_normal_d26ccb22614ae36546477dab90017d0e",
+        "600": "D:\\xampp\\htdocs\\food-court\\storage\\fonts\/open_sans_600_624d6e61f7711aa5830c80aa3bba1264",
+        "bold": "open_sans_bold_4238b33012be0cc2f17eea1b2179dc6e"
+    },
+    "quicksand": {
+        "300": "D:\\xampp\\htdocs\\food-court\\storage\\fonts\/quicksand_300_905281579d88a5b8727196db36a72e1a",
+        "normal": "D:\\xampp\\htdocs\\food-court\\storage\\fonts\/quicksand_normal_4bcd3d038e1b13d125799e986d72395f",
+        "500": "D:\\xampp\\htdocs\\food-court\\storage\\fonts\/quicksand_500_88bb83c765433e453cf77262bb98ae28",
+        "bold": "quicksand_bold_b400405166637f3d9bc27a47f228402b"
+    },
+    "lineawesome": {
+        "normal": "lineawesome_normal_72aa8cbc8105a668049b864ce463fb36"
+    }
+}

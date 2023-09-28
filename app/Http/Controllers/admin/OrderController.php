@@ -2,12 +2,34 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Exports\InvoicesExport;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
+    public function details($id)
+    {
+        $order = Order::find($id);
+        return view('admin.orders.details', compact('order'));
+    }
+
+    public function exportInvoice($orderId)
+    {
+        $order = Order::find($orderId);
+        $pdf = PDF::loadView('admin.orders.details', ['order' => $order]);
+
+        return $pdf->download('invoice.pdf');
+    }
+    public function exportPendingInvoice()
+    {
+        return Excel::download(new InvoicesExport, 'invoices.xlsx');
+    }
+
+
     public function pended()
     {
         $orders = Order::where('status', 'ordered')->paginate();
@@ -33,6 +55,11 @@ class OrderController extends Controller
     {
         $orders = Order::paginate();
         return view('admin.orders.all', compact('orders'));
+    }
+
+    public function track()
+    {
+        return view('admin.orders.track');
     }
 
     public function show()

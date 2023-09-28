@@ -74,17 +74,19 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function ()
 
     ########################################## End  SubCategories Route ##############################################################
     ########################################## Start Products Route ##############################################################
-    Route::get('/meals', [ProductController::class, 'index'])->name('admin.meals');
-    Route::get('/meals/create', [ProductController::class, 'create'])->name('admin.meals.create');
-    Route::get('/meals/stock/{id}', [ProductController::class, 'getStock'])->name('admin.meals.stock');
-    Route::get('/meals/stock/store', [ProductController::class, 'saveProductStock'])->name('admin.products.stock.store');
-    Route::post('/meals/store', [ProductController::class, 'store'])->name('admin.meals.store');
-    Route::get('/meals/edit/{id}', [ProductController::class, 'edit'])->name('admin.meals.edit');
-    Route::post('/meals/update', [ProductController::class, 'update'])->name('admin.meals.update');
-    Route::get('/meals/destroy', [ProductController::class, 'destroy'])->name('admin.meals.delete');
-    Route::get('/meals/change/{id}', [ProductController::class, 'changeStatus'])->name('admin.meals.status');
-    Route::get('/meals/accept', [ProductController::class, 'acceptMeals'])->name('admin.meals.accept');
+    Route::group(['prefix' => 'meals'], function () {
 
+        Route::get('/', [ProductController::class, 'index'])->name('admin.meals');
+        Route::get('/create', [ProductController::class, 'create'])->name('admin.meals.create');
+        Route::get('/stock/{id}', [ProductController::class, 'getStock'])->name('admin.meals.stock');
+        Route::get('/stock/store', [ProductController::class, 'saveProductStock'])->name('admin.products.stock.store');
+        Route::post('/store', [ProductController::class, 'store'])->name('admin.meals.store');
+        Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('admin.meals.edit');
+        Route::post('/update', [ProductController::class, 'update'])->name('admin.meals.update');
+        Route::get('/destroy', [ProductController::class, 'destroy'])->name('admin.meals.delete');
+        Route::get('/change/{id}', [ProductController::class, 'changeStatus'])->name('admin.meals.status');
+        Route::get('/accept', [ProductController::class, 'acceptMeals'])->name('admin.meals.accept');
+    });
     ########################################## End  Products Route ##############################################################
     ########################################## Start Coupons Route ##############################################################
     Route::get('/coupons', [CouponController::class, 'index'])->name('admin.coupons');
@@ -190,11 +192,16 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function ()
     ########################################## Start Order Route ##############################################################
     Route::group(['prefix' => 'orders'], function () {
         Route::get('/all', [OrderController::class, 'all'])->name('admin.orders.all');
+        Route::get('/track', [OrderController::class, 'track'])->name('admin.orders.track');
         Route::get('/pended', [OrderController::class, 'pended'])->name('admin.orders.pended');
         Route::get('/delivered', [OrderController::class, 'delivered'])->name('admin.orders.delivered');
         Route::get('/shipped', [OrderController::class, 'shipped'])->name('admin.orders.shipped');
         Route::get('/canceled', [OrderController::class, 'canceled'])->name('admin.orders.canceled');
         Route::PUT('/update-status/{id}', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
+        Route::get('order/{id}/details', [OrderController::class, 'details'])->name('order.details');
+        Route::get('/export-invoice/{orderId}', [OrderController::class, 'exportInvoice'])->name('export.invoice');
+        Route::get('/export-pending-invoice', [OrderController::class, 'exportPendingInvoice'])->name('export.pending.invoice');
+
     });
     ########################################## End  Order Route ######################################################################################################## Start MainCategories Route ##############################################################
 

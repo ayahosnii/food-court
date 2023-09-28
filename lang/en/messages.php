@@ -17,6 +17,8 @@ return [
     'Categories' => 'Categories',
     'meals' => 'Meals',
     'Restaurants' => 'Restaurants',
+    'sales' => 'Sales',
+
 
     'users' => 'المشرفين',
     'first_name' => 'الاسم الاول',

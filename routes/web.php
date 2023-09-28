@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Livewire\BlogComponent;
 use App\Http\Livewire\CartComponent;
@@ -66,6 +67,10 @@ Route::get('/wishlist', WishlistComponent::class)->name('wishlist');
 Route::get('/search', SearchComponent::class)->name('meal.search');
 
     Route::group( ['middleware' => 'auth' ], function() {
+
+        Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
+        Route::get('/conversations/create', [ConversationController::class, 'create'])->name('conversations.create');
+        Route::get('/conversations/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
 
         Route::get('/checkout', CheckoutComponent::class)->name('checkout');
     });

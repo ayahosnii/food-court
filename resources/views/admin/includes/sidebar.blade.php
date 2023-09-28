@@ -8,6 +8,58 @@
                             class="menu-title" data-i18n="nav.add_on_drag_drop.main">الرئيسية </span></a>
                 </li>
 
+                <li class=" nav-item"><a href="#"><i class="la la-television"></i><span class="menu-title"
+                                                                                        data-i18n="nav.templates.main">@lang('messages.sales')</span></a>
+                    <ul class="menu-content">
+                        <li class="inactive"><a class="menu-item" href="{{route('admin.sales')}}"
+                                                data-i18n="nav.dash.ecommerce"> @lang('messages.all-sales') </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class=" navigation-header">
+                    <span data-i18n="nav.category.layouts">Clients</span>
+                    <i class="la la-ellipsis-h ft-minus"
+                       data-toggle="tooltip"
+                       data-placement="right"
+                       data-original-title="Layouts"></i>
+                </li>
+                <li class=" nav-item">
+                    <a href="{{route('admin.orders.all')}}">
+                        <i class="la la-columns"></i><span class="menu-title"
+                                                           data-i18n="nav.page_layouts.main">
+                        The orders</span><span
+                            class="badge badge badge-stripeddge-danger float-right mr-2">New</span></a>
+                    <ul class="menu-content">
+                        <li>
+                            <a class="menu-item" href="{{route('admin.orders.shipped')}}" data-i18n="nav.page_layouts.1_column">
+                                Shipping
+                            </a>
+                        </li>
+                        <li>
+                            <a class="menu-item" href="{{route('admin.orders.pended')}}" data-i18n="nav.page_layouts.1_column">
+                                Pended
+                            </a>
+                        </li>
+                        <li>
+                            <a class="menu-item" href="{{route('admin.orders.delivered')}}" data-i18n="nav.page_layouts.1_column">
+                                Delivered
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="menu-item" href="{{route('admin.orders.canceled')}}" data-i18n="nav.page_layouts.1_column">
+                                Canceled
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="menu-item" href="{{route('admin.orders.all')}}" data-i18n="nav.page_layouts.1_column">
+                                All
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="nav-item"><a href=""><i class="la la-home"></i>
                         <span class="menu-title" data-i18n="nav.dash.main">@lang('messages.languages') </span>
                         <span
@@ -130,57 +182,7 @@
                 </li>
 
 
-                <li class=" nav-item"><a href="#"><i class="la la-television"></i><span class="menu-title"
-                                                                                        data-i18n="nav.templates.main">@lang('messages.sales')</span></a>
-                    <ul class="menu-content">
-                        <li class="inactive"><a class="menu-item" href="{{route('admin.sales')}}"
-                                                data-i18n="nav.dash.ecommerce"> @lang('messages.all-sales') </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class=" navigation-header">
-                    <span data-i18n="nav.category.layouts">Clients</span>
-                    <i class="la la-ellipsis-h ft-minus"
-                       data-toggle="tooltip"
-                       data-placement="right"
-                       data-original-title="Layouts"></i>
-                </li>
-                <li class=" nav-item">
-                    <a href="{{route('admin.orders.all')}}">
-                        <i class="la la-columns"></i><span class="menu-title"
-                                                           data-i18n="nav.page_layouts.main">
-                        The orders</span><span
-                            class="badge badge badge-stripeddge-danger float-right mr-2">New</span></a>
-                    <ul class="menu-content">
-                        <li>
-                            <a class="menu-item" href="{{route('admin.orders.shipped')}}" data-i18n="nav.page_layouts.1_column">
-                                Shipping
-                            </a>
-                        </li>
-                        <li>
-                            <a class="menu-item" href="{{route('admin.orders.pended')}}" data-i18n="nav.page_layouts.1_column">
-                                Pended
-                            </a>
-                        </li>
-                        <li>
-                            <a class="menu-item" href="{{route('admin.orders.delivered')}}" data-i18n="nav.page_layouts.1_column">
-                                Delivered
-                            </a>
-                        </li>
 
-                        <li>
-                            <a class="menu-item" href="{{route('admin.orders.canceled')}}" data-i18n="nav.page_layouts.1_column">
-                                Canceled
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="menu-item" href="{{route('admin.orders.all')}}" data-i18n="nav.page_layouts.1_column">
-                                All
-                            </a>
-                        </li>
-                    </ul>
-                </li>
                 <li>
                     <a class="menu-item" href="#" data-i18n="nav.page_layouts.3_columns_detached.main">
                         Sliders

@@ -41,7 +41,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('admin-assets/vendors/css/extensions/datedropper.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('admin-assets/vendors/css/extensions/timedropper.min.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.min.css">
-
+@stack('styles')
     <!-- END Page Level CSS-->
     <!-- BEGIN Custom CSS-->
     <!-- END Custom CSS-->
@@ -171,6 +171,7 @@
 
 <script src="{{ asset('js/app.js') }}" defer></script>
 
+<script src="{{asset('admin-assets/js/table-data.js')}}" type="text/javascript"></script>
 
 <script>
     $('#meridians1').timeDropper({

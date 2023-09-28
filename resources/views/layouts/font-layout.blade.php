@@ -21,7 +21,79 @@
     <link rel="stylesheet" href="{{asset('assets/css/owl.carousel.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('assets/css/slicknav.min.css')}}" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/fonts/flag-icon-css/css/flag-icon.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/menu.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}" type="text/css">
+
+    @if(app()->getLocale() == 'ar')
+    <style>
+        nav.header__menu ul{
+            direction: rtl;
+            text-align: right;
+            float: right;
+            display: flex;
+            justify-content: flex-end;
+            list-style: none;
+            padding: 0;
+        }
+        nav.header__menu ul li{
+            direction: rtl;
+            margin-left: 20px;
+        }
+        body section.hero.hero__categories {
+            direction: rtl;
+        }
+        body section.hero.hero-normal {
+            direction: rtl;
+            padding-right: 20px;
+        }
+        body .hero__search__form {
+            direction: ltr;
+            float: right;
+            padding-right: 20px;
+        }
+        body .hero__search__phone {
+            direction: ltr;
+            float: left;
+            padding-right: 20px;
+        }
+        body section.product.spad {
+            direction: rtl;
+            text-align: initial;
+        }
+       body .blog.spad {
+            direction: rtl;
+            text-align: initial;
+        }
+       body .shoping-cart.spad {
+            direction: rtl;
+            text-align: initial;
+        }
+        body .shoping-cart.spad .shoping__cart__table table thead th.shoping__product {
+            text-align: right;
+        }
+        body .shoping-cart.spad .shoping__cart__table table tbody tr td.shoping__cart__item {
+            width: 630px;
+            text-align: right;
+        }
+       body .shoping__checkout {
+           text-align: end;
+        }
+
+        body .shoping__checkout h5 {
+            text-align: right;
+        }
+
+        body .shoping__checkout ul li {
+            text-align: right;
+        }
+
+        body .shoping__checkout ul li span {
+            text-align: left;
+            float: left;
+        }
+
+    </style>
+    @endif
     @stack('styles')
     @livewireStyles
     @notifyCss
