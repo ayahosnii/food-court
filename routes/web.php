@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Livewire\BlogComponent;
 use App\Http\Livewire\CartComponent;
 use App\Http\Livewire\CheckoutComponent;
@@ -65,6 +66,9 @@ Route::get('/contact-us', ContactComponent::class)->name('contact');
 Route::get('/cart', CartComponent::class)->name('cart');
 Route::get('/wishlist', WishlistComponent::class)->name('wishlist');
 Route::get('/search', SearchComponent::class)->name('meal.search');
+//Route::get('/payments/verify/{payment?}',[FrontController::class,'payment_verify'])->name('payment-verify');
+Route::get('/fawry',[PaymentController::class,'payWithFawryView'])->name('payment-verify');
+Route::get('/verify-payment', [PaymentController::class,'verifyWithFawry'])->name('verify-payment');
 
     Route::group( ['middleware' => 'auth' ], function() {
 
