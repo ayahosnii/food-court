@@ -53,7 +53,8 @@ class ReservationComponent extends Component
                 ->setAmount(5)
                 ->pay();
 
-            dd($response);
+
+            //dd($response);
         }
         public function nextStep()
         {
