@@ -24,7 +24,8 @@
 
                                     <div class="col-md-12 col-sm-12">
                                         <section class="card-inputs">
-                                            <form id="paymob_checkout">
+                                            <form id="paymob_checkout" wire:submit.prevent="paymobPay" method="POST">
+                                                {{ csrf_field() }}
                                                 <input type="hidden" value="CARD" paymob_field="card_number" id="card_number">
                                                 <input type="hidden" value="CARD" paymob_field="card_expiry_mm" id="mm">
                                                 <input type="hidden" value="CARD" paymob_field="card_expiry_yy" id="yy">

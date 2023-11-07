@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Mockery\Exception;
+use Nafezly\Payments\Classes\PaymobPayment;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 
@@ -41,6 +42,19 @@ class ReservationComponent extends Component
             $this->providers = Provider::where('accountactivated', '1')->get();
         }
 
+        public function paymobPay()
+        {
+            $payment = new PaymobPayment();
+            $response = $payment
+                ->setUserFirstName('aya')
+                ->setUserLastName('hosny')
+                ->setUserEmail('ayia.hosni@gmail.com')
+                ->setUserPhone('01006215138')
+                ->setAmount(5)
+                ->pay();
+
+            dd($response);
+        }
         public function nextStep()
         {
             if ($this->step == 1) {
