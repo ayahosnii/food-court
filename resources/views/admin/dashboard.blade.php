@@ -29,8 +29,8 @@
                                 <div class="card-body">
                                     <div class="media d-flex">
                                         <div class="media-body text-left">
-                                            <h6 class="text-muted">Total Users</h6>
-                                            <h3>3,568</h3>
+                                            <h6 class="text-muted">Daily Total Revenue</h6>
+                                            <h3>${{$dailyRevenue}}</h3>
                                         </div>
                                         <div class="align-self-center">
                                             <i class="icon-users danger font-large-2 float-right"></i>
@@ -47,7 +47,7 @@
                                     <div class="media d-flex">
                                         <div class="media-body text-left">
                                             <h6 class="text-muted">Total Revenue</h6>
-                                            <h3>3,568</h3>
+                                            <h3>${{$totalRevenue}}</h3>
                                         </div>
                                         <div class="align-self-center">
                                             <i class="icon-graph success font-large-2 float-right"></i>

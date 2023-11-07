@@ -3,8 +3,11 @@
 namespace App\Models\providers;
 
 use App\Models\admin\MainCategory;
+use App\Models\admin\MealRawMaterial;
+use App\Models\admin\RawMaterial;
 use App\Models\Coupon;
 use App\Models\Option;
+use App\Models\OrderItem;
 use App\Models\providers\Provider;
 use App\Models\Rating;
 use App\Models\Sale;
@@ -105,12 +108,39 @@ class Meal extends Model implements TranslatableContract
     // Meal.php (assuming you have this relationship)
     public function ratings()
     {
-        return $this->hasMany(Rating::class);
+        return $this->hasMany(Rating::class, 'meal_id');
     }
 
     public function scopePublished($query){
         return $query ->where('published', 1);
     }
+
+    public function getOrderItemCount($mealId)
+    {
+        return OrderItem::where('meal_id', $mealId)->count();
+    }
+    public function getTotalPriceForMeal($mealId)
+    {
+        // Retrieve all OrderItems with the given meal_id
+        $orderItems = OrderItem::where('meal_id', $mealId)->get();
+
+        // Calculate the total price by summing up the 'price' attribute of all OrderItems
+        $totalPrice = $orderItems->sum('price');
+
+        return $totalPrice;
+    }
+    public function getPricePerGramAttribute()
+    {
+        $pricePerGram = [];
+
+        // Iterate through rawMaterials
+        foreach ($this->rawMaterials as $rawMaterial) {
+            $pricePerGram[$rawMaterial->id] = $rawMaterial->getPricePerGram();
+        }
+
+        return $pricePerGram;
+    }
+
 
     public function isInFavorites()
     {
@@ -126,6 +156,12 @@ class Meal extends Model implements TranslatableContract
     public function coupons()
     {
         return $this->belongsToMany(Coupon::class, 'coupon_meal');
+    }
+
+    public function rawMaterials()
+    {
+        return $this->belongsToMany(RawMaterial::class, 'meal_raw_material')
+            ->withPivot('quantity');
     }
 //
 //    public function hasStock($quantity)

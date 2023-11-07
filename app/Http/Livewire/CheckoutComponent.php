@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Cart\Cart;
 use App\Models\admin\Admin;
+use App\Models\admin\MealRawMaterial;
+use App\Models\admin\RawMaterialInventory;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -13,6 +15,7 @@ use App\Notifications\NewOrderForProviderNotify;
 use App\Support\Storage\Contracts\StorageInterface;
 use App\Support\Storage\SessionStorage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Mockery\Exception;
@@ -133,6 +136,7 @@ class CheckoutComponent extends Component
     private function createOrder()
     {
         try {
+            DB::beginTransaction();
             // Create a new order
             $order = new Order();
             $order->user_id = Auth::user()->id;
@@ -151,6 +155,7 @@ class CheckoutComponent extends Component
             $order->latitude = $this->latitude;
             $order->longitude = $this->longitude;
             $order->status = 'ordered';
+            $order->order_type = 'online';
             $order->is_shipping_different = $this->ship_to_different ? 1 : 0;
             $order->save();
             $data = ['order_id' => $order->id];
@@ -164,6 +169,8 @@ class CheckoutComponent extends Component
                 $orderItem->price = isset($item['newPrice']) ? $item['newPrice'] * $item['quantity'] : ($item['price'] * $item['quantity']);
                 $orderItem->quantity = $item['quantity'] ?? 1;
                 $orderItem->save();
+                DB::commit();
+
                 if ($orderItem) {
                     $admin->notify(new NewOrderForProviderNotify($orderItem));
                 }
@@ -173,6 +180,7 @@ class CheckoutComponent extends Component
             return $exception;
         }
     }
+
 
     private function shipToDifferent()
     {

@@ -9,6 +9,7 @@ use App\Models\admin\ProductTranslation;
 use App\Models\providers\Meal;
 use App\Models\providers\MealTranslation;
 use App\Models\providers\Provider;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Str;
@@ -25,6 +26,57 @@ class ProductController extends Controller
         $default_lang = get_default_language();
         $products = Meal::select()->get();
         return view('admin.products.index', compact('products'));
+    }
+
+    public function report($id)
+    {
+        try {
+            $meal = Meal::find($id);
+            if (!$meal)
+                return redirect()->route('admin.meals')->with(['error' => 'هذا المنتج غير موجود']);
+            $meal = Meal::with('rawMaterials')->find($id);
+            $orderItemCount = $meal->getOrderItemCount($id);
+            $totalPriceForMeal = $meal->getTotalPriceForMeal($id);
+            $averageRating = $meal->ratings->avg('rating');
+            $currentYear = date('Y');
+
+            $averageRatingCurrentYear = $meal->ratings()
+                ->whereYear('created_at', $currentYear)
+                ->avg('rating');
+
+            return view('admin.products.report', compact('meal', 'averageRatingCurrentYear', 'orderItemCount', 'totalPriceForMeal', 'averageRating'));
+
+
+        } catch (\Exception $ex) {
+            return $ex;
+            return redirect()->route('admin.meals')->with(['error' => 'حدث خطأ برجاء المحاولة لاحقا']);
+        }
+    }
+
+
+    public function generatePDF($id)
+    {
+        try {
+            $meal = Meal::find($id);
+            if (!$meal)
+                return redirect()->route('admin.meals')->with(['error' => 'هذا المنتج غير موجود']);
+            $meal = Meal::with('rawMaterials')->find($id);
+            $orderItemCount = $meal->getOrderItemCount($id);
+            $totalPriceForMeal = $meal->getTotalPriceForMeal($id);
+            $averageRating = $meal->ratings->avg('rating');
+            $currentYear = date('Y');
+
+            $averageRatingCurrentYear = $meal->ratings()
+                ->whereYear('created_at', $currentYear)
+                ->avg('rating');
+
+            $pdf = PDF::loadView('admin.products.report', compact('meal', 'averageRatingCurrentYear', 'orderItemCount', 'totalPriceForMeal', 'averageRating'));
+            return $pdf->download('meal-report.pdf');
+
+        } catch (\Exception $ex) {
+            return $ex;
+            return redirect()->route('admin.meals')->with(['error' => 'حدث خطأ برجاء المحاولة لاحقا']);
+        }
     }
 
     /**

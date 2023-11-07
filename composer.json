@@ -9,6 +9,7 @@
         "astrotomic/laravel-translatable": "^11.12",
         "barryvdh/laravel-dompdf": "^2.0",
         "barryvdh/laravel-snappy": "^1.0",
+        "doctrine/dbal": "^3.7",
         "guzzlehttp/guzzle": "^7.2",
         "laracasts/flash": "^3.2",
         "laravel/cashier": "^14.12",
@@ -23,6 +24,7 @@
         "nafezly/payments": "dev-master",
         "pusher/pusher-php-server": "*",
         "spatie/laravel-permission": "^5.11",
+        "spatie/laravel-translatable": "^6.5",
         "stripe/stripe-php": "^10.21",
         "twilio/sdk": "^7.9"
     },

@@ -13,6 +13,9 @@ class DashboardController extends Controller
 
     public function index()
     {
+        $dailyRevenue = Order::whereDate('created_at', now()->format('Y-m-d'))->sum('total');
+        $totalRevenue = Order::where('status', 'delivered')->sum('total');
+
         $orders = Order::latest()->take(6)->get();
         $countOrders = Order::count();
         $bestSellers =  OrderItem::select('meal_id')
@@ -20,7 +23,7 @@ class DashboardController extends Controller
             ->groupBy('meal_id')
             ->orderByRaw('COUNT(*) DESC')
             ->take(3)->get();
-        return view('admin.dashboard', compact('orders', 'countOrders', 'bestSellers'));
+        return view('admin.dashboard', compact('orders', 'countOrders', 'bestSellers', 'dailyRevenue', 'totalRevenue'));
     }
 
     /**

@@ -13,6 +13,8 @@ use App\Http\Controllers\admin\MainCategoryController;
 use App\Http\Controllers\admin\OptionController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\RawMaterialController;
+use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\admin\RestaurantController;
 use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\admin\SubCategoryController;
@@ -78,6 +80,10 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function ()
     Route::group(['prefix' => 'meals'], function () {
 
         Route::get('/', [ProductController::class, 'index'])->name('admin.meals');
+        Route::get('/report/{id}', [ProductController::class, 'report'])->name('admin.meals.report');
+
+        Route::get('/generate-pdf/{id}', [ProductController::class, 'generatePDF'])->name('admin.meals.generatePDF');
+
         Route::get('/create', [ProductController::class, 'create'])->name('admin.meals.create');
         Route::get('/stock/{id}', [ProductController::class, 'getStock'])->name('admin.meals.stock');
         Route::get('/stock/store', [ProductController::class, 'saveProductStock'])->name('admin.products.stock.store');
@@ -89,6 +95,26 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function ()
         Route::get('/accept', [ProductController::class, 'acceptMeals'])->name('admin.meals.accept');
     });
     ########################################## End  Products Route ##############################################################
+    ########################################## Start Reports Route ##############################################################
+    Route::group(['prefix' => 'reports'], function () {
+        Route::get('/sales-report', [ReportController::class, 'sales'])->name('admin.reports.sales');
+        Route::get('/line-chart', [ReportController::class, 'lineChart'])->name('admin.reports.line.chart');
+      });
+    ########################################## End  Reports Route #######################################################
+    ########################################## Start Raw Materials Route ##############################################################
+    Route::group(['prefix' => 'raw-materials'], function () {
+        Route::get('/', [RawMaterialController::class, 'index'])->name('admin.materials');
+        Route::get('/add-for-meal/{id}', [RawMaterialController::class, 'addForMeal'])->name('admin.materials.for.meal');
+        Route::post('/store-meal-raw-material', [RawMaterialController::class, 'storeMealRawMaterial'])->name('admin.store.meal.raw.material');
+        Route::get('/create', [RawMaterialController::class, 'create'])->name('admin.materials.create');
+        Route::post('/store', [RawMaterialController::class, 'store'])->name('admin.materials.store');
+        Route::get('/edit/{id}', [RawMaterialController::class, 'edit'])->name('admin.materials.edit');
+        Route::post('/update/{id}', [RawMaterialController::class, 'update'])->name('admin.materials.update');
+        Route::get('/destroy', [RawMaterialController::class, 'destroy'])->name('admin.materials.destroy');
+        Route::get('/changeStatus/{id}', [RawMaterialController::class, 'changeStatus'])->name('admin.materials.status');
+    });
+    ########################################## End  Raw Materials Route #######################################################
+
     ########################################## Start Coupons Route ##############################################################
     Route::get('/coupons', [CouponController::class, 'index'])->name('admin.coupons');
     Route::get('/coupons/create', [CouponController::class, 'create'])->name('admin.coupons.create');
@@ -194,6 +220,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function ()
 
     ########################################## Start Order Route ##############################################################
     Route::group(['prefix' => 'orders'], function () {
+        Route::get('/record-order', [OrderController::class, 'recordOrderForm'])->name('admin.orders.record.form');
         Route::get('/all', [OrderController::class, 'all'])->name('admin.orders.all');
         Route::get('/track', [OrderController::class, 'track'])->name('admin.orders.track');
         Route::get('/move', function () {
@@ -202,6 +229,10 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function ()
             // event(new CarMoved(-12.344, 111.036));
         });
         Route::get('/pended', [OrderController::class, 'pended'])->name('admin.orders.pended');
+        Route::get('/cooked', [OrderController::class, 'cooked'])->name('admin.orders.cooked');
+        Route::get('/confirmed-account-orders', [OrderController::class, 'confirmedAccountOrders'])->name('admin.orders.confirmed');
+        Route::get('/confirm-account/{id}', [OrderController::class, 'confirmAccount'])->name('admin.orders.confirm.account');
+        Route::post('/confirm-account-post/', [OrderController::class, 'confirmAccountPost'])->name('admin.orders.confirm.account.post');
         Route::get('/delivered', [OrderController::class, 'delivered'])->name('admin.orders.delivered');
         Route::get('/shipped', [OrderController::class, 'shipped'])->name('admin.orders.shipped');
         Route::get('/canceled', [OrderController::class, 'canceled'])->name('admin.orders.canceled');

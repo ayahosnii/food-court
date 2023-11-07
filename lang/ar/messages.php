@@ -93,6 +93,10 @@ return [
     'profit_percent' => 'المكسب',
     'The name field is required' => 'الاسم مطلوب',
 
+    'raw-materials' => 'المواد الخام',
+    'add-raw-material' => 'اضافة مادة خام',
+    'add-raw-material-to-meal' => 'اضافة مادة خام لوجبة',
+
     //Admin sidebar
     'الرئيسية' => 'الرئيسية',
     'المتاجر' => 'المتاجر',

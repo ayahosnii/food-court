@@ -31,7 +31,7 @@
 	$('#select').change(function () {
 		var selectedTheme = $(':selected').val();
 		var stylesheet = $('[title="theme"]');
-		stylesheet.attr('href','../../../app-assets/vendors/css/editors/theme/'+selectedTheme.toLowerCase()+'.css');
+		stylesheet.attr('href','../../../admin-assets/vendors/css/editors/theme/'+selectedTheme.toLowerCase()+'.css');
 		editor1.setOption("theme", selectedTheme);
 
 	});
@@ -54,7 +54,7 @@
 
 	// LoadMode
 	code = document.getElementById("codemirror-loadmode");
-	CodeMirror.modeURL = "../../../app-assets/vendors/js/editors/codemirror/mode/*/*.js";
+	CodeMirror.modeURL = "../../../admin-assets/vendors/js/editors/codemirror/mode/*/*.js";
 	var editorMode = CodeMirror.fromTextArea(code, {
 		lineNumbers: true
 	});

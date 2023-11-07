@@ -18,7 +18,7 @@ $(window).on("load", function(){
 
     require.config({
         paths: {
-            echarts: '../../../app-assets/vendors/js/charts/echarts'
+            echarts: '../../../admin-assets/vendors/js/charts/echarts'
         }
     });
 
@@ -127,7 +127,7 @@ $(window).on("load", function(){
                         itemStyle: dataStyle,
                         data: [
                             {
-                                value: 30, 
+                                value: 30,
                                 name: '30% Could be better'
                             },
                             {
@@ -146,7 +146,7 @@ $(window).on("load", function(){
                         itemStyle: dataStyle,
                         data: [
                             {
-                                value: 10, 
+                                value: 10,
                                 name: '10% Not at the moment'
                             },
                             {

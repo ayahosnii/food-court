@@ -17,7 +17,7 @@ $(window).on("load", function(){
 
     require.config({
         paths: {
-            echarts: '../../../app-assets/vendors/js/charts/echarts'
+            echarts: '../../../admin-assets/vendors/js/charts/echarts'
         }
     });
 
@@ -58,11 +58,11 @@ $(window).on("load", function(){
 
                 // Add legend
                 legend: {
-                    data: ['New orders', 'In progress', 'Closed deals']
+                    data: ['Total orders in this week', 'Total orders last week']
                 },
 
                 // Add custom colors
-                color: ['#FF4961', '#40C7CA', '#FF9149'],
+                color: ['#FF4961', '#40C7CA'],
 
                 // Enable drag recalculate
                 calculable: true,
@@ -84,21 +84,21 @@ $(window).on("load", function(){
                 // Add series
                 series: [
                     {
-                        name: 'Closed deals',
+                        name: 'Total orders in this week',
                         type: 'line',
                         smooth: true,
                         itemStyle: {normal: {areaStyle: {type: 'default'}}},
                         data: [10, 12, 21, 54, 260, 830, 710]
                     },
                     {
-                        name: 'In progress',
+                        name: 'Total orders last week',
                         type: 'line',
                         smooth: true,
                         itemStyle: {normal: {areaStyle: {type: 'default'}}},
                         data: [30, 182, 434, 791, 390, 30, 10]
                     },
                     {
-                        name: 'New orders',
+                        name: '',
                         type: 'line',
                         smooth: true,
                         itemStyle: {normal: {areaStyle: {type: 'default'}}},
@@ -110,7 +110,21 @@ $(window).on("load", function(){
             // Apply options
             // ------------------------------
 
-            myChart.setOption(chartOptions);
+
+            $.get('/api/weekly-orders', function(data) {
+                console.log('Weekly Sales:', data.daily_sales_current);
+                console.log('Last Week Sales:', data.daily_sales_last);
+                console.log(chartOptions);
+
+                // Update the 'data' arrays in the 'series' section of chartOptions
+                chartOptions.series[0].data = data.daily_sales_current;
+                chartOptions.series[1].data = data.daily_sales_last;
+                chartOptions.series[2].data = data.daily_sales_current;
+
+                // Set the updated chart options
+                myChart.setOption(chartOptions);
+            });
+
 
             // Resize chart
             // ------------------------------

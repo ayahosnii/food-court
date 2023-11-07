@@ -59,7 +59,7 @@
                                                             @isset($products)
                                                                 @foreach($products as $product)
                                                                     <tr>
-                                                                        <td> {{$product->name}}</td>
+                                                                        <td> <a href="{{route('admin.meals.report', $product->id)}}">{{$product->name}}</a></td>
                                                                         <td><img style="width: 150px; height: 100px;" src="{{$product->image}}" alt="{{$product->name}}"></td>
                                                                         <td>{{$product -> getActive()}}</td>
                                                                         <td>${{$product->price}}</td>

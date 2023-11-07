@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Nafezly\Payments\Classes\FawryPayment;
+use Nafezly\Payments\Classes\PaymobPayment;
 
 class PaymentController extends Controller
 {
@@ -25,6 +26,11 @@ class PaymentController extends Controller
         ];
 
         return view('vendor.payments.html.fawry', compact('data', 'model'));
+    }
+    public function payWithPaymobView()
+    {
+
+        return view('vendor.payments.html.paymob');
     }
 
     public function payWithFawry(Request $request){
@@ -62,5 +68,6 @@ class PaymentController extends Controller
         //    'process_data'=>""//payment response
         //]
     }
+ 
 
 }

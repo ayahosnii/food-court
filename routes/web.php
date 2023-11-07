@@ -67,7 +67,11 @@ Route::get('/cart', CartComponent::class)->name('cart');
 Route::get('/wishlist', WishlistComponent::class)->name('wishlist');
 Route::get('/search', SearchComponent::class)->name('meal.search');
 //Route::get('/payments/verify/{payment?}',[FrontController::class,'payment_verify'])->name('payment-verify');
-Route::get('/fawry',[PaymentController::class,'payWithFawryView'])->name('payment-verify');
+Route::get('/fawry',[PaymentController::class,'payWithFawryView'])->name('payment-verify-fawry');
+Route::get('/paymob',[PaymentController::class,'payWithPaymobView'])->name('payment-verify-paymob');
+Route::post('/paymob/pay', [PaymentController::class, 'payWithPaymob'])->name('paymob.pay');
+Route::post('/paymob/verify', [PaymentController::class, 'verifyWithPaymob'])->name('paymob.verify');
+
 Route::get('/verify-payment', [PaymentController::class,'verifyWithFawry'])->name('verify-payment');
 
     Route::group( ['middleware' => 'auth' ], function() {

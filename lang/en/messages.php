@@ -54,6 +54,10 @@ return [
     'profit_percent' => 'المكسب',
     'The name field is required' => 'الاسم مطلوب',
 
+    'raw-materials' => 'Raw Materials',
+    'add-raw-material' => 'Add a raw material',
+    'add-raw-material-to-meal' => 'Add a new material to meal',
+
     //Admin sidebar
     'add' => 'add',
     'الرئيسية' => 'Dashboard',

@@ -49,47 +49,76 @@
                                                 <table id="example" class="table key-buttons text-md-nowrap dataTable no-footer dtr-inline collapsed" style="text-align: center; width: 1104px;" role="grid" aria-describedby="example_info">
                                                     <thead>
                                                     <tr>
-                                                        <th>First Name</th>
-                                                        <th>Username</th>
-                                                        <th>Address</th>
-                                                        <th>Total</th>
-                                                        <th>Status</th>
-                                                        <th>نوع الكارت</th>
-                                                        <th>تاريخ الانتهاء</th>
-                                                        <th>الإجراءات</th>
+                                                        <th class="border-top-0">Status</th>
+                                                        <th class="border-top-0">Invoice#</th>
+                                                        <th class="border-top-0">Customer Name</th>
+                                                        <th class="border-top-0">Products</th>
+                                                        <th class="border-top-0">SubTotal</th>
+                                                        <th class="border-top-0">Address</th>
+                                                        <th class="border-top-0">Options</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    @isset($orders)
-                                                        @foreach($orders as $order)
-                                                            <tr>
-                                                                <td>
-                                                                    <a href="{{ route('order.details', ['id' => $order->id]) }}">
-                                                                        {{ $order->firstname }}
-                                                                    </a>
+                                                    @foreach($orders as $order)
+                                                        <tr>
+                                                            @if($order->status == 'ordered')
+                                                                <td class="text-truncate">
+                                                                    <i class="la la-dot-circle-o warning font-medium-1 mr-1"></i>
+                                                                    Pending
                                                                 </td>
-                                                                <td> {{$order->user->name}}</td>
+                                                            @elseif($order->status == 'canceled')
+                                                                <td class="text-truncate"><i class="la la-dot-circle-o danger font-medium-1 mr-1"></i>
+                                                                    Declined
+                                                                </td>
+                                                            @else
+                                                                <td class="text-truncate"><i class="la la-dot-circle-o success font-medium-1 mr-1"></i>
+                                                                    {{$order->status}}</td>
+                                                            @endif
+                                                            <td class="text-truncate"><a href="{{route('order.details', $order->id)}}">INV-{{$order->id}}</a></td>
+                                                            <td class="text-truncate">
+                          <span class="avatar avatar-xs">
+                            <img class="box-shadow-2" src="../../../app-assets/images/portrait/small/avatar-s-4.png"
+                                 alt="avatar">
+                          </span>
+                                                                <span>{{$order->firstname}} {{$order->lastname}}</span>
+                                                            </td>
+                                                            <td class="text-truncate p-1">
+                                                                <ul class="list-unstyled users-list m-0">
+                                                                    @foreach($order->orderItems as $item)
+                                                                        <li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="{{$item->meal->name}}"
+                                                                            class="avatar avatar-sm pull-up">
+                                                                            <img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius"
+                                                                                 src="{{$item->meal->image}}"
+                                                                                 style="width: 30px; height: 40px"
+                                                                                 alt="Avatar">
+                                                                        </li>
+                                                                    @endforeach
+                                                                    <li class="avatar avatar-sm">
+                                                                        <span class="badge badge-info">+1 more</span>
+                                                                    </li>
+                                                                </ul>
+                                                            </td>
+                                                            <td class="text-truncate">$ {{$order->subtotal}}</td>
+
                                                                 <td>{{$order->address}}</td>
-                                                                <td>{{$order->total}} LE</td>
-                                                                <td>{{$order->status}}</td>
-                                                                <td>{{$order->latitus}}</td>
-                                                                <td>{{$order->longitude}}</td>
+
                                                                 <td>
                                                                     <div class="order-status form-control" data-id="{{$order->id}}" data-status="{{$order->status}}">
                                                                         <select>
-                                                                            <option value="ordered" {{ $order->status == 'ordered' ? 'selected' : '' }}>Pending</option>
-                                                                            <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped</option>
+                                                                            <option value="" >Choose Status</option>
+                                                                            <option value="cooked" {{ $order->status == 'cooked' ? 'selected' : '' }}>Cooked</option>
                                                                             <option value="canceled" {{ $order->status == 'canceled' ? 'selected' : '' }}>Cancel</option>
-                                                                            <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Delivered</option>
                                                                         </select>
                                                                     </div>
                                                                 </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    @endisset
+                                                        </tr>
+
+                                                    @endforeach
                                                     </tbody>
                                                 </table>
+
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>

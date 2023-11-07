@@ -17,7 +17,7 @@ $(window).on("load", function(){
 
     require.config({
         paths: {
-            echarts: '../../../app-assets/vendors/js/charts/echarts'
+            echarts: '../../../admin-assets/vendors/js/charts/echarts'
         }
     });
 
@@ -153,7 +153,7 @@ $(window).on("load", function(){
                         splitNumber:2,
                         axisLine: {            // Coordinate axis
                             lineStyle: {       // Attribute lineStyle control line style
-                                color: [[0.2, '#ff4500'],[0.8, '#48b'],[1, '#228b22']], 
+                                color: [[0.2, '#ff4500'],[0.8, '#48b'],[1, '#228b22']],
                                 width: 8
                             }
                         },
@@ -202,7 +202,7 @@ $(window).on("load", function(){
                         splitNumber:2,
                         axisLine: {            // Coordinate axis
                             lineStyle: {       // Attribute lineStyle control line style
-                                color: [[0.2, '#ff4500'],[0.8, '#48b'],[1, '#228b22']], 
+                                color: [[0.2, '#ff4500'],[0.8, '#48b'],[1, '#228b22']],
                                 width: 8
                             }
                         },

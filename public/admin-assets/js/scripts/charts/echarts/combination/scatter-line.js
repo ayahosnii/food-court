@@ -18,7 +18,7 @@ $(window).on("load", function(){
 
     require.config({
         paths: {
-            echarts: '../../../app-assets/vendors/js/charts/echarts'
+            echarts: '../../../admin-assets/vendors/js/charts/echarts'
         }
     });
 
@@ -119,9 +119,9 @@ $(window).on("load", function(){
                             trigger: 'item',
                             formatter : function (params) {
                                 return '2013-03-' + params.value[0] + '<br/>'
-                                       + params.seriesName + ' : ' 
-                                       + params.value[1] + ', ' 
-                                       + params.value[2]; 
+                                       + params.seriesName + ' : '
+                                       + params.value[1] + ', '
+                                       + params.value[2];
                             }
                         },
                         yAxisIndex:1,

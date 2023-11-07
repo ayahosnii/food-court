@@ -92,9 +92,9 @@
 
                     </li>
 
-                    <div id="app">
+                    {{--<div id="app">
                     <admin-notification :message="''" :type="''"></admin-notification>
-                    </div>
+                    </div>--}}
                     <li class="dropdown dropdown-notification nav-item">
                         <a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i
                                 class="ficon ft-mail"> </i></a>

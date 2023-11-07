@@ -18,7 +18,7 @@ $(window).on("load", function(){
 
     require.config({
         paths: {
-            echarts: '../../../app-assets/vendors/js/charts/echarts'
+            echarts: '../../../admin-assets/vendors/js/charts/echarts'
         }
     });
 
@@ -59,11 +59,11 @@ $(window).on("load", function(){
 
                 // Add Legend
                 legend: {
-                    data:['Highest temperature','Minimum temperature']
+                    data:['Sales in this week','Sales last week']
                 },
 
                 // Add custom colors
-                color: ['#FF4961', '#666EE8'],
+                color: ['#27d700', '#e3c500'],
 
                 // Enable drag recalculate
                 calculable : true,
@@ -82,7 +82,7 @@ $(window).on("load", function(){
                     {
                         type : 'value',
                         axisLabel : {
-                            formatter: '{value} °C'
+                            formatter: '{value}'
                         }
                     }
                 ],
@@ -90,9 +90,9 @@ $(window).on("load", function(){
                 // Add Series
                 series : [
                     {
-                        name:'Highest temperature',
+                        name:'Sales in this week',
                         type:'line',
-                        data:[11, 11, 15, 13, 12, 13, 10],
+                        data:[0, 0, 0, 0, 0, 0, 0],
                         markPoint : {
                             data : [
                                 {type : 'max', name: 'Max'},
@@ -106,9 +106,9 @@ $(window).on("load", function(){
                         }
                     },
                     {
-                        name:'Minimum temperature',
+                        name:'Sales last week',
                         type:'line',
-                        data:[1, -2, 2, 5, 3, 2, 0],
+                        data:[0, 0, 0, 0, 0, 0, 0],
                         markPoint : {
                             data : [
                                 {name : 'Week low', value : -2, xAxis: 1, yAxis: -1.5}
@@ -127,6 +127,20 @@ $(window).on("load", function(){
             // ------------------------------
 
             myChart.setOption(chartOptions);
+
+            $.get('/api/weekly-orders', function(data) {
+                console.log('Weekly Sales:', data.daily_sales_current);
+                console.log('Last Week Sales:', data.daily_sales_last);
+                console.log(chartOptions);
+
+                // Update the 'data' arrays in the 'series' section of chartOptions
+                chartOptions.series[0].data = data.daily_sales_current;
+                chartOptions.series[1].data = data.daily_sales_last;
+                chartOptions.series[2].data = data.daily_sales_current;
+
+                // Set the updated chart options
+                myChart.setOption(chartOptions);
+               });
 
 
             // Resize chart

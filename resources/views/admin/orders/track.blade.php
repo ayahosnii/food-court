@@ -46,6 +46,13 @@
                                     <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                         <div class="row">
                                             <div class="col-sm-12">
+                                                <div class="map">
+                                                    <iframe
+                                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d34556.823499993675!2d31.235711536154927!3d30.044419617213937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145838f79f7eef09%3A0x7559c512954f99d6!2sCairo%2C%20Egypt!5e0!3m2!1sen!2sbd!4v1586106673811!5m2!1sen!2sbd"
+                                                        height="500" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                                                    <div class="map-inside">
+                                                        <i class="icon_pin"></i>
+                                                </div>
                                                 <button onclick="updatePosition()">Update Position</button>
                                                 <div id="map"></div>
                                             </div>
@@ -60,6 +67,11 @@
         </div>
     </div>
 
+@endsection
+@section('script')
+
+
+    <script src="{{ asset('js/app.js')}}"></script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAU7idojhoV50kILitscWS7I1WKYaAMytE&callback=initMap&v=weekly"async>
     </script>
@@ -86,7 +98,7 @@
         function updatePosition(newLat, newLng)
         {
             // alert('Its work');
-            const latLng = { lat: newLat, lng: newLng};
+            const latLng = { lat: -25.344, lng: 131};
             // alert(latLng);
             marker.setPosition(latLng);
             map.setCenter(latLng);
@@ -96,7 +108,6 @@
             .listen('CarMoved', (e) => {
                 // console.log(e);
                 updatePosition(e.lat, e.lng);
-                console.log(e.lat)
-                console.log(e.lang)
             });
     </script>
+@endsection

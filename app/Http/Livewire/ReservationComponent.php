@@ -32,8 +32,11 @@ class ReservationComponent extends Component
         public $availableTableIds = [];
 
         public $res_time;
+        public $paymobPaymentDisplay = 'block';
+        public $headingSectionDisplay = 'none';
 
-        public function mount()
+
+    public function mount()
         {
             $this->providers = Provider::where('accountactivated', '1')->get();
         }
@@ -138,7 +141,7 @@ class ReservationComponent extends Component
                 'table_id' => 'required',
             ]);
 
-            $this->submitPayment();
+            //$this->submitPayment();
 
             // Only move to step 3 if payment submission is successful
 
@@ -236,6 +239,16 @@ class ReservationComponent extends Component
         }
 
 
+    public function toggleStyles()
+    {
+        if ($this->paymobPaymentDisplay === 'block') {
+            $this->paymobPaymentDisplay = 'none';
+            $this->headingSectionDisplay = 'block';
+        } else {
+            $this->paymobPaymentDisplay = 'block';
+            $this->headingSectionDisplay = 'none';
+        }
+    }
 
         public function render()
         {

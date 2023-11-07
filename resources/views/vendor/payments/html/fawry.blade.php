@@ -53,7 +53,7 @@
             },
             returnUrl: 'https://developer.fawrystaging.com',
             authCaptureModePayment: false,
-            signature: "2ca4c078ab0d4c50ba90e31b3b0339d4d4ae5b32f97092dd9e9c07888c7eef36"
+            signature: "cf031d43901def1e209c1c74f2d6ef80da1e19331e1c94786f558dada612d118"
         };
         return chargeRequest;
     }

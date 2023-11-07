@@ -18,7 +18,7 @@ $(window).on("load", function(){
 
     require.config({
         paths: {
-            echarts: '../../../app-assets/vendors/js/charts/echarts'
+            echarts: '../../../admin-assets/vendors/js/charts/echarts'
         }
     });
 
@@ -129,8 +129,8 @@ $(window).on("load", function(){
                             trigger: 'item',
                             formatter : function (params) {
                                 return params.seriesName + ' （'  + 'Category' + params.value[0] + '）<br/>'
-                                       + params.value[1] + ', ' 
-                                       + params.value[2]; 
+                                       + params.value[1] + ', '
+                                       + params.value[2];
                             },
                             axisPointer:{
                                 show: true
@@ -160,8 +160,8 @@ $(window).on("load", function(){
                             trigger: 'item',
                             formatter : function (params) {
                                 return params.seriesName + ' （'  + 'Category' + params.value[0] + '）<br/>'
-                                       + params.value[1] + ', ' 
-                                       + params.value[2]; 
+                                       + params.value[1] + ', '
+                                       + params.value[2];
                             },
                             axisPointer:{
                                 show: true

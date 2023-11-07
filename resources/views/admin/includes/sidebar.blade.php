@@ -9,6 +9,15 @@
                 </li>
 
                 <li class=" nav-item"><a href="#"><i class="la la-television"></i><span class="menu-title"
+                                                                                        data-i18n="nav.templates.main">@lang('messages.reports')</span></a>
+                    <ul class="menu-content">
+                        <li class="inactive"><a class="menu-item" href="{{route('admin.reports.sales')}}"
+                                                data-i18n="nav.dash.ecommerce"> @lang('messages.all-reports') </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class=" nav-item"><a href="#"><i class="la la-television"></i><span class="menu-title"
                                                                                         data-i18n="nav.templates.main">@lang('messages.sales')</span></a>
                     <ul class="menu-content">
                         <li class="inactive"><a class="menu-item" href="{{route('admin.sales')}}"
@@ -131,6 +140,30 @@
                             <a class="menu-item" href="{{route('admin.meals.create')}}" data-i18n="nav.dash.crypto">
                                 @lang('messages.add-new-meal')
                                 </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li class="nav-item">
+                    <a href=""><i class="la la-male"></i>
+                        <span class="menu-title" data-i18n="nav.dash.main">@lang('messages.raw-materials')  </span>
+                        <span
+                            class="badge badge badge-striped badge-pill float-right mr-2">{{\App\Models\admin\RawMaterial::count()}}</span>
+                    </a>
+                    <ul class="menu-content">
+                        <li class="inactive"><a class="menu-item" href="{{route('admin.materials')}}"
+                                                data-i18n="nav.dash.ecommerce"> عرض الكل </a>
+                        </li>
+                        <li>
+                            <a class="menu-item" href="{{route('admin.materials.create')}}" data-i18n="nav.dash.crypto">
+                                @lang('messages.add-raw-material')
+                            </a>
+                        </li>
+                        <li>
+                            <a class="menu-item" href="{{route('admin.store.meal.raw.material')}}" data-i18n="nav.dash.crypto">
+                                @lang('messages.add-raw-material-to-meal')
+                            </a>
                         </li>
                     </ul>
                 </li>

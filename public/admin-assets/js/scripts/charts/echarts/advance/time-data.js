@@ -18,7 +18,7 @@ $(window).on("load", function(){
 
     require.config({
         paths: {
-            echarts: '../../../app-assets/vendors/js/charts/echarts'
+            echarts: '../../../admin-assets/vendors/js/charts/echarts'
         }
     });
 
@@ -120,7 +120,7 @@ $(window).on("load", function(){
                             trigger: 'axis',
                             formatter : function (params) {
                                 var date = new Date(params.value[0]);
-                                return params.seriesName 
+                                return params.seriesName
                                        + ' （'
                                        + date.getFullYear() + '-'
                                        + (date.getMonth() + 1) + '-'
@@ -128,7 +128,7 @@ $(window).on("load", function(){
                                        + date.getHours() + ':'
                                        + date.getMinutes()
                                        +  '）<br/>'
-                                       + params.value[1] + ', ' 
+                                       + params.value[1] + ', '
                                        + params.value[2];
                             },
                             axisPointer:{
