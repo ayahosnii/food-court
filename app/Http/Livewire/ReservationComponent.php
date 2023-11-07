@@ -51,6 +51,7 @@ class ReservationComponent extends Component
                 ->setUserEmail('ayia.hosni@gmail.com')
                 ->setUserPhone('01006215138')
                 ->setAmount(5)
+                ->setCurrency('EGP')
                 ->pay();
 
 
