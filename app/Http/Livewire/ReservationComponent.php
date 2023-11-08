@@ -18,261 +18,247 @@ use Stripe\Stripe;
 
 
 class ReservationComponent extends Component
-    {
-        public $step = 1;
-        public $user;
-        public $name;
-        public $email;
-        public $mobile;
-        public $provider_id;
-        public $table_id;
-        public $res_date;
-        public $guest_number;
-        public $providers;
-        public $availableTables;
-        public $availableTableIds = [];
+{
+    public $step = 1;
+    public $user;
+    public $name;
+    public $email;
+    public $mobile;
+    public $provider_id;
+    public $table_id;
+    public $res_date;
+    public $guest_number;
+    public $providers;
+    public $availableTables;
+    public $availableTableIds = [];
 
-        public $res_time;
-        public $paymobPaymentDisplay = 'block';
-        public $headingSectionDisplay = 'none';
+    public $res_time;
+    public $paymobPaymentDisplay = 'none';
+    public $headingSectionDisplay = 'block';
 
 
     public function mount()
-        {
-            $this->providers = Provider::where('accountactivated', '1')->get();
-        }
-
-        public function paymobPay()
-        {
-            $payment = new PaymobPayment();
-            $response = $payment
-                ->setUserFirstName('aya')
-                ->setUserLastName('hosny')
-                ->setUserEmail('ayia.hosni@gmail.com')
-                ->setUserPhone('01006215138')
-                ->setAmount(5)
-                ->setCurrency('EGP')
-                ->pay();
-
-
-            //dd($response);
-        }
-        public function nextStep()
-        {
-            if ($this->step == 1) {
-                $this->validateStepOne();
-                $isAvailable = $this->checkTableAvailability();
-
-                if (!$isAvailable) {
-                    notify()->error('There are no available tables for ' . $this->guest_number . ' person on the selected date and time.');
-                    return;
-                }
-
-                $tables = Table::whereIn('id', $isAvailable)->get();
-
-                $this->availableTableIds = $tables;
-                $this->step = 2;
-            }
-        }
-
-    public function submitPayment()
     {
-        try {
-            Stripe::setApiKey(config('services.stripe.secret'));
+        $this->providers = Provider::where('accountactivated', '1')->get();
 
-            $paymentIntent = PaymentIntent::create([
-                'amount' => 1000,
-                'currency' => 'usd',
-                'payment_method_types' => ['card'],
+        $this->emit('passUserData', [
+            'name' => $this->name,
+            'email' => $this->email,
+            'mobile' => $this->mobile,
+            'res_date' => $this->res_date,
+            'res_time' => $this->res_time,
+            'table_id' => $this->table_id,
+            'guest_number' => $this->guest_number,
+            'provider_id' => $this->provider_id,
+            'paymobPaymentDisplay' => $this->paymobPaymentDisplay,
+            'headingSectionDisplay' => $this->headingSectionDisplay
+        ]);
+
+    }
+
+    public function nextStep()
+    {
+        if ($this->step == 1) {
+            $this->validateStepOne();
+            $isAvailable = $this->checkTableAvailability();
+
+            if (!$isAvailable) {
+                notify()->error('There are no available tables for ' . $this->guest_number . ' person on the selected date and time.');
+                return;
+            }
+
+            $tables = Table::whereIn('id', $isAvailable)->get();
+
+            $this->emit('passUserData', [
+                'res_date' => $this->res_date,
+                'res_time' => $this->res_time,
+                'guest_number' => $this->guest_number,
+                'provider_id' => $this->provider_id,
+
+
+                'paymobPaymentDisplay' => $this->paymobPaymentDisplay,
+                'headingSectionDisplay' => $this->headingSectionDisplay
             ]);
 
-            $this->paymentSuccess = true; // Set a flag to indicate successful payment
-            $this->paymentMessage = 'Payment is done successfully.';
-        } catch (Exception $exception) {
-            $this->paymentSuccess = false; // Set a flag to indicate failed payment
-            $this->paymentMessage = 'Payment failed: ' . $exception->getMessage();
+            $this->availableTableIds = $tables;
+            $this->step = 2;
         }
     }
-        public function storeData()
-        {
-            try {
-                $this->validate([
-                    'name' => 'required|string',
-                    'email' => 'required|email',
-                    'mobile' => 'required|string',
-                    'res_date' => 'required|date',
-                    'res_time' => ['required'],
-                    'table_id' => 'required|exists:tables,id',
-                    'guest_number' => 'required|integer',
-                    'provider_id' => 'required|exists:providers,id',
-                ]);
 
-                // Use a transaction to ensure data consistency
-                DB::beginTransaction();
 
-                Reservation::create([
-                    'name' => $this->name,
-                    'email' => $this->email,
-                    'mobile' => $this->mobile,
-                    'res_date' => $this->res_date,
-                    'res_time' => $this->res_time,
-                    'table_id' => $this->table_id,
-                    'guest_number' => $this->guest_number,
-                    'provider_id' => $this->provider_id,
-                    'reservation_status' => 'reserved',
-                    'user_id' => Auth::user()->id ?? null,
-                ]);
+public function thirdStep()
+{
+    if ($this->step == 2) {
+        $this->validate([
+            'table_id' => 'required',
+        ]);
 
-                // Commit the transaction if all operations are successful
-                DB::commit();
+        $this->emit('passUserData', [
+            'table_id' => $this->table_id,
+        ]);
 
-                // Reset component properties to clear the input values
-                $this->name = '';
-                $this->email = '';
-                $this->mobile = '';
-                $this->res_date = '';
-                $this->res_time = '';
-                $this->table_id = null;
-                $this->guest_number = '';
-                $this->provider_id = null;
+        //$this->submitPayment();
 
-                notify()->success('Reservation successfully created.');
-            } catch (\Exception $e) {
+        // Only move to step 3 if payment submission is successful
 
-                // Handle the exception
-                DB::rollBack(); // Roll back the transaction if an exception occurs
+            $this->step = 3;
 
-                // You can log the exception or show an error message to the user
-                // For now, let's log the exception and show a generic error message
-                Log::error('Error creating reservation: ' . $e->getMessage());
+    }
+}
+    public function paymobPay()
+    {
+        $payment = new PaymobPayment();
+        $response = $payment
+            ->setUserFirstName($this->name)
+            ->setUserLastName('hosny')
+            ->setUserEmail($this->email)
+            ->setUserPhone($this->mobile)
+            ->setAmount(5)
+            ->setCurrency('EGP')
+            ->pay();
 
-                notify()->error('An error occurred while creating the reservation. Please try again later.');
-            }
+
+        return redirect($response['redirect_url']);
+    }
+
+    public function storeData()
+    {
+
+        try {
+            $reservation = Reservation::create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'mobile' => $this->mobile,
+                'res_date' => $this->res_date,
+                'res_time' => $this->res_time,
+                'table_id' => $this->table_id,
+                'guest_number' => $this->guest_number,
+                'provider_id' => $this->provider_id,
+                'reservation_status' => 'reserved',
+                'booked_price' => '5.00',
+                'user_id' => Auth::user()->id ?? null,
+            ]);
+
+            $this->paymobPay();
+
+            notify()->success('Reservation successfully created.');
+
+            // You can perform additional actions after reservation creation here.
+
+        } catch (\Exception $e) {
+            dd($e);
+            // Handle any exceptions that occur during reservation creation
+            DB::rollBack();
+            Log::error('Error creating reservation: ' . $e->getMessage());
+            notify()->error('An error occurred while creating the reservation. Please try again later.');
         }
-
-    public function thirdStep()
+    }
+public function previousStep()
     {
         if ($this->step == 2) {
-            $this->validate([
-                'table_id' => 'required',
-            ]);
-
-            //$this->submitPayment();
-
-            // Only move to step 3 if payment submission is successful
-
-                $this->step = 3;
-
+            $this->step = 1;
+        }elseif ($this->step == 3){
+            $this->step = 2;
         }
     }
 
-
-    public function previousStep()
-        {
-            if ($this->step == 2) {
-                $this->step = 1;
-            }elseif ($this->step == 3){
-                $this->step = 2;
-            }
-        }
-
-        private function checkTableAvailability()
-        {
-            // Find a table that can accommodate the selected guest number and belongs to the selected provider
-            $tables = Table::where('guest_number', '>=', $this->guest_number)
-                ->where('provider_id', $this->provider_id)
-                ->get();
-
-            if ($tables->isEmpty()) {
-                return false;
-            }
-            $tableIds = $tables->pluck('id')->toArray();
-
-
-            // Check if there are any reservations for the selected date and the found table
-            $existingReservation = Reservation::where('res_date', $this->res_date)
-                ->whereIn('table_id', $tables->pluck('id'))
-                ->where('reservation_status', 'reserved')
-                ->get();
-
-
-            if (!$existingReservation->isEmpty()) {
-                return false;
-            }
-
-            $reservedTableIds = $existingReservation->pluck('table_id')->toArray();
-
-            $availableTableIds = array_diff($tableIds, $reservedTableIds);
-
-            return $availableTableIds;
-        }
-
-
-
-        public function workHours()
-        {
-            $workingHours = WorkingHour::first();
-            $start_time = Carbon::parse($workingHours->start_time);
-            $end_time = Carbon::parse($workingHours->end_time);
-
-            $current_time = $start_time;
-            $time_intervals = [];
-
-            while ($current_time < $end_time) {
-                $time_intervals[] = $current_time->format('H:i:s');
-                $current_time->addHour();
-            }
-            return $time_intervals;
-        }
-
-        private function validateStepOne()
-        {
-            $this->validate([
-                'provider_id' => 'required',
-                'res_date' => ['required', 'date', $this->validateDateTimeNotBeforeNow($this->res_date, $this->res_time)],
-                'guest_number' => 'required|integer',
-                'res_time' => 'required'
-            ]);
-        }
-
-        private function validateDateTimeNotBeforeNow($date, $time)
-        {
-            // Combine the date and time inputs into a single datetime string
-            $dateTimeInput = $date . ' ' . $time;
-
-            // Parse the datetime input
-            $selectedDateTime = Carbon::parse($dateTimeInput);
-
-            // Get the current date and time
-            $currentDateTime = Carbon::now();
-
-            // Check if the selected datetime is before the current datetime
-            if ($selectedDateTime->lt($currentDateTime)) {
-                return 'after_or_equal:' . $currentDateTime->toDateTimeString();
-            }
-
-            return '';
-        }
-
-
-    public function toggleStyles()
+    private function checkTableAvailability()
     {
-        if ($this->paymobPaymentDisplay === 'block') {
-            $this->paymobPaymentDisplay = 'none';
-            $this->headingSectionDisplay = 'block';
-        } else {
-            $this->paymobPaymentDisplay = 'block';
-            $this->headingSectionDisplay = 'none';
+        // Find a table that can accommodate the selected guest number and belongs to the selected provider
+        $tables = Table::where('guest_number', '>=', $this->guest_number)
+            ->where('provider_id', $this->provider_id)
+            ->get();
+
+        if ($tables->isEmpty()) {
+            return false;
         }
+        $tableIds = $tables->pluck('id')->toArray();
+
+
+        // Check if there are any reservations for the selected date and the found table
+        $existingReservation = Reservation::where('res_date', $this->res_date)
+            ->whereIn('table_id', $tables->pluck('id'))
+            ->where('reservation_status', 'reserved')
+            ->get();
+
+
+        if (!$existingReservation->isEmpty()) {
+            return false;
+        }
+
+        $reservedTableIds = $existingReservation->pluck('table_id')->toArray();
+
+        $availableTableIds = array_diff($tableIds, $reservedTableIds);
+
+        return $availableTableIds;
     }
 
-        public function render()
-        {
-            $resTimes = $this->workHours();
-            if ($this->step == 2) {
-                // Fetch available tables for the selected provider and reservation date
-            }
 
-            return view('livewire.reservation-component', ['resTimes' => $resTimes])->layout('layouts.font-layout');
+
+    public function workHours()
+    {
+        $workingHours = WorkingHour::first();
+        $start_time = Carbon::parse($workingHours->start_time);
+        $end_time = Carbon::parse($workingHours->end_time);
+
+        $current_time = $start_time;
+        $time_intervals = [];
+
+        while ($current_time < $end_time) {
+            $time_intervals[] = $current_time->format('H:i:s');
+            $current_time->addHour();
         }
+        return $time_intervals;
     }
+
+    private function validateStepOne()
+    {
+        $this->validate([
+            'provider_id' => 'required',
+            'res_date' => ['required', 'date', $this->validateDateTimeNotBeforeNow($this->res_date, $this->res_time)],
+            'guest_number' => 'required|integer',
+            'res_time' => 'required'
+        ]);
+    }
+
+    private function validateDateTimeNotBeforeNow($date, $time)
+    {
+        // Combine the date and time inputs into a single datetime string
+        $dateTimeInput = $date . ' ' . $time;
+
+        // Parse the datetime input
+        $selectedDateTime = Carbon::parse($dateTimeInput);
+
+        // Get the current date and time
+        $currentDateTime = Carbon::now();
+
+        // Check if the selected datetime is before the current datetime
+        if ($selectedDateTime->lt($currentDateTime)) {
+            return 'after_or_equal:' . $currentDateTime->toDateTimeString();
+        }
+
+        return '';
+    }
+
+
+public function toggleStyles()
+{
+    if ($this->paymobPaymentDisplay === 'block') {
+        $this->paymobPaymentDisplay = 'none';
+        $this->headingSectionDisplay = 'block';
+    } else {
+        $this->paymobPaymentDisplay = 'block';
+        $this->headingSectionDisplay = 'none';
+    }
+}
+
+    public function render()
+    {
+        $resTimes = $this->workHours();
+        if ($this->step == 2) {
+            // Fetch available tables for the selected provider and reservation date
+        }
+
+        return view('livewire.reservation-component', ['resTimes' => $resTimes])->layout('layouts.font-layout');
+    }
+}

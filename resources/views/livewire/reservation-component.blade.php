@@ -5,77 +5,7 @@
                 <div class="col-lg-12">
                     <div class="section-content bg-white p-5 shadow">
                         <div class="paymob-payment" style="display: {{ $paymobPaymentDisplay }};">
-                            <h2>
-                                Confirm the payment by pay 5$
-                            </h2>
-
-                            <img src="/static/img/arrow_corner_up.svg" class="arrow1"
-                                 style="position: absolute;opacity: 0.1;width: 13%;z-index: -1;">
-
-                            <div class="containers">
-                                <div class="row formRowContainer">
-                                    <div class="col-md-12 col-sm-12">
-                                        <section class="cards">
-                                            <div class="card-wrapper">
-
-                                            </div>
-                                        </section>
-                                    </div>
-
-                                    <div class="col-md-12 col-sm-12">
-                                        <section class="card-inputs">
-                                            <form id="paymob_checkout" wire:submit.prevent="paymobPay" method="POST">
-                                                {{ csrf_field() }}
-                                                <input type="hidden" value="CARD" paymob_field="card_number" id="card_number">
-                                                <input type="hidden" value="CARD" paymob_field="card_expiry_mm" id="mm">
-                                                <input type="hidden" value="CARD" paymob_field="card_expiry_yy" id="yy">
-                                                <input type="hidden" value="" name="tenure" paymob_field="tenure" id="tenureHiddenInput">
-                                                <input type="hidden" value="CARD" paymob_field="subtype">
-                                                <input type="hidden" value="" name="slug" />
-                                                <div class="card-num-input">
-                                                    <input placeholder="Card Number" onchange="update_two_hidden_fields();" type="tel" name="number"
-                                                           id="number" class="card-num">
-                                                </div>
-                                                <div class="checkInstallmentTextDiv">
-                                                    <p>Your card is eligible for installments</p>
-                                                    <span>Check Installment Plans</span>
-                                                </div>
-                                                <div class="card-num-input">
-                                                    <input placeholder="Card Holder Name" type="text" name="name" paymob_field="card_holdername">
-                                                </div>
-                                                <div class="input-containers">
-                                                    <input placeholder="MM/YY" onchange="update_two_hidden_fields();" type="tel" name="expiry"
-                                                           id="mmyy">
-                                                    <input placeholder="CVV" type="tel" name="cvc" paymob_field="card_cvn">
-                                                </div>
-                                                <div class="card-footer">
-                                                    <div class="saveCardText">Save Card <input type="checkbox" value="tokenize" name="save card">
-                                                    </div>
-                                                    <div id="discountMessgae"></div>
-                                                    <button id="submitButtonWaiting" class="submit" style="display: block;" disabled>
-                                                        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-                                                    </button>
-                                                    <input id="submitButton" type="submit" value="PAY" class="submit" style="display: none;">
-                                                    <span><i class="fa fa-lock" aria-hidden="true"></i> Secured by Paymob</span>
-                                                    <div id="checkInstallmentBtn" class="whiteBtn">Check Installment Plans</div>
-                                                </div>
-                                            </form>
-                                        </section>
-                                    </div>
-                                </div>
-                                <div class="installmentsDiv">
-                                    <div class="installmentsHead">
-                                        <img src="/static/img/paymob_new.svg" />
-                                        <p>Choose your plan</p>
-                                    </div>
-                                    <div id="installmentsBody"></div>
-                                </div>
-                            </div>
-
-                            <img src="/static/img/arrow_corner_down.svg" style="position: absolute; opacity: 0.1; z-index: -1;width: 13%;"
-                                 class="arrow2">
-
-                            <button wire:click="toggleStyles" class="btn btn-success">Next</button>
+                            @livewire('paymob-payment-component')
                         </div>
                         <div class="heading-section text-center" style="display: {{ $headingSectionDisplay }};">
                             @if ($step == 1)
