@@ -42,18 +42,28 @@ class CartComponent extends Component
     public function itemTotalPrice($item)
     {
         $coupon = \App\Models\Coupon::find($item->coupon);
+        $price = $this->calculateMealPrice($item);
+
 
         if ($coupon) {
             if ($coupon->type === 'fixed') {
-                return number_format($item->price * $item->quantity - $coupon->value, 2);
+                return number_format($price * $item->quantity - $coupon->value, 2);
             } elseif ($coupon->type === 'percent') {
-                return number_format($item->price * $item->quantity - ($coupon->value / 100) * ($item->price * $item->quantity), 2);
+                return number_format($price * $item->quantity - ($coupon->value / 100) * ($item->price * $item->quantity), 2);
             }
         }
 
-        return number_format($item->price * $item->quantity, 2);
+        return number_format($price * $item->quantity, 2);
     }
 
+    protected function calculateMealPrice($item)
+    {
+        if ($item->sales->isNotEmpty()) {
+            return number_format($item->price * (100 - $item->sales->first()->percentage) / 100, 2);
+        }
+
+        return number_format($item->price, 2);
+    }
 
     public function getCartProperty()
         {

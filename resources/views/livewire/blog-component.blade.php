@@ -61,8 +61,8 @@
                                     </div>
                                     <div class="blog__item__text">
                                         <ul>
-                                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                                            <li><i class="fa fa-comment-o"></i> 5</li>
+                                            <li><i class="fa fa-calendar-o"></i> {{ date('M d, Y', strtotime($post->created_at)) }}</li>
+                                            <li><i class="fa fa-comment-o"></i> 0</li>
                                         </ul>
                                         <h5><a href="#">{{$post->title}}</a></h5>
                                         <p>{{$post->body}}</p>
@@ -73,12 +73,7 @@
                         @endforeach
 
                         <div class="col-lg-12">
-                            <div class="product__pagination blog__pagination">
-                                <a href="#">1</a>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-                            </div>
+                            {{$posts->links()}}
                         </div>
                     </div>
                 </div>

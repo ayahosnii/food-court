@@ -33,7 +33,7 @@ class BlogComponent extends Component
             });
         }
 
-        $posts = $query->get();
+        $posts = $query->paginate(4);
         $categoryBlogs = CategoryBlog::get();
 
         return view('livewire.blog-component', ['posts' => $posts, 'categoryBlogs' => $categoryBlogs])

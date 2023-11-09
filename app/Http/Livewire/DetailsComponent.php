@@ -52,7 +52,8 @@ class DetailsComponent extends Component
 
         $this->slug = $slug;
         $this->qty = 1;
-        $meal = Meal::where('slug', $slug)->first();
+        $meal = Meal::where('slug', $slug)->with('ratings')->first();
+
         $this->loadAttributesAndOptions($meal);
     }
 
@@ -147,9 +148,11 @@ class DetailsComponent extends Component
         }
     }
 
+
+
     public function render()
     {
-        $meal = Meal::where('slug', $this->slug)->first();
+        $meal = Meal::where('slug', $this->slug)->with('ratings')->first();
         $excludedIds = [$meal->id];
 
         $rproducts = Meal::where('category_id', $meal->category_id)
@@ -159,6 +162,16 @@ class DetailsComponent extends Component
             ->get();
         $nproducts = Meal::Latest()->take(4)->get();
 
-        return view('livewire.details-component', ['meal' => $meal ,'rproducts' => $rproducts , 'nproducts' => $nproducts])->layout('layouts.font-layout');
+        $averageRating = Meal::leftJoin('ratings', 'meals.id', '=', 'ratings.meal_id')
+            ->selectRaw('AVG(ratings.rating) as average_rating')
+            ->where('meals.id', $meal->id)
+            ->first();
+
+        return view('livewire.details-component', [
+            'meal' => $meal ,
+            'rproducts' => $rproducts ,
+            'nproducts' => $nproducts,
+            'averageRating'=>$averageRating
+        ])->layout('layouts.font-layout');
     }
 }

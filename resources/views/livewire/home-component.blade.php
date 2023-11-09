@@ -248,7 +248,12 @@
                                         <span class="text-primary">{{$meal->provider->name}}</span>
                                     </a>
                                 </div>
-                                <span class="text-1000 fw-bold">${{$meal->price}}</span>
+                                @if ($meal->sales->isNotEmpty())
+                                    <span class="text-1000 fw-bold"><del>${{$meal->price}}</del></span>
+                                    <span class="text-1000 fw-bold">${{ number_format($meal->price * (100 - $meal->sales->first()->percentage) / 100, 2) }}</span>
+                                @else
+                                  <span class="text-1000 fw-bold">${{$meal->price}}</span>
+                                @endif
                             </div>
                         </div>
                         <div class="d-grid gap-2">
@@ -491,51 +496,23 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic">
-                            <img src="img/blog/blog-1.jpg" alt="">
-                        </div>
-                        <div class="blog__item__text">
-                            <ul>
-                                <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                                <li><i class="fa fa-comment-o"></i> 5</li>
-                            </ul>
-                            <h5><a href="#">Cooking tips make cooking simple</a></h5>
-                            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic">
-                            <img src="img/blog/blog-2.jpg" alt="">
-                        </div>
-                        <div class="blog__item__text">
-                            <ul>
-                                <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                                <li><i class="fa fa-comment-o"></i> 5</li>
-                            </ul>
-                            <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
-                            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                @foreach($blogs as $blog)
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <div class="blog__item">
+                            <div class="blog__item__pic">
+                                <img style="height: 400px" src="{{$blog->image}}" alt="">
+                            </div>
+                            <div class="blog__item__text">
+                                <ul>
+                                    <li><i class="fa fa-calendar-o"></i> {{ date('M d, Y', strtotime($blog->created_at)) }}</li>
+                                    <li><i class="fa fa-comment-o"></i> {{ $blog->comments_count }}</li>
+                                </ul>
+                                <h5><a href="#">{{ $blog->title }}</a></h5>
+                                <p>{{ Str::limit($blog->body, 200) }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic">
-                            <img src="img/blog/blog-3.jpg" alt="">
-                        </div>
-                        <div class="blog__item__text">
-                            <ul>
-                                <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                                <li><i class="fa fa-comment-o"></i> 5</li>
-                            </ul>
-                            <h5><a href="#">Visit the clean farm in the US</a></h5>
-                            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

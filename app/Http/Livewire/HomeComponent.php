@@ -96,6 +96,7 @@ class HomeComponent extends BaseComponent
         $data['posts'] = $this->loadLatestPosts();
         $data['sale'] = $this->loadLatestSale();
         $data['banners'] = Banner::get();
+        $data['blogs'] = Post::take(3)->get();
 
         $ends_at = null;
 

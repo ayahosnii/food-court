@@ -38,6 +38,25 @@ class Cart
     }
 
     /**
+     * Calculate the price for a specific meal, taking into account any discounts.
+     *
+     * @param Meal $meal
+     * @return float
+     */
+    protected function calculateMealPrice(Meal $meal)
+    {
+        $price = $meal->price;
+
+        if ($meal->sales->isNotEmpty()) {
+            return number_format($meal->price * (100 - $meal->sales->first()->percentage) / 100, 2);
+        }
+
+
+        return number_format($price, 2);
+    }
+
+
+    /**
      * Add the meal with its quantity to the basket.
      * The quantity will be updated if it exists.
      *
@@ -79,9 +98,9 @@ class Cart
             // Check if $mealData is null before accessing its properties
             if ($mealData !== null) {
                 $quantity = isset($mealData['quantity']) ? $mealData['quantity'] : 0; // Get quantity from the session
-
+                $mealPrice = $this->calculateMealPrice($meal);
                 // Calculate the updated price based on the applied coupon
-                $updatedPrice = $meal->price * $quantity;
+                $updatedPrice = $mealPrice * $quantity;
                 if ($coupon) {
                     if ($coupon->type === 'fixed') {
                         $updatedPrice -= $coupon->value;
@@ -270,11 +289,13 @@ class Cart
         $subtotal = 0;
 
         foreach ($this->all() as $item) {
+            $mealPrice = $this->calculateMealPrice($item);
+
 //            if ($item->outOfStock()) {
 //                continue;
 //            }
 
-            $subtotal += $item->price * $item->quantity;;
+            $subtotal += $mealPrice * $item->quantity;;
         }
 
         return floatval(number_format($subtotal, 2));
@@ -287,15 +308,16 @@ class Cart
 
         foreach ($this->all() as $item) {
             $coupon = \App\Models\Coupon::find($item->coupon);
+            $mealPrice = $this->calculateMealPrice($item);
 
             if ($coupon) {
                 if ($coupon->type === 'fixed') {
-                    $discountedPrice = $item->price * $item->quantity - $coupon->value;
+                    $discountedPrice = $mealPrice * $item->quantity - $coupon->value;
                 } elseif ($coupon->type === 'percent') {
-                    $discountedPrice = $item->price * $item->quantity - ($coupon->value / 100) * ($item->price * $item->quantity);
+                    $discountedPrice = $mealPrice * $item->quantity - ($coupon->value / 100) * ($mealPrice * $item->quantity);
                 }
             } else {
-                $discountedPrice = $item->price * $item->quantity;
+                $discountedPrice = $mealPrice * $item->quantity;
             }
 
             $totalPriceAfterDiscount += $discountedPrice;
@@ -310,12 +332,13 @@ class Cart
 
         foreach ($this->all() as $item) {
             $coupon = \App\Models\Coupon::find($item->coupon);
+            $mealPrice = $this->calculateMealPrice($item);
 
             if ($coupon) {
                 if ($coupon->type === 'fixed') {
                     $totalDiscount += $coupon->value;
                 } elseif ($coupon->type === 'percent') {
-                    $totalDiscount += ($coupon->value / 100) * ($item->price * $item->quantity);
+                    $totalDiscount += ($coupon->value / 100) * ($mealPrice * $item->quantity);
                 }
             }
         }

@@ -132,7 +132,12 @@
                                             <span class="text-primary">{{$meal->provider->name}}</span>
                                             </a>
                                         </div>
-                                        <span class="text-1000 fw-bold">${{$meal->price}}</span>
+                                        @if ($meal->sales->isNotEmpty())
+                                            <span class="text-1000 fw-bold"><del>${{$meal->price}}</del></span>
+                                            <span class="text-1000 fw-bold">${{ number_format($meal->price * (100 - $meal->sales->first()->percentage) / 100, 2) }}</span>
+                                        @else
+                                            <span class="text-1000 fw-bold">${{$meal->price}}</span>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="d-grid gap-2">
@@ -144,9 +149,7 @@
                         @endforeach
                     </div>
                     <div class="product__pagination">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
+                        {{ $meals->links() }}
                         <a href="#"><i class="fa fa-long-arrow-right"></i></a>
                     </div>
                 </div>

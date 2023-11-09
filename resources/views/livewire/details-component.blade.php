@@ -30,12 +30,14 @@
                     <div class="product__details__text">
                         <h3>{{$meal->name}}</h3>
                         <div class="product__details__rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-half-o"></i>
-                            <span>(18 reviews)</span>
+                            @for ($i = 0; $i < intval($averageRating->average_rating); $i++)
+                                @if ($i < intval($averageRating->average_rating))
+                                    <i class="fa fa-star"></i>
+                                @else
+                                    <i class="fa fa-star-half-o"></i>
+                                @endif
+                            @endfor
+                            <span>({{ intval($averageRating->average_rating) }} reviews)</span>
                         </div>
                         <div class="product__details__price">
                             @if ($selectedAttributePrice)
@@ -76,19 +78,31 @@
                             <li><b>Availability</b> <span>In Stock</span></li>
                             <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
 
-                                <li><b>
+                                <li>
+                                    <b>
                                         @foreach($options as $option)
-                                        {{ $option->attribute->name }}
+                                            @if (!empty($option->attribute->name))
+                                                {{ $option->attribute->name }}
+                                            @endif
                                         @endforeach
                                     </b>
-                                    <span>
-                                        <select wire:model="selectedAttributePrice" wire:change="calculateTotalPrice">
-                                            <optgroup label="Choose Attribute"></optgroup>
-                                             @foreach($options as $option)
-                                            <option  value="{{ $option->price }}">{{$option->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </span></li>
+
+                                    @if (count($options) === 0)
+
+                                    @else
+                                        <span>
+        <select>
+            @foreach($options as $option)
+                <option value="{{ $option->price }}">{{ $option->name }}</option>
+            @endforeach
+        </select>
+    </span>
+         @endif
+
+
+
+
+                                </li>
 
                             <li><b>Share on</b>
                                 <div class="share">

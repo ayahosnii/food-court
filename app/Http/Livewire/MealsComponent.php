@@ -15,13 +15,16 @@ use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class MealsComponent extends BaseComponent
 {
+    use WithPagination;
+
     public function mount()
     {
         $this->sorting = "price";
-        $this->pagesize = "12";
+        $this->pagesize = "6";
 
         $this->min_price=1;
         $this->max_price=100;

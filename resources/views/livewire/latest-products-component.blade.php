@@ -12,7 +12,12 @@
                                 </div>
                                 <div class="latest-product__item__text">
                                     <h6>{{ $meal->name }}</h6>
-                                    <span>${{ $meal->price }}</span>
+                                    @if ($meal->sales->isNotEmpty())
+                                        <span><del>${{$meal->price}}</del></span>
+                                        <span>${{ number_format($meal->price * (100 - $meal->sales->first()->percentage) / 100, 2) }}</span>
+                                    @else
+                                        <span>${{$meal->price}}</span>
+                                    @endif
                                 </div>
                             </a>
                         @endforeach

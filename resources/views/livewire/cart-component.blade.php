@@ -38,12 +38,18 @@
                                     <td class="shoping__cart__item">
                                         <img style="width: 80px; height: 100px" src="{{ asset($item->image) }}"
                                              alt="{{ $item->name }}">
-                                        <h5>{{ $item->name }} {{ \App\Models\Coupon::find($item->coupon)->value ?? 0 }}
+                                        <h5>{{ $item->name }} [${{ $item->price }}] {{ \App\Models\Coupon::find($item->coupon)->value ?? 0 }}
                                         </h5>
                                     </td>
-                                    <td class="shoping__cart__price">
-                                        ${{ $item->price }}
-                                    </td>
+                                    @if ($item->sales->isNotEmpty())
+                                        <td class="shoping__cart__price">
+                                            ${{ number_format($item->price * (100 - $item->sales->first()->percentage) / 100, 2) }}
+                                        </td>
+                                    @else
+                                        <td class="shoping__cart__price">
+                                            ${{ $item->price }}
+                                        </td>
+                                    @endif
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
                                             <a href="javascript:void(0)" class="minus-btn text-black"
