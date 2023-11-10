@@ -19,6 +19,7 @@ use App\Support\Storage\Contracts\StorageInterface;
 use App\Support\Storage\SessionStorage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Livewire\Component;
 use Illuminate\Http\Request as HttpRequest;
@@ -91,6 +92,7 @@ class HomeComponent extends BaseComponent
         $data['sub_categories'] = $this->loadSubCategories();
         $data['categories'] = $this->loadCategories($default_lang);
         $data['meals'] = $this->loadMeals();
+        $data['topmeals'] = $this->loadTopRatedMeals();
         $data['lmeals'] = $this->loadLatestMeals();
         $data['smeals'] = $this->loadSpecialMeals();
         $data['posts'] = $this->loadLatestPosts();
@@ -135,6 +137,15 @@ class HomeComponent extends BaseComponent
         return Meal::where('published', '1')->limit('8')->get();
     }
 
+    private function loadTopRatedMeals()
+    {
+         return Meal::has('ratings')
+         ->with('ratings')
+             ->leftJoin('ratings', 'meals.id', '=', 'ratings.meal_id')
+             ->orderByDesc('rating')
+             ->take(6)
+             ->get();
+    }
 
     private function loadLatestMeals()
     {
